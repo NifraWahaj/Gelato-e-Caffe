@@ -1,0 +1,367 @@
+/* Navbar Styles */
+.custom-navbar {
+    background-color: #fffdec;
+}
+
+/* Change the default font color for navigation links */
+.navbar-nav .nav-item .nav-link {
+    color: #02594d !important; /* Your desired font color */
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Rubik Mono One', sans-serif;
+    padding: 5px 15px; /* Adjust the values as needed */
+}
+
+/* Change the hover color for navigation links */
+.navbar-nav .nav-item .nav-link:hover {
+    color: #ff8674 !important; /* Your desired hover font color */
+}
+
+.navbar-logo {
+    width: 250px;
+}
+
+/* Search Input Styles */
+.form-control {
+    width: 300px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    font-size: 18px; /* Adjust the font size as needed */
+}
+
+/* Search Button Styles */
+.search-button {
+    background-color: rgb(246, 239, 176);
+    color: #02594d;
+    border: none;
+    height: 40px;
+    font-size: 18px; /* Adjust the font size as needed */
+}
+
+.search-button:hover {
+    background-color: #ff8674;
+    color: #95beb2;
+}
+
+
+/*=======================================================*/
+
+.separator-section1-class {
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 24px;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 70px; /* Add padding as needed */
+}
+
+#home-section {
+    background-image: url('homeB.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+    height: 1000px; /* Set the height as needed */
+}
+#separator-section-1 {
+    background-color:#fffdec;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+    height: 300px; /* Set the height as needed */
+}
+
+
+/*=======================================================*/
+
+#Menu-section {
+    display: flex;
+    height: 600px; /* Set the height as needed */
+    background-color: #d9e5db;
+}
+
+#Menu-section .left-half {
+    flex: 1;
+    background-image: url('menB.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+}
+
+#Menu-section .right-half {
+    flex: 1;
+    /* Add your styles for the right half here */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.btn-custom {
+    background-color: #02594d; /* Background color */
+    color: #fff; /* Text color */
+    border-color: #02594d; /* Border color (if needed) */
+}
+
+.btn-custom:hover {
+    background-color: #d9534f; /* Darker background color on hover */
+    color: #fff; /* Text color on hover */
+    border-color: #d9534f; /* Border color on hover (if needed) */
+}
+.Menu-section-text{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 24px;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+
+}
+
+.Menu-section-head{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bolder;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+}
+
+/*=======================================================*/
+
+
+#Daily-Specials-section {
+    display: flex;
+    height: 600px; /* Set the height as needed */
+    background-color: #ffde9f;
+}
+
+#Daily-Specials-section .left-half {
+    flex: 1;
+    /* Add your styles for the right half here */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+   
+}
+
+#Daily-Specials-section .right-half {
+
+
+    flex: 1;
+    background-image: url('specialsB.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+}
+.btn-custom {
+    background-color: #02594d; /* Background color */
+    color: #fff; /* Text color */
+    border-color: #02594d; /* Border color (if needed) */
+}
+
+.btn-custom:hover {
+    background-color: #d9534f; /* Darker background color on hover */
+    color: #fff; /* Text color on hover */
+    border-color: #d9534f; /* Border color on hover (if needed) */
+}
+.Daily-Special-section-text{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 24px;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+
+}
+
+.Daily-Specials-section-head{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bolder;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+}
+
+
+/*=======================================================*/
+
+#Location-section {
+    display: flex;
+    height: 600px; /* Set the height as needed */
+    background-color: #d9e5db;
+}
+
+#Location-section .left-half {
+    flex: 1;
+    background-image: url('locationB.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+}
+
+#Location-section .right-half {
+    flex: 1;
+    /* Add your styles for the right half here */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.btn-custom {
+    background-color: #02594d; /* Background color */
+    color: #fff; /* Text color */
+    border-color: #02594d; /* Border color (if needed) */
+}
+
+.btn-custom:hover {
+    background-color: #d9534f; /* Darker background color on hover */
+    color: #fff; /* Text color on hover */
+    border-color: #d9534f; /* Border color on hover (if needed) */
+}
+.Location-section-text{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 24px;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+
+}
+
+.Location-section-head{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bolder;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+}
+
+
+/*=======================================================*/
+
+#About-Us-section {
+    display: flex;
+    height: 600px; /* Set the height as needed */
+    background-color: #ffde9f;
+}
+
+#About-Us-section .left-half {
+    flex: 1;
+    /* Add your styles for the right half here */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+   
+}
+
+#About-Us-section .right-half {
+
+
+    flex: 1;
+    background-image: url('aboutusB.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+}
+.btn-custom {
+    background-color: #02594d; /* Background color */
+    color: #fff; /* Text color */
+    border-color: #02594d; /* Border color (if needed) */
+}
+
+.btn-custom:hover {
+    background-color: #d9534f; /* Darker background color on hover */
+    color: #fff; /* Text color on hover */
+    border-color: #d9534f; /* Border color on hover (if needed) */
+}
+.About-Us-section-text{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 24px;
+
+    max-width: 550px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+}
+
+.About-Us-section-head{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bolder;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+}
+
+
+/*=======================================================*/
+
+#footer-section {
+    background-color:#fffdec;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+    height: 300px; /* Set the height as needed */
+}
+
+.footer-section-text{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 24px;
+    max-width: 550px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 20px; /* Add padding as needed */
+}
+
+.footer-section-head{
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bolder;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 50px; /* Add padding as needed */
+}
+
+
+
+
+/*MENU PAGE*/
+
+#separator-section-2 {
+    background-color:#fffdec;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Change to scroll */
+    height: 300px; /* Set the height as needed */
+}
+.separator-section2-class {
+    color: #02594d; /* Text color for normal state */
+    font-family: 'Ubuntu Mono', sans-serif;
+    text-align: center;
+    font-size: 24px;
+    max-width: 400px; /* Adjust the max width as needed */
+    margin: 0 auto; /* Center the text horizontally */
+    padding-top: 70px; /* Add padding as needed */
+}
