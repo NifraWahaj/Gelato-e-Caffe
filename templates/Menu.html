@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
-
     <!-- Google Fonts Link -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logo.png') }}">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -25,9 +24,9 @@
 <body class="menu-page-body">
 
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
-        <a class="navbar-brand" href="Home.html">
-            <img src="logo.png" alt="Gelato e Caffè Logo" class="navbar-logo">
-        </a>
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo">
+        </a>        
        
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,25 +35,26 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto nav-fill">
                 <li class="nav-item active">
-                    <a class="nav-link" href="Menu.html">Menu <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('menu') }}">Menu <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="Home.html#Location-section">Location <span class="sr-only">(current)</span></a>
-                </li>
-            
-                <li class="nav-item active">
-                    <a class="nav-link" href="Home.html#Reviews-section">Reviews <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('home') }}#Location-section">Location <span class="sr-only">(current)</span></a>
                 </li>
             
                 <li class="nav-item active">
-                    <a class="nav-link" href="Home.html#About-Us-section">About Us <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('home') }}#Reviews-section">Reviews <span class="sr-only">(current)</span></a>
+                </li>
+            
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home') }}#About-Us-section">About Us <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            
-            <a class=" custom-cart-button" href="./LogIn.html">
-                <i class="material-icons" >shopping_cart</i>
+        
+            <a class="custom-cart-button" href="{{ url_for('login') }}">
+                <i class="material-icons">shopping_cart</i>
             </a>
-           <a class="btn btn-custom my-2 my-sm-0" href="./LogIn.html">Log In</a>  
+            
+            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>            
         </div>
     </nav>
 
@@ -85,10 +85,6 @@
     </select>
 </div>
 
-
-
-
-   
     <div class="menu-options">
         <!-- Menu options -->
         <button class="menu-button" data-toggle="collapse" data-target="#coffee-section">Coffee</button>
@@ -98,11 +94,11 @@
     </div>
 
     <div id="menu-section">
-        <!-- Create sections for each menu category -->
+        <!--  sections for each category -->
         <div class="menu-section collapse" id="drinks-section">
             <h2 class="item-title">Drinks</h2>
             <div class="menu-items">
-                <!-- Add menu items for drinks here -->
+
                 <div class="menu-item">
                     <span class="item-name">Drink 1</span>
                     <span class="item-price">$5.99</span>
@@ -121,7 +117,6 @@
             
             <h2 class="item-title">Coffee</h2>
             <div class="menu-items">
-                <!-- Add menu items for coffee here -->
                 <div class="menu-item">
                     <span class="item-name">Coffee 1</span>
                     <span class="item-price">$3.99</span>
@@ -153,7 +148,6 @@
         <div class="menu-section collapse" id="gelato-section">
             <h2 class="item-title">Gelato</h2>
             <div class="menu-items">
-                <!-- Add menu items for gelato here -->
                 <div class="menu-item">
                     <span class="item-name">Gelato 1</span>
                     <span class="item-price">$4.99</span>
@@ -171,7 +165,6 @@
             
             <h2 class="item-title">Brunch</h2>
             <div class="menu-items">
-                <!-- Add menu items for brunch here -->
                 <div class="menu-item">
                     <span class="item-name">Brunch 1</span>
                     <span class="item-price">$7.99</span>
@@ -189,7 +182,7 @@
     <div id="footer-section">
         <div class="left-section">
             <a class="navbar-brand-foot" href="#footer-section">
-                <img src="logo.png" alt="Gelato e Caffè Logo" class="navbar-logo-foot">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo-foot">            
             </a>
         </div>
         <div class="right-section">
@@ -239,7 +232,6 @@
                 }
             });
         });
-    
         //Show the "Coffee" section by default
         showCoffeeSection();
 
@@ -262,7 +254,6 @@
                 priceFilter.style.display = 'none';
                 sortBy.style.display = 'none';
             }
-
             //search functionality/filtering logic..
         });  
     </script>
