@@ -1,0 +1,38 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Node.js modules
+node_modules/
+
+# Ignore editor/IDE-specific files
+.vscode/
+.idea/
+*.code-workspace
+
+# Ignore compiled files
+*.log
+*.log.*
+*.tmp
+*.bak
+*.swp
+*.out
+*.class
+*.dll
+*.exe
+
+# Ignore dependency directories
+vendor/
+bower_components/
+
+# Ignore build output
+/dist/
+/build/
+/out/
+/public/
+
+# Ignore environment-specific files
+.env
+
+# Ignore OS-specific files
+Thumbs.db
+Desktop.ini
