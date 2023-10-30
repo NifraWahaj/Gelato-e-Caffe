@@ -32,24 +32,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto nav-fill">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/menu">Menu <span class="sr-only">(current)</span></a>
-
+                    <a class="nav-link" href="{{ url_for('menu') }}">Menu <span class="sr-only">(current)</span></a>
+                    
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#Location-section">Location <span class="sr-only">(current)</span></a>
-                </li>
-            
-                <li class="nav-item active">
-                   <!--<a class="nav-link" href="#Reviews-section">Reviews <span class="sr-only">(current)</span></a>--> 
-                    <a class="nav-link" href="/reviews">Reviews<span class="sr-only">(current)</span></a>
-
+                    <a class="nav-link" href="{{ url_for('home') }}#Location-section">Location <span class="sr-only">(current)</span></a>
                 </li>
             
                 <li class="nav-item active">
-                    <a class="nav-link" href="#About-Us-section">About Us <span class="sr-only">(current)</span></a>
+                   <a class="nav-link" href="{{ url_for('home') }}#Reviews-section">Reviews <span class="sr-only">(current)</span></a>
+
+                </li>
+            
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home') }}#About-Us-section">About Us <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            
             <!--<a class=" custom-cart-button" href="./LogIn.html"> -->
                 <a class="custom-cart-button" href="{{ url_for('login') }}">
                     <i class="material-icons">shopping_cart</i>
