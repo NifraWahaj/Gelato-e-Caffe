@@ -62,7 +62,6 @@
 }
 .custom-cart-button i.material-icons {
     font-size: 40px; 
-  
 }
 
 .custom-cart-button {
@@ -72,7 +71,7 @@
 }
 
 .custom-cart-button:hover {
-    background-color: transpagrerent; 
+    background-color: transparent; 
     color: #ff8674 !important; 
 }
 
@@ -109,7 +108,6 @@
 #Menu-section {
     display: flex;
     height: 600px; 
-   
     background-color: #d9e5db;
 
 }
@@ -149,7 +147,6 @@
     max-width: 400px; 
     margin: 0 auto; 
     padding-top: 50px; 
-
 }
 
 .Menu-section-head{
@@ -531,4 +528,50 @@ body {
     font-size: 30px; 
     font-family: 'Open Sans', sans-serif;
     font-weight: bold;
+}
+
+
+/*================================ADMIN================================*/
+
+.menu-section-admin {
+    margin-top:5%;
+    margin-bottom: 5%;
+    text-align: left;
+    margin-left: 10%; 
+    margin-right: 10%; 
+    padding: 20px; 
+    border: 1px solid #ccc; 
+}
+.item-price-admin {
+    font-weight: bold;
+    font-size: 20px;
+    color: #d9534f; 
+    align-self: flex-end; 
+    margin-left: 75%;
+}
+.edit-button{
+    margin-left: 1%; 
+    margin-right: 1%; 
+    background-color: #02594d;
+    border-radius: 3px;
+}
+.delete-button{
+    background-color: #02594d;
+    border-radius: 3px;
+
+}
+.delete-button i.material-icons {
+    color: #fffdec;
+}
+
+.edit-button i.material-icons {
+    color: #fffdec;
+}
+
+.delete-button:hover i.material-icons {
+    color: #ff8674 !important;
+}
+
+.edit-button:hover i.material-icons {
+    color: #ff8674 !important;
 }
