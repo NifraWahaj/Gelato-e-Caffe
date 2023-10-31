@@ -89,7 +89,7 @@
 }
 
 #home-section {
-    background-image: url('homeB.png');
+    background-image: url('/static/images/homeB.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll; 
@@ -116,7 +116,7 @@
 
 #Menu-section .left-half {
     flex: 1;
-    background-image: url('menB.png');
+    background-image: url('/static/images/menB.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll; 
@@ -163,6 +163,25 @@
     padding-top: 50px; 
 }
 
+.menu-section {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.item-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+}
+
+
 /*================LCOATION=================*/
 #Location-section{
     display: flex;
@@ -184,7 +203,7 @@
 
 
     flex: 1;
-    background-image: url('locationB.png');
+    background-image: url('/static/images/locationB.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll; 
@@ -231,7 +250,7 @@
 
 #Reviews-section .left-half {
     flex: 1;
-    background-image: url('reviewB.png');
+    background-image: url('/static/images/reviewB.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll; 
@@ -291,7 +310,7 @@
 }
 #About-Us-section .right-half {
     flex: 1;
-    background-image: url('aboutusB.jpg');
+    background-image: url('/static/images/aboutusB.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll; 
@@ -471,7 +490,7 @@
     padding-top: 30%; 
 }
 #separator-menu {
-    background-image:url(menu.jpg);
+    background-image:url('/static/images/menu.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll; 
@@ -520,8 +539,9 @@ body {
     font-weight: bold;
     font-size: 20px;
     color: #d9534f; 
-    align-self: flex-end; 
     margin-left: 80%;
+    font-size: 18px;
+    margin-top: -30px;
 }
 .item-description {
     font-size: 16px;
@@ -532,3 +552,4 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-weight: bold;
 }
+
