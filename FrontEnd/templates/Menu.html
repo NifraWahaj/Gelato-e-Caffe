@@ -146,6 +146,41 @@
     
         // Show the default section by default
         showDefaultSection();
+
+
+        function filterItems() {
+            const minPrice = parseFloat(document.getElementById("min-price").value);
+            const maxPrice = parseFloat(document.getElementById("max-price").value);
+
+            const items = document.querySelectorAll(".menu-item");
+
+            items.forEach((item) => {
+                const itemPrice = parseFloat(item.querySelector(".item-price").textContent.replace("$", ""));
+                item.style.display = itemPrice >= minPrice && itemPrice <= maxPrice ? "block" : "none";
+            });
+        }
+
+        // Event listener for the filter button
+        document.getElementById("apply-filter").addEventListener("click", filterItems);
+
+        // Event listener for the search form
+        document.getElementById("search-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const searchTerm = document.querySelector(".form-control-menu").value.toLowerCase();
+            const items = document.querySelectorAll(".item-name");
+
+            items.forEach((item) => {
+                const itemName = item.textContent.toLowerCase();
+                const itemParent = item.closest(".menu-item");
+
+                if (itemName.includes(searchTerm)) {
+                    itemParent.style.display = "block";
+                } else {
+                    itemParent.style.display = "none";
+                }
+            });
+        });
     </script>
     
     
