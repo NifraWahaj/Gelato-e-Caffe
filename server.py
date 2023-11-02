@@ -9,7 +9,7 @@ login_user = ''
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="patanahi",
+    password="r13Bne3@7",
     database="gelatoecaffè"
 )
 cursor = db.cursor()
@@ -73,6 +73,24 @@ def handle_menu():
     categories = cursor.fetchall()
     print("categories",categories)
     return render_template('Menu.html', menu=menu, categories=categories)
+
+@app.route('/AdminHome')
+def admin_home():
+    return render_template('AdminHome.html')
+
+@app.route('/AdminMenu')
+def admin_menu():
+    sql = "SELECT * FROM Menu"
+    cursor.execute(sql)
+    menu = cursor.fetchall()
+    #print("menu", menu)  #debug
+
+    sql = "SELECT * FROM Category"
+    cursor.execute(sql)
+    categories = cursor.fetchall()
+    #print("categories", categories)  # debug
+
+    return render_template('AdminMenu.html', menu=menu, categories=categories)
 
 if __name__ == '__main__':
     app.run(debug=True)
