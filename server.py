@@ -92,5 +92,9 @@ def admin_menu():
 
     return render_template('AdminMenu.html', menu=menu, categories=categories)
 
+@app.route('/Reviews', methods=['GET'])
+def reviews():
+    return render_template('Reviews.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
