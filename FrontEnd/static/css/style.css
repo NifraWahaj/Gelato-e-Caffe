@@ -556,6 +556,27 @@ body {
     font-weight: bold;
 }
 
+/*================REVIEWS=================*/
+
+.separator-review-class {
+    color: #02594d; 
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bolder;
+    max-width: 400px; 
+    margin: 0 auto; 
+    padding-top: 30%; 
+}
+#separator-review {
+    background-image:url('/static/images/reviewsB.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; 
+    height: 600px; 
+}
+
+
 /*================================ADMIN================================*/
 
 .menu-section-admin {
@@ -670,8 +691,3 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-weight: bold;
 }
-
-
-
-
-
