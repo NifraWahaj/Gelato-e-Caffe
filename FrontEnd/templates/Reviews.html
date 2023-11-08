@@ -16,12 +16,63 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <style> /*keep this here, it disrupts nav bar of all pages if put in style.css*/
+    /*nav bar will be fixed later on this page, ignore it*/
+        .custom-center {
+            display: flex;
+            justify-content: center;
+        }
+        .rating .glyphicon { font-size: 22px; }
+        .rating-num { font-size: 54px; }
+        .progress { margin-bottom: 5px; }
+        .progress-bar { text-align: left; }
+        .rating-desc .col-md-3 { padding-right: 0px; }
+        .glyphicon {
+            margin-right: 5px;
+            font-size: 22px; 
+        }
+        .rating-desc .col-md-3 {
+            padding-right: 5px; 
+        }
+        .sr-only {
+            margin-left: 5px;
+            overflow: visible;
+            clip: auto;
+            font-size: 12px;
+            margin-bottom: 3%;
+        }
+        .animated {
+            -webkit-transition: height 0.2s;
+            -moz-transition: height 0.2s;
+            transition: height 0.2s;
+        }
+        .stars
+        {
+            margin: 20px 0;
+            font-size: 24px;
+            color: #d9534f;
+        }
+        .custom-btn {
+            background-color: #02594d;
+            color: white; 
+        }
+        .custom-btn:hover {
+            background-color:#d9534f; /* Change this to your desired hover color */
+        }
+
+
+    </style>
     
     <title>Reviews</title>
+
 </head>
-
-<body class="menu-page-body">
-
+<body >
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
         <a class="navbar-brand" href="Home.html">
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo">
@@ -55,22 +106,175 @@
             <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>  
         </div>
     </nav>
-
+   
     <div id="separator-review">
         <h3 class="separator-review-class">REVIEWS</h3>
     </div>
     <br>
-<!--
-    <div class="reviews-section">
-        {% for review in reviews %}
-        <div class="review">
-            <div class="rating">Rating: {{ review.Rating }}/5</div>
-            <div class="comments">{{ review.Comments }}</div>
+
+    <!--RATING-->
+    
+    <div class="container">
+        <h2 class="text-center">Rating</h2>
+        <div class="row">
+            <div class="col-xs-12 col-md-14">
+                <div class="well well-sm"> <br>
+                    <div class="row"> <br>
+                       
+                        <div class="col-xs-12 col-md-6 text-center">
+                            <h1 class="rating-num"> 4.0</h1> <!--AVERAGE RATING-->
+                            <div class="rating">
+                                <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                                </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                                </span><span class="glyphicon glyphicon-star-empty"></span>
+                            </div>
+                            <div>
+                                <span class="glyphicon glyphicon-user"></span>1,050,008 total  <!--TOTAL REVIEWS-->
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6">
+                            <div class="row rating-desc">
+                                <div class="col-xs-3 col-md-3 text-right">
+                                    <span class="glyphicon glyphicon-star"></span>5
+                                </div>
+                                <div class="col-xs-8 col-md-9">
+                                    <div class="progress progress-striped">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                            <span class="sr-only">80%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end 5 -->
+                                <div class="col-xs-3 col-md-3 text-right">
+                                    <span class="glyphicon glyphicon-star"></span>4
+                                </div>
+                                <div class="col-xs-8 col-md-9">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                            <span class="sr-only">60%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end 4 -->
+                                <div class="col-xs-3 col-md-3 text-right">
+                                    <span class="glyphicon glyphicon-star"></span>3
+                                </div>
+                                <div class="col-xs-8 col-md-9">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                            <span class="sr-only">40%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end 3 -->
+                                <div class="col-xs-3 col-md-3 text-right">
+                                    <span class="glyphicon glyphicon-star"></span>2
+                                </div>
+                                <div class="col-xs-8 col-md-9">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                            <span class="sr-only">20%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end 2 -->
+                                <div class="col-xs-3 col-md-3 text-right">
+                                    <span class="glyphicon glyphicon-star"></span>1
+                                </div>
+                                <div class="col-xs-8 col-md-9">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 15%">
+                                            <span class="sr-only">15%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end 1 -->
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        
+                    </div>
+                    <br>
+                </div>
+                
+            </div>
         </div>
-        {% endfor %}
     </div>
--->
- 
+
+    <!--REVIEW-->
+    <div class="container">
+        <h2 class="text-center">Reviews</h2>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p style="font-size: 18px;">
+                            <a class="float-left"><strong>Mansfljs </strong></a>
+                            <span class="float-right">
+                                <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                            </span>
+                            <span class="float-right">
+                                <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                            </span>
+                            <span class="float-right">
+                                <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                            </span>
+                            <span class="float-right">
+                                <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                            </span>
+                        </p>
+                        <div class="clearfix"></div>
+                        <p style="font-size: 18px;">Lorem Ipsum is simply dummy text of the pr make but also the leap into electro.</p>
+                        <hr>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+    <!--WRITE REVIEW-->
+    <div class="container">
+        <div class="row" style="margin-top: 40px;">
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <div class="text-right">
+                        <a class="btn btn-success custom-btn" href="#post-review-box" id="open-review-box">Leave a Review</a>
+                       
+                    </div>
+                    <br>
+
+                    <div class="row" id="post-review-box" style="display: none;">
+                        <div class="col-md-12">
+                            <form accept-charset="UTF-8" action="" method="post">
+                                <input id="ratings-hidden" name="rating" type="hidden">
+                                <textarea class="form-control" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
+                                <div class="text-right">
+                                    <div class="stars starrr" data-rating="0"></div>
+                                    <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display: none; margin-right: 10px;">
+                                        <span class="glyphicon glyphicon"></span>Cancel
+                                    </a>
+                                    <button class="btn btn-danger btn-lg" type="button" id="cancel-review-box" style="margin-right: 10px;">Cancel</button>
+                                    <button class="btn btn-success btn-lg" type="submit" style="background-color: #02594d;">Save</button>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+
     <div id="footer-section">
         <div class="left-section">
             <a class="navbar-brand-foot" href="#footer-section">
@@ -84,5 +288,88 @@
         </div>
     </div>
 
+    <script>
+        //show review box
+        function openReviewBox() {
+            document.getElementById("post-review-box").style.display = "block";
+        }
+    
+        //hide review box
+        function closeReviewBox() {
+            document.getElementById("post-review-box").style.display = "none";
+        }
+        //cancel review box
+        function cancelReview() {
+        document.getElementById("post-review-box").style.display = "none";
+    }
+        //star rating plugin
+        function Starrr(element, options) {
+            this.element = element;
+            this.options = options;
+            for (var i = 0; i < 5; i++) {
+                this.element.innerHTML += '<span class="glyphicon glyphicon-star-empty"></span>';
+            }
+            this.stars = this.element.getElementsByTagName('span');
+            for (i = 0; i < this.stars.length; i++) {
+                this.stars[i].addEventListener('click', this.starClick.bind(this));
+            }
+            this.updateRating();
+        }
+    
+        Starrr.prototype.starClick = function (e) {
+            var index = this.getIndex(e.target);
+            if (this.options.rating === index + 1) {
+                this.options.rating = 0;
+            } else {
+                this.options.rating = index + 1;
+            }
+            this.updateRating();
+            var changeEvent = new Event('starrr:change');
+            this.element.dispatchEvent(changeEvent);
+        };
+    
+        Starrr.prototype.getIndex = function (element) {
+            var index = 0;
+            while ((element = element.previousElementSibling) != null) {
+                index++;
+            }
+            return index;
+        };
+    
+        Starrr.prototype.updateRating = function () {
+            for (var i = 0; i < 5; i++) {
+                if (i < this.options.rating) {
+                    this.stars[i].classList.remove('glyphicon-star-empty');
+                    this.stars[i].classList.add('glyphicon-star');
+                } else {
+                    this.stars[i].classList.remove('glyphicon-star');
+                    this.stars[i].classList.add('glyphicon-star-empty');
+                }
+            }
+        }
+    
+        //initializing star rating plugin
+        const starRating = document.querySelector('.stars.starrr');
+        const ratingsField = document.getElementById('ratings-hidden');
+        const starrr = new Starrr(starRating, {
+            rating: 0, // initial rating
+        });
+    
+        //handling "starrr:change" event to update hidden input field
+        starRating.addEventListener('starrr:change', function (e) {
+            ratingsField.value = starrr.options.rating;
+        });
+    
+        //click event handlers to the open/close/cancel buttons
+        const openReviewBtn = document.getElementById('open-review-box');
+        openReviewBtn.addEventListener('click', openReviewBox);
+    
+        const closeReviewBtn = document.getElementById('close-review-box');
+        closeReviewBtn.addEventListener('click', closeReviewBox);
+
+        const cancelReviewBtn = document.getElementById('cancel-review-box');
+        cancelReviewBtn.addEventListener('click', cancelReview);
+
+    </script>
 </body>
 </html>
