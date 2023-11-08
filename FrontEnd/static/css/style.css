@@ -709,25 +709,157 @@ body {
 }
 
 /*================CART=================*/
+
 /*-------------cart items--------------*/
+#separator-cart {
+    background-color: #95beb2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    height: 180px;
+    text-align: center; 
+    padding-top: 100px; 
+}
+
+#separator-cart h3.separator-cart-class {
+    font-size: 40px;
+    font-weight: bold;
+    color: #02594d; 
+}
+#cart-heading {
+    font-size: 22px; 
+    font-weight: bold;
+    color: #02594d; 
+    margin-left: 5%;
+}
+
 #cart-section {
-    display: flex; /* Use flexbox to create a two-column layout */
-    justify-content: space-between; /* Separate the left and right halves */
+    display: flex; 
+    justify-content: space-between; 
 }
 
-.left-half {
-    width: 70%; /* Adjust the width to control the size of the left half */
-    padding: 20px; /* Add padding for spacing */
-    border: 1px solid #ccc; /* Add a border for separation */
+#cart-section> .left-half {
+    width: 70%; 
+    padding: 20px;
+    border: 1px solid #ccc; 
+    margin-left: 5% ;
+    margin-right: 10px;
+}
+#summary-heading{
+    font-size: 22px; 
+    font-weight: bold;
+    color: #02594d;
+    margin-left: 0%;
+
 }
 
-.right-half {
-    width: 30%; /* Adjust the width to control the size of the right half */
-    padding: 20px; /* Add padding for spacing */
-    border: 1px solid #ccc; /* Add a border for separation */
+.menu-item-cart {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    margin-bottom: 10px;
 }
 
-/* You can add additional styles as needed for the content within the left and right halves */
+.menu-item-details-cart {
+    flex: 1;
+}
 
+.item-name-cart {
+    font-weight: bold;
+    font-size: 20px;
+    color: #02594d;
+}
 
+.item-description-cart {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.item-price-quantity-cart {
+    display: flex;
+    align-items: center;
+    color: #d9534f;
+    font-weight: bold;
+    font-size: 20px;
+    padding-right: 2%;
+}
+
+.quantity-buttons-cart {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.quantity-button-cart {
+    background-color: #02594d;
+    color: #dfe8e7;
+    border: none;
+    font-size: 18px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.item-quantity-cart {
+    font-size: 20px;
+    margin: 0 5px;
+}
+
+.remove-from-cart-button {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 22px 5px; 
+}
 /*-------------payment--------------*/
+#cart-section> .right-half {
+    width: 30%;
+    padding: 20px;
+    border: 1px solid #ccc; 
+    margin-right: 5%;
+    max-height: 250px;
+    
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.large-text {
+    font-size: 20px;
+}
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.checkout-button {
+    background-color: #d9534f;
+    color: #dfe8e7;
+    width: 100%; 
+    border: none;
+    font-size: 18px;
+    margin-top: 10%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.checkout-button:hover {
+    background-color: #c9312c;
+}
