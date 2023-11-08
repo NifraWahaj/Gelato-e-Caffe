@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Google Fonts Link -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
+    <title>Reservation</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+        <a class="navbar-brand" href="Home.html">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo">
+        </a>
+       
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto nav-fill">
+                <li class="nav-item active">
+                    <a class="nav-link" href="Menu.html">Menu <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="Home.html#Location-section">Location <span class="sr-only">(current)</span></a>
+                </li>
+            
+                <li class="nav-item active">
+                    <a class="nav-link" href="Home.html#Reviews-section">Reviews <span class="sr-only">(current)</span></a>
+                </li>
+            
+                <li class="nav-item active">
+                    <a class="nav-link" href="Home.html#About-Us-section">About Us <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            
+            <a class=" custom-cart-button" href="./LogIn.html">
+                <i class="material-icons" >shopping_cart</i>
+            </a>
+            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>  
+        </div>
+    </nav>
+
+    <div id="separator-reservation">
+        <h3 class="separator-reservation-class">RESERVATION</h3>
+    </div>
+    <br>
+    
+    <h1 class="booking-heading">Table Booking</h1>
+
+    <p class="booking-instructions">
+        Please select a preferred time slot for your reservation. After submitting this form, we will review your request and confirm your booking via email or phone. Thank you for choosing our restaurant. We look forward to serving you!
+    </p>
+    
+   
+   
+   
+    
+    
+    <form action="#" method="post" name="booking-form" id="booking-form">
+
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" class="styled-input" name="name" required>
+        
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" class="styled-input" name="email" required>
+        
+        <label for="date" class="form-label">Date:</label>
+        <input type="date" class="styled-input" name="date" required>
+        <br><br>
+        <label for="time-slot" class="form-label">Select a time slot:</label>
+        <select id="time-slot">
+            <option value="9:00 AM">9:00 AM - 9:45 AM</option>
+            <option value="10:00 AM">10:00 AM - 10:45 AM</option>
+            <option value="11:00 AM">11:00 AM - 11:45 AM</option>
+            <option value="12:00 PM">12:00 PM - 12:45 PM</option>
+        </select>
+        <br><br>
+        
+        <label for="seats" class="form-label">Number of Seats:</label>
+        
+        <input type="number" name="seats" required>
+    
+        <button type="button" class ="book-table-btn" onclick="bookTable()">Book Table</button>
+    </form>
+
+    <br><br><br>
+    <div id="footer-section">
+        <div class="left-section">
+            <a class="navbar-brand-foot" href="#footer-section">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo-foot">
+            </a>
+        </div>
+        <div class="right-section">
+            <h3 class="footer-section-head">Contact</h3>
+            <h3 class="footer-section-text">
+                Email: gelatoecaffè@gmail.com
+            </h3>
+            <h3 class="footer-section-text">
+                Phone: (123) 456-7890
+            </h3>
+        </div>
+       
+    </div>
+    <h6 class="copyright-section">Copyright © 2023 Gelato e Caffè.  All rights reserved.</h6>
+
+
+<script>
+    function bookTable() {
+        const selectedTime = document.getElementById("time-slot").value;
+        alert(`Table booked for ${selectedTime}`);
+    }
+</script>
+</body>
+</html>
