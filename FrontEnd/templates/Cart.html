@@ -51,27 +51,65 @@
                 </li>
             </ul>
             
-            <a class=" custom-cart-button" href="./LogIn.html">
+            <a class=" custom-cart-button" href="#">
                 <i class="material-icons" >shopping_cart</i>
             </a>
-            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>  
+            <a class="btn btn-custom my-2 my-sm-0" href="/">Log Out</a>
+
         </div>
     </nav>
+   
+    <div id="separator-cart">
+        <h3 class="separator-cart-class">CART</h3>
+    </div>
     <br>
-
+    <h4 id="cart-heading">Items:</h4>
     <div id="cart-section">
-        <div class="left-half"> <!-- FOR CART ITEMS-->
-           
+       
+        <div class="left-half">
+            <div class="menu-item-cart">
+                <div class="menu-item-details-cart">
+                    <span class="item-name-cart">Ice Cream</span>
+                    <p class="item-description-cart">Delicious vanilla ice cream with chocolate sauce.</p>
+                </div>
+                <div class="item-price-quantity-cart">
+                    <span class="item-price-cart">$5.99</span>
+                    <div class="quantity-buttons-cart">
+                        <button class="quantity-button-cart" data-action="decrease">-</button>
+                        <span class="item-quantity-cart">1</span>
+                        <button class="quantity-button-cart" data-action="increase">+</button>
+                    </div>
+                </div>
+                <button class="remove-from-cart-button" data-item-name="Ice Cream" data-item-price="5.99">
+                    <i class="material-icons">remove_shopping_cart</i>
+                </button>
+            </div>
         </div>
-        
-        <div class="right-half"> <!-- FOR PAYMENT VIEW-->
-          
+
+        <div class="right-half">
+            <div class="summary-container">
+                <h4 id="summary-heading">Summary</h4>
+                <div class="summary-item">
+                    <span class="summary-label">Sub Total:</span>
+                    <span class="summary-value">$25.99</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Tax:</span>
+                    <span class="summary-value">$5.20</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label"><span class="bold-text large-text">Total:</span></span>
+                    <span class="summary-value"><span class="bold-text large-text">$33.12</span></span>
+                </div>
+
+                <button class="checkout-button">Checkout</button>
+            </div>
+            
         </div>
         
     </div>
-
-
     
+    <br> <br> <br> <br> 
     <div id="footer-section">
         <div class="left-section">
             <a class="navbar-brand-foot" href="#footer-section">
@@ -84,6 +122,26 @@
             <h3 class="footer-section-text">Phone: (123) 456-7890</h3>
         </div>
     </div>
+
+
+    <script>
+        document.querySelectorAll(".quantity-button-cart").forEach(function (button) {
+            button.addEventListener("click", function () {
+                const action = this.getAttribute("data-action");
+                const quantityElement = this.parentElement.querySelector(".item-quantity-cart");
+                let quantity = parseInt(quantityElement.textContent);
+    
+                if (action === "increase") {
+                    quantity++;
+                } else if (action === "decrease" && quantity > 1) {
+                    quantity--;
+                }
+    
+                quantityElement.textContent = quantity;
+            });
+        });
+    </script>
+    
 
 </body>
 </html>
