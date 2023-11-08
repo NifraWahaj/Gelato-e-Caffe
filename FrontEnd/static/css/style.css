@@ -707,3 +707,27 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-weight: bold;
 }
+
+/*================CART=================*/
+/*-------------cart items--------------*/
+#cart-section {
+    display: flex; /* Use flexbox to create a two-column layout */
+    justify-content: space-between; /* Separate the left and right halves */
+}
+
+.left-half {
+    width: 70%; /* Adjust the width to control the size of the left half */
+    padding: 20px; /* Add padding for spacing */
+    border: 1px solid #ccc; /* Add a border for separation */
+}
+
+.right-half {
+    width: 30%; /* Adjust the width to control the size of the right half */
+    padding: 20px; /* Add padding for spacing */
+    border: 1px solid #ccc; /* Add a border for separation */
+}
+
+/* You can add additional styles as needed for the content within the left and right halves */
+
+
+/*-------------payment--------------*/
