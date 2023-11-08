@@ -78,6 +78,10 @@ def handle_menu():
 def cart():
     return render_template('Cart.html')
 
+@app.route('/Reservation')
+def reservation():
+    return render_template('Reservation.html')
+
 @app.route('/AdminHome')
 def admin_home():
     return render_template('AdminHome.html')

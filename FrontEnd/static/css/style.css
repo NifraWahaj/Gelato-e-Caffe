@@ -861,3 +861,82 @@ body {
 .checkout-button:hover {
     background-color: #c9312c;
 }
+
+
+
+/*==============RESERVATION===============*/
+#separator-reservation {
+    background-image:url('/static/images/ReservationB.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; 
+    height: 600px; 
+}
+.separator-reservation-class{
+    color: #02594d; 
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bolder;
+    max-width: 400px; 
+    margin: 0 auto; 
+    padding-top: 30%; 
+}
+.booking-heading {
+    font-size: 24px;
+    color: #02594d;
+    font-weight: bold;
+    margin-top: 2%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.booking-instructions {
+    font-size: 18px;
+    font-weight: 700;
+    color: #02594d; 
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 3%;
+}
+
+#booking-form {
+    background-color: #d9e5db;
+   
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+.form-label {
+    font-size: 16px;
+    color: #02594d;
+    margin-bottom: 5px;
+    font-weight: bold;
+    width:67%;
+}
+
+.styled-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.book-table-btn {
+    background-color: #02594d;
+    color: #dfe8e7;
+    width: 100%; 
+    border: none;
+    font-size: 18px;
+    margin-top: 10%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.book-table-btn:hover {
+    background-color: #c9312c;
+}
