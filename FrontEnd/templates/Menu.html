@@ -90,26 +90,30 @@
         {% endfor %}
     </div>
     
-    <div id="menu-section">
-        {% for category in categories %}
-        <div id="{{ category[1] }}-section" class="menu-section collapse">
-            <h2 class="item-title">{{ category[1] }}</h2>
-            <div class="menu-items">
-                {% for item in menu %}
-                {% if item[4] == category[0] %}
-                <div class="menu-item">
-                    <div class="menu-item-details">
-                        <span class="item-name">{{ item[1] }}</span>
-                        <p class="item-description">{{ item[2] }}</p>
-                    </div>
-                    <span class="item-price">${{ "{:,.2f}".format(item[3]) }}</span>
+<div id="menu-section">
+    {% for category in categories %}
+    <div id="{{ category[1] }}-section" class="menu-section collapse">
+        <h2 class="item-title">{{ category[1] }}</h2>
+        <div class="menu-items">
+            {% for item in menu %}
+            {% if item[4] == category[0] %}
+            <div class="menu-item">
+                <div class="menu-item-details">
+                    <span class="item-name">{{ item[1] }}</span>
+                    <p class="item-description">{{ item[2] }}</p>
                 </div>
-                {% endif %}
-                {% endfor %}
+                <span class="item-price">${{ "{:,.2f}".format(item[3]) }}</span>
+                <button class="add-to-cart-button" data-item-name="{{ item[1] }}" data-item-price="{{ item[3] }}">
+                    <i class="material-icons">add_shopping_cart</i>
+                </button>
             </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
+</div>
+
     
     <script>
         // For sections toggling
