@@ -74,6 +74,10 @@ def handle_menu():
     print("categories",categories)
     return render_template('Menu.html', menu=menu, categories=categories)
 
+@app.route('/Cart')
+def cart():
+    return render_template('Cart.html')
+
 @app.route('/AdminHome')
 def admin_home():
     return render_template('AdminHome.html')
