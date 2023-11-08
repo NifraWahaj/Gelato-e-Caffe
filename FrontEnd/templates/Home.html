@@ -42,7 +42,7 @@
                 </li>
             
                 <li class="nav-item active">
-                    <a class="nav-link" href="#Reviews-section">Reviews <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('reviews') }}">Reviews <span class="sr-only">(current)</span></a>
                 </li>
             
                 <li class="nav-item active">
@@ -102,7 +102,7 @@
         <div class="right-half">
             <h3 class = "Reviews-section-head">Hear From Our Customers!</h3>
             <h3 class="Reviews-section-text"></h3>
-            <a href="#" class="btn btn-custom btn-lg mt-4">Reviews</a> 
+            <a href="{{ url_for('reviews') }}" class="btn btn-custom btn-lg mt-4">Reviews</a> 
            
         </div>
     </div>

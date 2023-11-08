@@ -1,5 +1,3 @@
-
-
 /*================HOME=================*/
 /* Navbar Styles */
 .bg-image-vertical {
@@ -581,14 +579,14 @@ body {
     font-weight: bolder;
     max-width: 400px; 
     margin: 0 auto; 
-    padding-top: 30%; 
+    padding-top: 20%; 
 }
 #separator-review {
     background-image:url('/static/images/reviewsB.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: scroll; 
-    height: 600px; 
+    height: 400px; 
 }
 
 
