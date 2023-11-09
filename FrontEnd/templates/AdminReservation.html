@@ -52,38 +52,56 @@
     </div>
     <br><br>
 
-    <div class="container">
-        <h2 class="custom-admin-heading">Unread Booking Requests</h2>
-        <table class="table">
+    <div class="container-reservation">
+        <h1 class="reservation-admin-heading">Reservations</h1>
+        <table class="table table-striped table-bordered reservation-admin-table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Date</th>
+                    <th>Customer Name</th>
+                    <th>Reservation Date</th>
                     <th>Time Slot</th>
-                    <th>Number of Seats</th> 
-                    <th>Action</th>
+                    <th>Number of Seats</th>
                 </tr>
             </thead>
             <tbody>
-            
+                <!-- Looping through reservations here-->
                 <tr>
-                    <td>{{ request.name }}</td>
-                    <td>{{ request.email }}</td>
-                    <td>{{ request.date }}</td>
-                    <td>{{ request.time_slot }}</td>
-                    <td>{{ request.num_seats }}</td>
-                    <td>
-                        <button class="btn btn-success">Confirm</button>
-                        <button class="btn btn-danger">Deny</button>
+                    <td>John Doe</td>
+                    <td>2023-11-15</td>
+                    <td>9:00 AM - 9:45 AM</td>
+                    <td>4</td>
+                </tr>
+            </tbody>
+        </table>
+    
+        <h1 class="reservation-admin-heading">Time Slots</h1>
+        <table class="table table-striped table-bordered reservation-admin-table">
+            <thead>
+                <tr>
+                    <th>TimeSlotID</th>
+                    <th>DayOfWeek</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Availability</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                 <!-- Looping through time slots here-->
+                <tr>
+                    <td>1</td>
+                    <td>Monday</td>
+                    <td>9:00 AM</td>
+                    <td>10:00 AM</td>
+                    <td>Booked</td>
+                    <td> <button class="reservation-admin-button">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
                     </td>
                 </tr>
-            
             </tbody>
         </table>
     </div>
- <!-- {% for request in unread_requests %}  {% endfor %} --> 
-
 
 </body>
 </html>
