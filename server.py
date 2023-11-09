@@ -86,6 +86,14 @@ def reservation():
 def admin_home():
     return render_template('AdminHome.html')
 
+@app.route('/AdminReview')
+def admin_review():
+    return render_template('AdminReview.html')
+
+@app.route('/AdminReservation')
+def admin_reservation():
+    return render_template('AdminReservation.html')
+
 @app.route('/AdminMenu')
 def admin_menu():
     sql = "SELECT * FROM Menu"
