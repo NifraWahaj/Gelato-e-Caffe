@@ -589,123 +589,6 @@ body {
     height: 400px; 
 }
 
-
-/*================================ADMIN================================*/
-
-.menu-section-admin {
-    margin-top:5%;
-    margin-bottom: 5%;
-    text-align: left;
-    margin-left: 10%; 
-    margin-right: 10%; 
-    padding: 20px; 
-    border: 1px solid #ccc; 
-}
-.item-price-admin {
-    font-weight: bold;
-    font-size: 20px;
-    color: #d9534f; 
-    align-self: flex-end; 
-    margin-left: 75%;
-}
-.edit-button{
-    margin-left: 1%; 
-    margin-right: 1%; 
-    background-color: #02594d;
-    border-radius: 3px;
-}
-.delete-button{
-    background-color: #02594d;
-    border-radius: 3px;
-
-}
-.delete-button i.material-icons {
-    color: #fffdec;
-}
-
-.edit-button i.material-icons {
-    color: #fffdec;
-}
-
-.delete-button:hover i.material-icons {
-    color: #ff8674 !important;
-}
-
-.edit-button:hover i.material-icons {
-    color: #ff8674 !important;
-}
-
-
-/*================ADMIN MENU=================*/
-
-#separator-menu {
-    background-image:url('/static/images/menu.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: scroll; 
-    height: 600px; 
-}
-body {
-    background-color: #fffdec;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.menu-options-admin {
-    margin-top: 2%;
-    text-align: center;
-}
-.menu-button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #02594d;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.menu-button:hover {
-    background-color: #d9534f; 
-    color: #fff;
-}
-.menu-section-admin {
-    margin-top:5%;
-    margin-bottom: 5%;
-    text-align: left;
-    margin-left: 15%; 
-    margin-right: 15%; 
-    padding: 20px; 
-    border: 1px solid #ccc; 
-}
-
-.item-name {
-    font-weight: bold;
-    font-size: 20px;
-    color:#02594d;
-}
-/*
-.item-price {
-    font-weight: bold;
-    font-size: 20px;
-    color: #d9534f; 
-   /*margin-left: 80%;
-    font-size: 18px;
-    margin-top: -30px;/
-    float: left;
-    width: 20%; 
-}*/
-.item-description {
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.item-title {
-    font-size: 30px; 
-    font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
-}
-
 /*================CART=================*/
 
 /*-------------cart items--------------*/
@@ -940,3 +823,154 @@ body {
 .book-table-btn:hover {
     background-color: #c9312c;
 }
+
+/*================================ADMIN================================*/
+
+.menu-section-admin {
+    margin-top:5%;
+    margin-bottom: 5%;
+    text-align: left;
+    margin-left: 10%; 
+    margin-right: 10%; 
+    padding: 20px; 
+    border: 1px solid #ccc; 
+}
+.item-price-admin {
+    font-weight: bold;
+    font-size: 20px;
+    color: #d9534f; 
+    align-self: flex-end; 
+    margin-left: 75%;
+}
+.edit-button{
+    margin-left: 1%; 
+    margin-right: 1%; 
+    background-color: #02594d;
+    border-radius: 3px;
+}
+.delete-button{
+    background-color: #02594d;
+    border-radius: 3px;
+
+}
+.delete-button i.material-icons {
+    color: #fffdec;
+}
+
+.edit-button i.material-icons {
+    color: #fffdec;
+}
+
+.delete-button:hover i.material-icons {
+    color: #ff8674 !important;
+}
+
+.edit-button:hover i.material-icons {
+    color: #ff8674 !important;
+}
+#separator-admin {
+    background-color: #95beb2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    height: 180px;
+    text-align: center; 
+    padding-top: 100px; 
+}
+
+#separator-admin h3.separator-admin-class {
+    font-size: 40px;
+    font-weight: bold;
+    color: #02594d;
+}
+.custom-admin-heading {
+    font-size: 24px; 
+    font-weight: bold;
+    color: #02594d; 
+    margin-left: 1%;
+    
+}
+
+/*================ADMIN MENU=================*/
+
+#separator-menu {
+    background-image:url('/static/images/menu.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; 
+    height: 600px; 
+}
+.separator-heading-admin{
+    color: #02594d; 
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bolder;
+    max-width: 400px; 
+    margin: 0 auto; 
+}
+body {
+    background-color: #fffdec;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.menu-options-admin {
+    margin-top: 2%;
+    text-align: center;
+}
+.menu-button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #02594d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.menu-button:hover {
+    background-color: #d9534f; 
+    color: #fff;
+}
+.menu-section-admin {
+    margin-top:5%;
+    margin-bottom: 5%;
+    text-align: left;
+    margin-left: 15%; 
+    margin-right: 15%; 
+    padding: 20px; 
+    border: 1px solid #ccc; 
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: 20px;
+    color:#02594d;
+}
+/*
+.item-price {
+    font-weight: bold;
+    font-size: 20px;
+    color: #d9534f; 
+   /*margin-left: 80%;
+    font-size: 18px;
+    margin-top: -30px;/
+    float: left;
+    width: 20%; 
+}*/
+.item-description {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.item-title {
+    font-size: 30px; 
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+}
+
+
+/*================ADMIN RESERVATION=================*/
+
+/*================ADMIN REVIEW=================*/
