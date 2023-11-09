@@ -81,5 +81,30 @@ INSERT INTO Orders (OrderID, UserID, MItemID) VALUES
 (5, 5, 4);
 
 
+/*
+DRAFT ONLY - NOT TESTED
+CREATE TABLE Reservations (
+    ReservationID INT AUTO_INCREMENT PRIMARY KEY,
+    CustomerName VARCHAR(255) NOT NULL,
+    CustomerEmail VARCHAR(255) NOT NULL,
+    ReservationDate DATE NOT NULL,
+    TimeSlotID INT NOT NULL, -- Change the data type to INT
+    NumberOfSeats INT NOT NULL,
+    TableID INT NOT NULL, 
+    FOREIGN KEY (TimeSlotID) REFERENCES TimeSlots(TimeSlotID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (TableID) REFERENCES Tables(TableID) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
-
+CREATE TABLE TimeSlots (
+    TimeSlotID INT AUTO_INCREMENT PRIMARY KEY,
+    StartTime TIME NOT NULL,
+    EndTime TIME NOT NULL,
+    DayOfWeek INT NOT NULL,
+    IsAvailable BOOLEAN
+);
+CREATE TABLE Tables (
+    TableID INT AUTO_INCREMENT PRIMARY KEY,
+    NumberOfSeats INT NOT NULL,
+    IsAvailable BOOLEAN NOT NULL
+);
+*/
