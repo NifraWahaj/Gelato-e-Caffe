@@ -70,7 +70,6 @@
 }
 
 .custom-cart-button:hover {
-    background-color: transpagrerent; 
     color: #ff8674 !important; 
 }
 
@@ -823,6 +822,14 @@ body {
 .book-table-btn:hover {
     background-color: #c9312c;
 }
+p.reservation-info {
+    font-size: 16px;
+    color: #02594d;
+    margin-left: 10%;
+    margin-right: 10%;
+    line-height: 1.5;
+}
+
 
 /*================================ADMIN================================*/
 
@@ -888,7 +895,6 @@ body {
     font-weight: bold;
     color: #02594d; 
     margin-left: 1%;
-    
 }
 
 /*================ADMIN MENU=================*/
@@ -972,5 +978,39 @@ body {
 
 
 /*================ADMIN RESERVATION=================*/
+.reservation-admin-heading {
+    font-size: 24px; 
+    font-weight: bold;
+    color: #02594d; 
+    margin-left: 3%;
+    margin-right: 3%;
+}
+.reservation-admin-table{
+    font-size: 20px; 
+    color: #02594d; 
+    margin-left: 3%;
+    margin-right: 5%;
+}
+
+.container-reservation {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.reservation-admin-button {
+    background-color: #02594d;
+    color: #dfe8e7;
+    border: none;
+    font-size: 14px;
+    height: 35px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 3px;
+    float: left;
+}
+
+.reservation-admin-button:hover {
+    background-color:#d9534f;
+    color: #95beb2;
+}
 
 /*================ADMIN REVIEW=================*/
