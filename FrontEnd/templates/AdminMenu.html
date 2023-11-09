@@ -21,10 +21,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     
     <title>Menu</title>
-
-
-  
-      
+    
 </head>
 
 <body class="menu-page-body">
@@ -42,27 +39,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto nav-fill">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_menu') }}">Menu <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{url_for('admin_menu') }}">Menu <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_home') }}#Location-section">Location <span class="sr-only">(current)</span></a>
+                   <a class="nav-link" href="{{ url_for('admin_review') }}">Reviews <span class="sr-only">(current)</span></a>
                 </li>
-            
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_home') }}#Reviews-section">Reviews <span class="sr-only">(current)</span></a>
-                </li>
-            
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_home') }}#About-Us-section">About Us <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>   
-            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('homepage') }}">Log Out</a>            
+                    <a class="nav-link" href="{{ url_for('admin_reservation') }}#">Reservation <span class="sr-only">(current)</span></a>
+                 </li>
+            </ul>
+            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('homepage') }}">Log Out</a>
         </div>
     </nav>
 
-    <div id="separator-menu">
-        <h3 class = "separator-menu-class">MENU
-        </h3>
+    <div id="separator-admin">
+        <h3 class="separator-heading-admin">MENU</h3>
     </div>
 <br>
 
@@ -128,25 +119,6 @@
         {% endfor %}
     </div>
   
-    <div id="footer-section">
-        <div class="left-section">
-            <a class="navbar-brand-foot" href="#footer-section">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo-foot">  
-
-            </a>
-        </div>
-        <div class="right-section">
-            <h3 class="footer-section-head">Contact</h3>
-            <h3 class="footer-section-text">
-                Email: gelatoecaffè@gmail.com
-            </h3>
-            <h3 class="footer-section-text">
-                Phone: (123) 456-7890
-            </h3>
-        </div>
-       
-    </div>
-    <h6 class="copyright-section">Copyright © 2023 Gelato e Caffè.  All rights reserved.</h6>
 
     <script>
   // For sections toggling

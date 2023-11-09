@@ -34,103 +34,20 @@
             <ul class="navbar-nav mr-auto nav-fill">
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url_for('admin_menu') }}">Menu <span class="sr-only">(current)</span></a>
-                    
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_home') }}#Location-section">Location <span class="sr-only">(current)</span></a>
+                   <a class="nav-link" href="{{ url_for('admin_review') }}">Reviews <span class="sr-only">(current)</span></a>
                 </li>
-            
                 <li class="nav-item active">
-                   <a class="nav-link" href="{{ url_for('admin_home') }}#Reviews-section">Reviews <span class="sr-only">(current)</span></a>
-
-                </li>
-            
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_home') }}#About-Us-section">About Us <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('admin_reservation') }}#">Reservation <span class="sr-only">(current)</span></a>
+                 
                 </li>
             </ul>
-        <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('homepage') }}">Log Out</a>
-
+            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('homepage') }}">Log Out</a>
         </div>
     </nav>
     <!-- ======= Home Image ======= -->
     <div id="home-section">
     </div>
-     <!-- ======= Separator ======= -->
-    <div id="separator-section-1">
-        <h3 class = "separator-section1-class">Crafted with the essence of Italian tradition.
-            Dedicated to savoring every flavor together.
-            In the heart of your neighborhood.
-        </h3>
-    </div>
-    <!-- ======= Menu ======= -->
-    <div id="Menu-section">
-        <div class="left-half">
-        </div>
-        <div class="right-half">
-            <h3 class="Menu-section-head" >Menu</h3>
-            <h3 class="Menu-section-text">Enjoy our current offering of delicious dishes, made with local ingredients sourced from our friends and neighbors.</h3>
-            <a href="#" class="btn btn-custom btn-lg mt-4">View Our Menu</a> <!-- Added "mt-3" class for margin-top -->
-            <a href="{{ url_for('handle_menu') }}" class="btn btn-custom btn-lg mt-4">View Our Menu</a>
-
-        </div>
-    </div>
-     <!-- ======= Lcation ======= -->
-    <div id="Location-section">
-        <div class="left-half">
-            <h3 class="Location-section-head" >HOURS</h3>
-            <h3 class="Location-section-text">
-                Monday - Thursday : 8 am - 10 pm
-                Friday - Sunday : 8 am - 12 am
-            </h3>
-            <a href="#" class="btn btn-custom btn-lg mt-4">Google Maps</a> <!-- Added "mt-3" class for margin-top -->
-        </div>
-        <div class="right-half">
-          
-        </div>
-    </div>
-
-    <!-- ======= Review ======= -->
-    <div id="Reviews-section">
-        <div class="left-half">
-           
-        </div>
-        <div class="right-half">
-            <h3 class = "Reviews-section-head">Hear From Our Customers!</h3>
-            <h3 class="Reviews-section-text"></h3>
-            <a href="#" class="btn btn-custom btn-lg mt-4">Reviews</a>
-        </div>
-    </div>
-
-    <!-- ======= About Us ======= -->
-    <div id="About-Us-section">
-        <div class="left-half">
-            <h3 class = "About-Us-section-head">About Us</h3>
-            <h3 class="About-Us-section-text"> Gelato e Caffè is an Italian café with a contemporary twist, offering authentic Italian cuisine using top-quality ingredients. It's known for its genuine approach to food and hospitality and has received one Michelin star in 2020, 2021, and 2022..</h3>
-        </div>
-        <div class="right-half">
-           
-        </div>
-    </div>
-
-     <!-- ======= Footer ======= -->
-    <div id="footer-section">
-        <div class="left-section">
-            <a class="navbar-brand-foot" href="#footer-section">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo-foot">
-            </a>
-        </div>
-        <div class="right-section">
-            <h3 class="footer-section-head">Contact</h3>
-            <h3 class="footer-section-text">
-                Email: gelatoecaffè@gmail.com
-            </h3>
-            <h3 class="footer-section-text">
-                Phone: (123) 456-7890
-            </h3>
-        </div>
-       
-    </div>
-    <h6 class="copyright-section">Copyright © 2023 Gelato e Caffè.  All rights reserved.</h6>
 </body>
 </html>
