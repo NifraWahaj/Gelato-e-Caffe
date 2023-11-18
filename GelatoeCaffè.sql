@@ -10,18 +10,20 @@ password varchar(250) Not NULL
 
 create table Category(
 CategoryID int auto_increment primary key,
-CategoryName varchar(250) not null
+CategoryName varchar(250) unique not null 
 );
+drop table Category;
+
 
 create table Menu(
 MItemID int auto_increment primary key,
-MenuItem varchar(250) not null,
+MenuItem varchar(250) unique not null,
 Description varchar(250) not null,
 Price int not null,
 CategoryID int not null,
 FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
+drop table Menu;
 CREATE TABLE Review (
     ReviewID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
@@ -38,7 +40,7 @@ CREATE TABLE Orders (
     FOREIGN KEY (MItemID) REFERENCES Menu(MItemID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
+drop table Orders;
 -- Insert data into the User table
 INSERT INTO User (UserName, Email, Password) VALUES
 ('Admin', 'admin@example.com', '1234'),
@@ -66,7 +68,7 @@ INSERT INTO Menu (MenuItem, Description, Price, CategoryID) VALUES
 
 -- Insert data into the Review table
 INSERT INTO Review (UserID, Rating, Comments) VALUES
-(1, 5, 'Great coffee!'),
+(5, 5, 'Great coffee!'),
 (2, 4, 'Love the gelato!'),
 (3, 3, 'Decent drinks.'),
 (4, 5, 'Best brunch in town!'),
@@ -74,13 +76,14 @@ INSERT INTO Review (UserID, Rating, Comments) VALUES
 
 -- Insert data into the Orders table
 INSERT INTO Orders (OrderID, UserID, MItemID) VALUES
-(1, 1, 1),
+(1, 3, 1),
 (2, 2, 3),
 (3, 3, 5),
 (4, 4, 2),
 (5, 5, 4);
 
-
+select * from User;
+select * from Review;
 /*
 DRAFT ONLY - NOT TESTED
 CREATE TABLE Reservations (
@@ -108,3 +111,5 @@ CREATE TABLE Tables (
     IsAvailable BOOLEAN NOT NULL
 );
 */
+
+select * from Category;

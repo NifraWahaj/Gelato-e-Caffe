@@ -62,18 +62,15 @@
     <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit">Search</button>
 </form>
 
+    <br><br>
 
-    <div class="menu-options">
-        {% for category in categories %}
-        <button class="menu-button" data-toggle="collapse" data-target="#{{ category[1] }}-section">{{ category[1] }}</button>
-        
-        {% endfor %}
+    <div style="margin-left: 40%;">
         <button id="add-category-button" class="menu-button">Add Category</button>
         <button id="add-item-button" class="menu-button">Add Item</button>
-    </div> 
+    </div>
     <!-- Form for adding a category (initially hidden) -->
             <div id="add-category-form" style="display: none;justify-content: center; align-items: center;">
-                <form id="category-form">
+                <form id="category-form" >
                     <label for="category-name">Category Name:</label>
                     <input type="text" id="category-name" name="category-name" required>
                     <button type="submit" class="menu-button">Add</button>
@@ -97,7 +94,16 @@
         </div>
 
     </div>
-    
+    <br><br>
+
+    <div class="menu-options">
+        {% for category in categories %}
+        <button class="menu-button" data-toggle="collapse" data-target="#{{ category[1] }}-section">{{ category[1] }}</button>
+        
+        {% endfor %}
+        
+    </div> 
+
     <div id="menu-section">
         {% for category in categories %}
         <div id="{{ category[1] }}-section" class="menu-section collapse">
@@ -192,11 +198,32 @@
         });
         // Form submission
         const categoryForm = document.getElementById('category-form');
-        categoryForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        categoryForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
             const categoryName = document.getElementById('category-name').value;
-
-            addCategoryForm.style.display = 'none';
+            
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({ categoryName })
+            };
+            
+            try {
+                const response = await fetch('/AdminMenuCategory', requestOptions);
+                const { msg, redirect_url } = await response.json();
+                if (redirect_url) {
+                    window.location.href = redirect_url;
+                }
+                else{
+                    alert(msg);
+                }
+                addCategoryForm.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error:', error);              
+            }
         });
         //================================ADD ITEM FORM============================================
         const addItemButton = document.getElementById('add-item-button');
@@ -211,15 +238,34 @@
         });
         // Form submission
         const itemForm = document.getElementById('item-form');
-        itemForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const categoryName = document.getElementById('item-name').value;
-            const categoryPrice = document.getElementById('item-price').value;
-            const categoryDescription= document.getElementById('item-description').value;
-            const categoryCategory = document.getElementById('item-category').value;
-
-        
-            addItemForm.style.display = 'none';
+        itemForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const ItemName = document.getElementById('item-name').value;
+            const ItemPrice = document.getElementById('item-price').value;
+            const ItemDescription= document.getElementById('item-description').value;
+            const CategoryName = document.getElementById('item-category').value;
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({ ItemName, ItemPrice, ItemDescription, CategoryName})
+            };
+            
+            try {
+                const response = await fetch('/AdminMenuItem', requestOptions);
+                const { msg, redirect_url } = await response.json();
+                if (redirect_url) {
+                    window.location.href = redirect_url;
+                }
+                else{
+                    alert(msg);
+                }
+                addItemForm.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error:', error);              
+            }
         });
 
  
