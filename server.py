@@ -88,7 +88,12 @@ def admin_home():
 
 @app.route('/AdminReview')
 def admin_review():
-    return render_template('AdminReview.html')
+    # Example data 
+    avg_rating = 4.5
+    total_reviews = 100
+    rating_counts = [(5, 30), (4, 25), (3, 20), (2, 18), (1, 15)]
+    return render_template('AdminReview.html', avg_rating=avg_rating, total_reviews=total_reviews, rating_counts=rating_counts)
+
 
 @app.route('/AdminReservation')
 def admin_reservation():
