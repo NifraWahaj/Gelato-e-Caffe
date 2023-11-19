@@ -23,7 +23,6 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <style> /*keep this here, it disrupts nav bar of all pages if put in style.css*/
-    /*nav bar will be fixed later on this page, ignore it*/
         .custom-center {
             display: flex;
             justify-content: center;
@@ -83,32 +82,32 @@
         </button>
       
         <ul class="navbar-nav mr-auto nav-fill">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('handle_menu') }}">Menu <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('handle_menu') }}">Menu</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/#Location-section">Location <span class="sr-only">(current)</span></a>
-            </li>
-        
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('reviews') }}">Reviews <span class="sr-only">(current)</span></a>
-            </li>
-
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('reservation') }}">Reservation <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="/#Location-section">Location</a>
             </li>
         
-            <li class="nav-item active">
-                <a class="nav-link" href="/#About-Us-section">About Us <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('reviews') }}">Reviews</a>
+            </li>
+    
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('reservation') }}">Reservation</a>
+            </li>
+        
+            <li class="nav-item">
+                <a class="nav-link" href="/#About-Us-section">About Us</a>
             </li>
         </ul>
-
-        <a class=" custom-cart-button" href="/Cart">
-            <i class="material-icons" >shopping_cart</i>
+    
+        <a class="custom-cart-button" href="/Cart">
+            <i class="material-icons">shopping_cart</i>
         </a>
         <a class="btn btn-custom my-2 my-sm-0" href="/">Log In</a>
     </nav>
-   
+    
     <div id="separator-review">
         <h3 class="separator-review-class">REVIEWS</h3>
     </div>
