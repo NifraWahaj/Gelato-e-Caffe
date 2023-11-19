@@ -3,56 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Bootstrap 4 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
-    <!-- Google Fonts Link -->
-    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+<!-- Custom Stylesheet -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <title>Gelato e Caffè</title>
+<!-- Google Fonts Link -->
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+
+<!-- Bootstrap 3 for Ratings Chart -->
+<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<!-- Custom Navbar Styles -->
+<style>
+    /* Custom styles for the overridden navbar */
+    .custom-navbar {
+        background-color: #fffdec;
+        position: fixed;
+        z-index: 1000;
+        width: 100%;
+        top: 0;
+    }
+ /* Increase left padding for the "Log Out" button */
+ .custom-navbar .btn-custom {
+        margin-left: 49%; /* Adjust the value as needed */
+    }
+  
+
+    /* Rest of your custom styles */
+</style>
+<style> /*keep this here, it disrupts nav bar of all pages if put in style.css*/
+    /*nav bar will be fixed later on this page, ignore it*/
+    .custom-center {
+        display: flex;
+        justify-content: center;
+    }
+    .rating .glyphicon {
+        font-size: 22px;
+    }
+    .rating-num {
+        font-size: 54px;
+    }
+    .progress {
+        margin-bottom: 5px;
+    }
+    .progress-bar {
+        text-align: left;
+    }
+    .rating-desc .col-md-3 {
+        padding-right: 0px;
+    }
+    .glyphicon {
+        margin-right: 5px;
+        font-size: 22px;
+    }
+    .rating-desc .col-md-3 {
+        padding-right: 5px;
+    }
+    .sr-only {
+        margin-left: 5px;
+        overflow: visible;
+        clip: auto;
+        font-size: 12px;
+        margin-bottom: 3%;
+    }
+    .animated {
+        -webkit-transition: height 0.2s;
+        -moz-transition: height 0.2s;
+        transition: height 0.2s;
+    }
+    .stars {
+        margin: 20px 0;
+        font-size: 24px;
+        color: #d9534f;
+    }
+    .custom-btn {
+        background-color: #02594d;
+        color: white;
+    }
+    .custom-btn:hover {
+        background-color: #d9534f;
+    }
+
+    </style>
+
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<title>Gelato e Caffè</title>
+
 </head>
-
 <body>
-     <!-- ======= Nav Bar  ======= -->  
-     <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+    <!-- ======= Nav Bar  ======= -->  
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
         <a class="navbar-brand" href="{{ url_for('admin_home') }}">
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo">
         </a>      
-       
+           
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto nav-fill">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{url_for('admin_menu') }}">Menu <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('admin_menu') }}">Menu</a>
                 </li>
-                <li class="nav-item active">
-                   <a class="nav-link" href="{{ url_for('admin_review') }}">Reviews <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                   <a class="nav-link" href="{{ url_for('admin_review') }}">Reviews</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_reservation') }}#">Reservation <span class="sr-only">(current)</span></a>
-                 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin_reservation') }}#">Reservation</a>
                 </li>
             </ul>
+     
             <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('homepage') }}">Log Out</a>
         </div>
-    </nav>
-    <div id="separator-admin">
-        <h3 class="separator-heading-admin">REVIEW</h3>
-    </div>
-
-    <!-- ======= View Reviews  ======= -->  
-    <!-- ======= Sorting  ======= -->  
-    <!-- ======= Graph: Rating/Time?   ======= -->  
+     </nav>
+   <div id="separator-admin">
+       <h3 class="separator-heading-admin " style="margin-top: 1%; ">REVIEW</h3>
+   </div>
    
+   <div class="container mt-5">
+
+        <!--Ratings overall-->
+       <div class="container">
+           <h2 class="text-center">Ratings</h2>
+           <div class="row">
+               <div class="col-xs-12 col-md-14">
+                   <div class="well well-sm"><br>
+                       <div class="row"><br>
+       
+                           <!-- Display average rating and total reviews -->
+                           <div class="col-xs-12 col-md-6 text-center">
+                               <h1 class="rating-num">{{ avg_rating | round(1) }}</h1>
+                               <div class="rating">
+                                   {% for _ in range(5) %}
+                                       {% if loop.index <= avg_rating %}
+                                           <span class="glyphicon glyphicon-star"></span>
+                                       {% else %}
+                                           <span class="glyphicon glyphicon-star-empty"></span>
+                                       {% endif %}
+                                   {% endfor %}
+                               </div>
+                               <div>
+                                   <span class="glyphicon glyphicon-user"></span>{{ total_reviews }} total reviews
+                               </div>
+                           </div>
+       
+                           <!-- Display rating distribution -->
+                           <div class="col-xs-12 col-md-6">
+                               <div class="row rating-desc">
+                                   {% for rating, count in rating_counts %}
+                                   <div class="col-xs-3 col-md-3 text-right">
+                                       <span class="glyphicon glyphicon-star"></span>{{ rating }}
+                                   </div>
+                                   <div class="col-xs-8 col-md-9">
+                                       <div class="progress">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="{{ (count / total_reviews) * 100 }}"
+                                               aria-valuemin="0" aria-valuemax="100" style="width: {{ (count / total_reviews) * 100 }}%"> <!-- it might be showing an error here but when we run it it's working fine -->
+                                               <span class="sr-only">{{ (count / total_reviews) * 100 }}%</span>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   {% endfor %}
+                                   <!-- end rating -->
+                               </div>
+                               <!-- end row -->
+                           </div>
+       
+                       </div>
+                       <br>
+                   </div>
+       
+               </div>
+           </div>
+       </div>
+       
+       <br><br>
+        <!--Top 10 Items -->
+       <h2 class="text-center">Top 10 Items Sold</h2>
+       <div class="row justify-content-center">
+       
+           <div class="col-md-6">
+               <div class="card">
+                   <div class="card-body">
+                       <canvas id="soldItemsChart"></canvas>
+                       <script>
+                           var itemLabels = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10"];
+                           var itemQuantities = [30, 25, 20, 18, 15, 12, 10, 8, 6, 5]; //quantities sold
+
+                           var soldItemsChart = new Chart("soldItemsChart", {
+                               type: "pie",
+                               data: {
+                                   labels: itemLabels,
+                                   datasets: [{
+                                       data: itemQuantities,
+                                       backgroundColor: ["#FF6384", "#36A2EB", "#ff8b3d", "#4BC0C0", "#9966FF", "#FF99CC", "#66FF66", "#FFD700", "#0a417a", "#8464a0"]
+                                   }]
+
+                                   
+
+                               },
+                               options: {
+                                   title: {
+                                       display: true,
+                                       text: "Top 10 Sold Items"
+                                   }
+                               }
+                           });
+                       </script>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+        <!--REVIEW-->
+        <div class="container">
+            <h2 class="text-center">Reviews</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p style="font-size: 18px;">
+                                <a class="float-left"><strong>John Doe</strong></a>
+                                <span class="float-right">
+                                    <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                                </span>
+                            </p>
+                            <div class="clearfix"></div>
+                            <p style="font-size: 18px;">Great experience! The gelato here is amazing.</p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--problem with adding rating of each customer with their review-->
+
+   </div>
+
+   <br><br>
+         
 </body>
 </html>
