@@ -586,6 +586,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: scroll; 
     height: 400px; 
+    margin-top: -2%;
 }
 
 /*================CART=================*/
