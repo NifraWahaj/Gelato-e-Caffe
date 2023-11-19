@@ -30,7 +30,6 @@
 
 <!-- Custom Navbar Styles -->
 <style>
-    /* Custom styles for the overridden navbar */
     .custom-navbar {
         background-color: #fffdec;
         position: fixed;
@@ -38,16 +37,11 @@
         width: 100%;
         top: 0;
     }
- /* Increase left padding for the "Log Out" button */
  .custom-navbar .btn-custom {
-        margin-left: 49%; /* Adjust the value as needed */
+        margin-left: 49%;
     }
-  
 
-    /* Rest of your custom styles */
-</style>
-<style> /*keep this here, it disrupts nav bar of all pages if put in style.css*/
-    /*nav bar will be fixed later on this page, ignore it*/
+ /*keep this here, it disrupts nav bar of all pages if put in style.css*/
     .custom-center {
         display: flex;
         justify-content: center;
@@ -98,7 +92,6 @@
     .custom-btn:hover {
         background-color: #d9534f;
     }
-
     </style>
 
 <!-- Chart.js -->
@@ -195,8 +188,16 @@
        </div>
        
        <br><br>
-        <!--Top 10 Items -->
-       <h2 class="text-center">Top 10 Items Sold</h2>
+            <!--Top 10 Items -->
+        <h2 class="text-center">Top 10 Items Sold</h2>
+            <div class="form-group">
+                <label for="monthSelect">Select Month:</label>
+                <select class="form-control" id="monthSelect">
+           
+                </select>
+            </div>
+
+
        <div class="row justify-content-center">
        
            <div class="col-md-6">
@@ -215,9 +216,6 @@
                                        data: itemQuantities,
                                        backgroundColor: ["#FF6384", "#36A2EB", "#ff8b3d", "#4BC0C0", "#9966FF", "#FF99CC", "#66FF66", "#FFD700", "#0a417a", "#8464a0"]
                                    }]
-
-                                   
-
                                },
                                options: {
                                    title: {
@@ -259,6 +257,41 @@
    </div>
 
    <br><br>
+<script>
+    // current year
+    function getCurrentYear() {
+        var currentDate = new Date();
+        return currentDate.getFullYear();
+    }
+    //current month
+    function getCurrentMonth() {
+        var currentDate = new Date();
+        return currentDate.getMonth() + 1; // Adding 1 because getMonth() returns zero-based months
+    }
+
+    //populate dropdown with curr and previous months of curr year
+    function populateMonthDropdown() {
+        var monthSelect = document.getElementById('monthSelect');
+        var currentYear = getCurrentYear();
+        var currentMonth = getCurrentMonth();
+
+        for (var month = currentMonth; month >= 1; month--) {
+            var option = document.createElement('option');
+            option.value = month;
+            option.text = new Date(currentYear, month - 1, 1).toLocaleString('en-US', { month: 'long' });
+            monthSelect.add(option);
+        }
+    }
+
+    //event listener for monthSelect dropdown
+    document.getElementById('monthSelect').addEventListener('change', function () {
+        var selectedMonth = this.value;
+        fetchTopItems(selectedMonth);
+    });
+    populateMonthDropdown();
+    
+</script>
+
          
 </body>
 </html>
