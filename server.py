@@ -88,11 +88,21 @@ def admin_home():
 
 @app.route('/AdminReview')
 def admin_review():
-    # Example data 
-    avg_rating = 4.5
-    total_reviews = 100
-    rating_counts = [(5, 30), (4, 25), (3, 20), (2, 18), (1, 15)]
-    return render_template('AdminReview.html', avg_rating=avg_rating, total_reviews=total_reviews, rating_counts=rating_counts)
+    sql_fetch_reviews = "SELECT R.ReviewID ,U.UserName, R.Rating, R.Comments FROM Review R, User U where R.UserID = U.UserID ORDER BY ReviewID DESC"
+    cursor.execute(sql_fetch_reviews)
+    reviews = cursor.fetchall()
+
+    cursor.execute("SELECT COUNT(*) FROM Review")
+    total_reviews = cursor.fetchone()[0]
+
+    cursor.execute("SELECT AVG(Rating) FROM Review")
+    avg_rating = cursor.fetchone()[0]
+
+    cursor.execute("SELECT Rating, COUNT(*) FROM Review GROUP BY Rating ORDER BY Rating DESC")
+    rating_counts = cursor.fetchall()
+
+    print(reviews)
+    return render_template('AdminReview.html', reviews=reviews,total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts)
 
 
 @app.route('/AdminReservation')

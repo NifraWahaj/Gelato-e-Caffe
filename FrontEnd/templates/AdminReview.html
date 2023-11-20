@@ -27,6 +27,7 @@
 
 <!-- Bootstrap 3 for Ratings Chart -->
 <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 <!-- Custom Navbar Styles -->
 <style>
@@ -233,25 +234,29 @@
         <!--REVIEW-->
         <div class="container">
             <h2 class="text-center">Reviews</h2>
-
+            {% for review in reviews %}
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <p style="font-size: 18px;">
-                                <a class="float-left"><strong>John Doe</strong></a>
+                                <a class="float-left"><strong>{{ review[1] }}</strong></a>
                                 <span class="float-right">
+                                    {% for star in range(review[2]) %}
                                     <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                                    {% endfor %}
                                 </span>
                             </p>
                             <div class="clearfix"></div>
-                            <p style="font-size: 18px;">Great experience! The gelato here is amazing.</p>
+                            <p style="font-size: 18px;">{{ review[3] }}</p>
                             <hr>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
+
         <!--problem with adding rating of each customer with their review-->
 
    </div>
