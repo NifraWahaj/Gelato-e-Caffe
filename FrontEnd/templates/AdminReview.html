@@ -173,36 +173,55 @@
             </div>
          </div>
          <br><br>
+
+
          <!--REVIEW-->
          <div class="container">
             <h2 class="text-center">Reviews</h2>
+
+          <!-- show month wise  -->
             <div class="form-group">
-               <label for="monthSelect-review">Select Month:</label>
-               <select class="form-control" id="monthSelect-review">
-               </select>
+                <label for="monthSelect-review">Select Month:</label>
+                <select class="form-control" id="monthSelect-review">
+                </select>
+        
+          <!-- sorting by rating -->
+            <label for="ratingSort">Sort by Rating:</label>
+            <select class="form-control" id="ratingSort">
+               <option value="all">All Ratings</option>
+               <option value="5">5 Stars</option>
+               <option value="4">4 Stars</option>
+               <option value="3">3 Stars</option>
+               <option value="2">2 Stars</option>
+               <option value="1">1 Star</option>
+            </select>
             </div>
+        
             {% for review in reviews %}
             <div class="card">
-               <div class="card-body">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <p style="font-size: 18px;">
-                           <a class="float-left"><strong>{{ review[1] }}</strong></a>
-                           <span class="float-right">
-                           {% for star in range(review[2]) %}
-                           <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
-                           {% endfor %}
-                           </span>
-                        </p>
-                        <div class="clearfix"></div>
-                        <p style="font-size: 18px;">{{ review[3] }}</p>
-                        <hr>
-                     </div>
-                  </div>
-               </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p style="font-size: 18px;">
+                                <a class="float-left"><strong>{{ review[1] }}</strong></a>
+                                <span class="float-right">
+                                    {% for star in range(review[2]) %}
+                                        <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                                    {% endfor %}
+                                </span>
+                            </p>
+                            <div class="clearfix"></div>
+                            <p style="font-size: 18px;">{{ review[3] }}</p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
             </div>
             {% endfor %}
-         </div>
+        </div>
+        
+
+
          <!--TTOP 10 ITEMS SOLD -->
          <h2 class="text-center">Top 10 Items Sold</h2>
          <div class="form-group">
@@ -300,6 +319,8 @@
              }
          });
       </script>
+
+      
       <script>
          // current year
          function getCurrentYear() {
@@ -333,7 +354,7 @@
          });
          populateMonthDropdown();
          
-         // ================== REVIEW DROPDOWN ==================
+         // ================== REVIEW DROPDOWNS ==================
          // populate dropdown with curr and previous months of curr year
          function populateReviewMonthDropdown() {
              var monthSelect = document.getElementById('monthSelect-review');
@@ -354,6 +375,16 @@
              fetchTopItems(selectedMonth);
          });
          populateReviewMonthDropdown(); 
+
+          // event listener ratingSort dropdown
+         document.getElementById('ratingSort').addEventListener('change', function () {
+            var selectedRating = this.value;
+            fetchReviewsByRating(selectedRating);
+         });
+
+         function fetchReviewsByRating(selectedRating) {
+           
+         }
       </script>
       <br><br>
    </body>
