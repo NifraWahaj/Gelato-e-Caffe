@@ -33,3 +33,13 @@ Customer Reviews and Admin Menu are completed except searching in Adm…
 - Manage the cafe's menu, including editing and updating.
 - Update reservations and alter availible resesrvation time slots.
 - View customer reviews and ratings for cafe performance analysis.
+
+
+sorry for making it messy :
+-what should be done for showing reviews rn it is showing on all of them in des order of review_id in Reviews.html 
+-deleted email in reservation as user should be login in order to make reservation and we'll get it's email from there
+-to make adminReviews different we can also add reply for admin only. Users can only view replies (but that's totally optional)
+-MENU, REVIEW and RESERVATION is not really visible on these pictures so maybe move them a bit high(maybe change pic for reservation, some might find it a bit inappropriate)
+-kindly, put both filters in same row for AdminReviews
+
+

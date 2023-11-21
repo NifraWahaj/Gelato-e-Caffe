@@ -69,31 +69,26 @@
     <p class="booking-instructions">
         Please select a preferred time slot for your reservation. We look forward to serving you!
     </p>
-    <form action="#" method="post" name="booking-form" id="booking-form">
+    <form action="/Reservation" method="post" name="booking-form" id="booking-form">
 
         <label for="name" class="form-label">Name:</label>
         <input type="text" class="styled-input" name="name" required>
-        
-        <label for="email" class="form-label">Email:</label>
-        <input type="email" class="styled-input" name="email" required>
         
         <label for="date" class="form-label">Date:</label>
         <input type="date" class="styled-input" name="date" required>
         <br><br>
         <label for="time-slot" class="form-label">Select a time slot:</label>
-        <select id="time-slot">
-            <option value="9:00 AM">9:00 AM - 9:45 AM</option>
-            <option value="10:00 AM">10:00 AM - 10:45 AM</option>
-            <option value="11:00 AM">11:00 AM - 11:45 AM</option>
-            <option value="12:00 PM">12:00 PM - 12:45 PM</option>
-        </select>
+        <select id="time-slot" name="time-slot">
+            <!-- Options will be populated dynamically using JavaScript -->
+        </select>  
+              
         <br><br>
         
         <label for="seats" class="form-label">Number of Seats:</label>
         
-        <input type="number" name="seats" required>
-    
-        <button type="button" class ="book-table-btn" onclick="bookTable()">Book Table</button>
+        <input type="number" name="seats" required style="width: 172px;" min="1" max="15">
+
+        <button type="submit" class ="book-table-btn" onclick="bookTable()">Book Table</button>
     </form>
 
     <br>
@@ -118,12 +113,31 @@
     </div>
     <h6 class="copyright-section">Copyright © 2023 Gelato e Caffè.  All rights reserved.</h6>
 
-
+    
 <script>
     function bookTable() {
         const selectedTime = document.getElementById("time-slot").value;
         alert(`Table booked for ${selectedTime}`);
     }
+
+
+    const enumValues = [
+            '9:00am - 9:50am', '10:00am - 10:50am', '11:00am - 11:50am',
+            '12:00pm - 12:50pm', '1:00pm - 1:50pm', '2:00pm - 2:50pm',
+            '3:00pm - 3:50pm', '4:00pm - 4:50pm', '5:00pm - 5:50pm',
+            '6:00pm - 6:50pm', '7:00pm - 7:50pm', '8:00pm - 8:50pm', '9:00pm - 9:50pm'
+        ];
+    
+        // Get the select element
+        const timeSlotSelect = document.getElementById('time-slot');
+    
+        // Iterate through enum values and create options
+        enumValues.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value; // Setting value same as the text for simplicity
+            option.textContent = value;
+            timeSlotSelect.appendChild(option);
+        });
 </script>
 </body>
 </html>

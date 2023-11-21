@@ -78,8 +78,27 @@ def handle_menu():
 def cart():
     return render_template('Cart.html')
 
-@app.route('/Reservation')
+@app.route('/Reservation', methods=['GET', 'POST'])
 def reservation():
+    if request.method == 'POST':
+        name = request.form['name']
+        date = request.form['date']
+        time_slot = request.form['time-slot']
+        seats = request.form['seats']
+        print(name,date,time_slot,seats)
+        sql_user = "SELECT UserID FROM User WHERE Email = %s"
+        cursor.execute(sql_user, (login_user,))
+        user = cursor.fetchone()
+
+        if user:
+            user_id = user[0]
+            insert_query = "INSERT INTO Reservations (CustomerName, ReservationDate, NumberOfSeats, TimeSlot, UserID) VALUES (%s, %s, %s, %s, %s)"
+            values = (name, date, seats, time_slot, user_id)
+            cursor.execute(insert_query, values)
+            db.commit()
+
+        return "Reservation successfully added to the database!"
+
     return render_template('Reservation.html')
 
 @app.route('/AdminHome')
@@ -88,10 +107,6 @@ def admin_home():
 
 @app.route('/AdminReview')
 def admin_review():
-    sql_fetch_reviews = "SELECT R.ReviewID ,U.UserName, R.Rating, R.Comments FROM Review R, User U where R.UserID = U.UserID ORDER BY ReviewID DESC"
-    cursor.execute(sql_fetch_reviews)
-    reviews = cursor.fetchall()
-
     cursor.execute("SELECT COUNT(*) FROM Review")
     total_reviews = cursor.fetchone()[0]
 
@@ -101,9 +116,19 @@ def admin_review():
     cursor.execute("SELECT Rating, COUNT(*) FROM Review GROUP BY Rating ORDER BY Rating DESC")
     rating_counts = cursor.fetchall()
 
-    print(reviews)
-    return render_template('AdminReview.html', reviews=reviews,total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts)
+    # Return the rendered template along with reviews as JSON
+    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts)
 
+@app.route('/admin_reviews_json')
+def admin_reviews_json():
+    sql_fetch_reviews = "SELECT R.ReviewID, U.UserName, R.Rating, R.Comments, R.entry_date FROM Review R, User U WHERE R.UserID = U.UserID ORDER BY ReviewID DESC"
+    cursor.execute(sql_fetch_reviews)
+    reviews = cursor.fetchall()
+
+    # Convert the reviews data to a JSON object
+    reviews_json = [{'ReviewID': review[0], 'UserName': review[1], 'Rating': review[2], 'Comments': review[3], 'entry_date': review[4]} for review in reviews]
+
+    return jsonify({'reviews': reviews_json})
 
 @app.route('/AdminReservation')
 def admin_reservation():
