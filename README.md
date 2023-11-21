@@ -8,6 +8,19 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 - Reviews.html nav bar style -FIXED
   
 ## Progress Status
+Customer Reviews and Admin Menu are completed except searching in Adm…
+…in Menu and displaying less reviews
+- AdminHome - Complete
+- AdminMenu- Searching left
+- AdminReservation - Tables/seats to be implemented. Time slots fixed. Number of tables fixed each with particular number of seats. Table will be booked if availible seats are greater than or equal to required seats, for that time slot. + Front end done for Reservations and Available tables.
+- AdminReview -front end done for ratings + review + top 10 items sold for each month in current year + sales of each month of current year
+
+- Login - Complete
+- SignUp - Complete
+- Home - Complete
+- Menu - ?
+- Reviews - Complete
+- Reservation - ?
 
 ## Features
 
