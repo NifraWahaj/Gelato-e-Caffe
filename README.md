@@ -2,9 +2,9 @@
 This website serves as a platform for customers to explore the cafe's menu, conveniently place orders, reserve a spot, and share their valuable feedback through reviews. Behind the scenes, the cafe effortlessly manages its menu, reviews and reservations.
 
 ## Issues
-- AdminReview: not Showing rating of each customer with their review
-- AdminReview: Sorting by rating missing
-- AdminReview: View month wise missing
+- AdminReview: not Showing rating of each customer with their review  - FIXED
+- AdminReview: Sorting by rating missing 
+- AdminReview: View month wise missing - FIXED
 - Reviews.html nav bar style -FIXED
   
 ## Progress Status
