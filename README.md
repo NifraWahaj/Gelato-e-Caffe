@@ -3,7 +3,7 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 
 ## Issues
 - AdminReview: not Showing rating of each customer with their review  - FIXED
-- AdminReview: Sorting by rating missing 
+- AdminReview: Sorting by rating missing - FIXED
 - AdminReview: View month wise missing - FIXED
 - Reviews.html nav bar style -FIXED
   
