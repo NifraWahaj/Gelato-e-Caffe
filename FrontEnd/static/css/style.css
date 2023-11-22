@@ -477,7 +477,7 @@
 
 
 .separator-menu-class {
-    color: #02594d; 
+    color: #fff; 
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     font-size: 70px;
@@ -571,7 +571,7 @@ body {
 /*================REVIEWS=================*/
 
 .separator-review-class {
-    color: #02594d; 
+    color: #fff; 
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     font-size: 70px;
