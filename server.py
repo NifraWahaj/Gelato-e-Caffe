@@ -78,28 +78,42 @@ def handle_menu():
 def cart():
     return render_template('Cart.html')
 
+
 @app.route('/Reservation', methods=['GET', 'POST'])
 def reservation():
     if request.method == 'POST':
-        name = request.form['name']
-        date = request.form['date']
-        time_slot = request.form['time-slot']
-        seats = request.form['seats']
-        print(name,date,time_slot,seats)
-        sql_user = "SELECT UserID FROM User WHERE Email = %s"
-        cursor.execute(sql_user, (login_user,))
-        user = cursor.fetchone()
+        if login_user:
+            name = request.form['name']
+            date = request.form['date']
+            time_slot = request.form['time-slot']
+            seats = request.form['seats']
+            print(name,date,time_slot,seats)
+            sql_user = "SELECT UserID FROM User WHERE Email = %s"
+            cursor.execute(sql_user, (login_user,))
+            user = cursor.fetchone()
+            cursor.execute("SELECT TableID FROM Tables WHERE NumberOfSeats >= %s AND TableID NOT IN (SELECT TableID FROM Reservations WHERE ReservationDate = %s AND TimeSlot = %s) ORDER BY NumberOfSeats ASC LIMIT 1", (seats, date, time_slot))
+            table = cursor.fetchone()
+            if user:
+                if table:
+                    table_id = table[0]
+                    user_id = user[0]
+                    print("hehe:",name, date, seats, time_slot, user_id, table_id)
+                    insert_query = "INSERT INTO Reservations (CustomerName, ReservationDate, NumberOfSeats, TimeSlot, UserID, TableID) VALUES (%s, %s, %s, %s, %s, %s)"
+                    values = (name, date, seats, time_slot, user_id, table_id)
+                    cursor.execute(insert_query, values)
+                    db.commit()
 
-        if user:
-            user_id = user[0]
-            insert_query = "INSERT INTO Reservations (CustomerName, ReservationDate, NumberOfSeats, TimeSlot, UserID) VALUES (%s, %s, %s, %s, %s)"
-            values = (name, date, seats, time_slot, user_id)
-            cursor.execute(insert_query, values)
-            db.commit()
+                    return render_template('Reservation.html',table_Number=table_id)
 
-        return "Reservation successfully added to the database!"
-
-    return render_template('Reservation.html')
+                else:
+                    return "No available tables for the requested number of seats."
+            else:
+                return "User not found"
+        else:
+            return "Login required"
+    else:
+        return render_template('Reservation.html')
+   
 
 @app.route('/AdminHome')
 def admin_home():
@@ -132,7 +146,10 @@ def admin_reviews_json():
 
 @app.route('/AdminReservation')
 def admin_reservation():
-    return render_template('AdminReservation.html')
+    sql = "SELECT * FROM Reservations r, Tables t where r.TableID = t.TableID Order by ReservationDate, TimeSlot"
+    cursor.execute(sql)
+    reservations = cursor.fetchall()
+    return render_template('AdminReservation.html', reservations=reservations)
 
 @app.route('/AdminMenu', methods=['GET'])
 def admin_menu():

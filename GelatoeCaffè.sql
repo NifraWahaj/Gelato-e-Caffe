@@ -113,61 +113,30 @@ select * from Review;
 
 CREATE TABLE Reservations (
     ReservationID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    TableID INT NOT NULL,
     CustomerName VARCHAR(255) NOT NULL,
     ReservationDate DATE NOT NULL,
-    NumberOfSeats INT NOT NULL,
+    NumberOfSeats INT NOT NULL ,
     TimeSlot ENUM(
         '9:00am - 9:50am', '10:00am - 10:50am', '11:00am - 11:50am',
         '12:00pm - 12:50pm', '1:00pm - 1:50pm', '2:00pm - 2:50pm',
         '3:00pm - 3:50pm', '4:00pm - 4:50pm', '5:00pm - 5:50pm',
         '6:00pm - 6:50pm', '7:00pm - 7:50pm', '8:00pm - 8:50pm', '9:00pm - 9:50pm'
     ),
-    UserID INT NOT NULL,
-	FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (TableID) REFERENCES Tables(TableID) ON DELETE CASCADE ON UPDATE CASCADE
 );
-drop table Reservations;
+
 CREATE TABLE Tables (
     TableID INT AUTO_INCREMENT PRIMARY KEY,
-    NumberOfSeats INT NOT NULL ,
-    IsAvailable BOOLEAN NOT NULL
+    NumberOfSeats INT NOT NULL
 );
 
-INSERT INTO Tables (NumberOfSeats, IsAvailable) VALUES
-(4, TRUE),
-(2, TRUE),
-(6, TRUE),
-(8, TRUE),
-(10, TRUE),
-(12, TRUE),
-(3, TRUE),
-(5, TRUE),
-(7, TRUE),
-(9, TRUE),
-(11, TRUE),
-(13, TRUE),
-(15, TRUE),
-(17, TRUE),
-(19, TRUE),
-(20, TRUE),
-(18, TRUE),
-(16, TRUE),
-(14, TRUE),
-(1, TRUE),
-(4, TRUE),
-(2, TRUE),
-(6, TRUE),
-(8, TRUE),
-(10, TRUE),
-(12, TRUE),
-(3, TRUE),
-(5, TRUE),
-(7, TRUE),
-(9, TRUE),
-(11, TRUE),
-(13, TRUE),
-(15, TRUE),
-(17, TRUE),
-(19, TRUE),
-(20, TRUE);
+insert into Tables (NumberOfSeats) values(1),(2),(2),(2),(3),(3);
+select * from Reservations;
+select * from Tables;
 
 select * from Category;
+drop table Tables;
+
