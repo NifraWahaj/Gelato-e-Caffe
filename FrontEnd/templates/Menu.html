@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <!-- Google Fonts Link -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -85,56 +84,45 @@
             <option value="desc">High to Low</option>
         </select>
     </div>
-
     <div class="menu-options">
         {% for category in categories %}
-        <button class="menu-button" data-toggle="collapse" data-target="#{{ category[1] }}-section">{{ category[1] }}</button>
+            <button class="menu-button" data-toggle="collapse" data-target="#{{ category[1] }}-section" {% if category[1] == default_category %}aria-expanded="true"{% endif %}>{{ category[1] }}</button>
         {% endfor %}
     </div>
     
-<div id="menu-section">
-    {% for category in categories %}
-    <div id="{{ category[1] }}-section" class="menu-section collapse">
-        <h2 class="item-title">{{ category[1] }}</h2>
-        <div class="menu-items">
-            {% for item in menu %}
-            {% if item[4] == category[0] %}
-            <div class="menu-item">
-                <div class="menu-item-details">
-                    <span class="item-name">{{ item[1] }}</span>
-                    <p class="item-description">{{ item[2] }}</p>
+    <div id="menu-section">
+        {% for category in categories %}
+        <div id="{{ category[1] }}-section" class="menu-section collapse {% if category[1] == default_category %}show show-default{% endif %}">
+            <h2 class="item-title">{{ category[1] }}</h2>
+            <div class="menu-items">
+                {% for item in menu %}
+                {% if item[4] == category[0] %}
+                <div class="menu-item">
+                    <div class="menu-item-details">
+                        <span class="item-name">{{ item[1] }}</span>
+                        <p class="item-description">{{ item[2] }}</p>
+                    </div>
+                    <span class="item-price">${{ "{:,.2f}".format(item[3]) }}</span>
+                    <button class="add-to-cart-button" data-item-id="{{ item[0] }}" data-item-name="{{ item[1] }}" data-item-price="{{ item[3] }}">
+                        <i class="material-icons">add_shopping_cart</i>
+                    </button>
                 </div>
-                <span class="item-price">${{ "{:,.2f}".format(item[3]) }}</span>
-                <button class="add-to-cart-button" data-item-id="{{ item[0] }}" data-item-name="{{ item[1] }}" data-item-price="{{ item[3] }}">
-                    <i class="material-icons">add_shopping_cart</i>
-                </button>
+                {% endif %}
+                {% endfor %}
             </div>
-            {% endif %}
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
+    
 
     
     <script>
+
         // For sections toggling
         const buttons = document.querySelectorAll(".menu-button");
         const menuSections = document.querySelectorAll(".menu-section");
-    
-        function showDefaultSection() {
-            menuSections.forEach((section) => {
-                section.style.display = "none";
-            });
-    
-            const defaultSection = document.querySelector("[data-default='true']");
-    
-            if (defaultSection) {
-                defaultSection.style.display = "block";
-            }
-        }
-    
-        // Event listeners for menu buttons
+      
+      // Event listeners for menu buttons
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
                 menuSections.forEach((section) => {
@@ -149,9 +137,6 @@
                 }
             });
         });
-    
-        // Show the default section by default
-        showDefaultSection();
 
 
         function filterItems() {
