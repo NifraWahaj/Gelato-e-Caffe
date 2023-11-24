@@ -68,23 +68,25 @@
     <div id="cart-section">
        
         <div class="left-half">
+            {% for item in cart %}
             <div class="menu-item-cart">
                 <div class="menu-item-details-cart">
-                    <span class="item-name-cart">Ice Cream</span>
-                    <p class="item-description-cart">Delicious vanilla ice cream with chocolate sauce.</p>
+                    <span class="item-name-cart">{{item[1]}}</span>
+                    <p class="item-description-cart">{{item[2]}}</p>
                 </div>
                 <div class="item-price-quantity-cart">
-                    <span class="item-price-cart">$5.99</span>
+                    <span class="item-price-cart">${{ "{:,.2f}".format(item[3]) }}</span>
                     <div class="quantity-buttons-cart">
-                        <button class="quantity-button-cart" data-action="decrease">-</button>
-                        <span class="item-quantity-cart">1</span>
-                        <button class="quantity-button-cart" data-action="increase">+</button>
+                        <button class="quantity-button-cart" data-item-id="{{item[0]}}" data-action="decrease">-</button>
+                        <span class="item-quantity-cart">{{item[5]}}</span>
+                        <button class="quantity-button-cart" data-item-id="{{item[0]}}" data-action="increase">+</button>
                     </div>
                 </div>
-                <button class="remove-from-cart-button" data-item-name="Ice Cream" data-item-price="5.99">
+                <button class="remove-from-cart-button" data-item-id="{{item[0]}}" data-item-name="{{item[1]}}" data-item-price="{{item[3]}}">
                     <i class="material-icons">remove_shopping_cart</i>
                 </button>
             </div>
+            {% endfor %}
         </div>
 
         <div class="right-half">
@@ -92,18 +94,18 @@
                 <h4 id="summary-heading">Summary</h4>
                 <div class="summary-item">
                     <span class="summary-label">Sub Total:</span>
-                    <span class="summary-value">$25.99</span>
+                    <span class="summary-value">${{ "{:,.2f}".format(total) }}</span>
                 </div>
                 <div class="summary-item">
                     <span class="summary-label">Tax:</span>
-                    <span class="summary-value">$5.20</span>
+                    <span class="summary-value">${{ "{:,.2f}".format(tax) }}</span>
                 </div>
                 <div class="summary-item">
                     <span class="summary-label"><span class="bold-text large-text">Total:</span></span>
-                    <span class="summary-value"><span class="bold-text large-text">$33.12</span></span>
+                    <span class="summary-value"><span class="bold-text large-text">${{ "{:,.2f}".format(total + tax) }}</span></span>
                 </div>
 
-                <button class="checkout-button">Checkout</button>
+                <button id="checkout-button" class="checkout-button">Checkout</button>
             </div>
             
         </div>
@@ -137,16 +139,78 @@
                 const action = this.getAttribute("data-action");
                 const quantityElement = this.parentElement.querySelector(".item-quantity-cart");
                 let quantity = parseInt(quantityElement.textContent);
-    
-                if (action === "increase") {
+                const itemId = this.dataset.itemId;
+
+                if (action === "increase" && quantity < 25) {
                     quantity++;
                 } else if (action === "decrease" && quantity > 1) {
                     quantity--;
                 }
-    
+        
                 quantityElement.textContent = quantity;
+
+                fetch('/change_quanity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ itemId: itemId ,quantity: quantity })
+            }).then(response => {
+                // Handle the response
+                if (response.ok) {
+                    return response.json().then(data => (window.location.href= data.redirect_url));
+                }
+        
+            }).catch(error => {
+                // Handle errors
+                console.error('Error changing quantity of item:', error);
             });
         });
+    });
+
+        document.querySelectorAll('.remove-from-cart-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const itemId = button.dataset.itemId;
+            const itemName = button.dataset.itemName;
+            const itemPrice = button.dataset.itemPrice;
+            
+            // Send the JSON object
+            fetch('/remove_from_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ itemId: itemId })
+            }).then(response => {
+                // Handle the response
+                if (response.ok) {
+                    return response.json().then(data => (window.location.href= data.redirect_url));
+                }
+        
+            }).catch(error => {
+                // Handle errors
+                console.error('Error removing item to cart:', error);
+            });
+        });
+    });
+
+    document.getElementById('checkout-button').addEventListener('click', () => {
+    fetch('/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            return response.json().then(data => (window.location.href= data.redirect_url));
+        }
+        else
+            response.json().then(data => alert(data.msg));
+    }).catch(error => {
+            console.error('Error in checkout:', error);
+        });
+    });
+
     </script>
     
 

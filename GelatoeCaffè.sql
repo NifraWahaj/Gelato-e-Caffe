@@ -33,11 +33,21 @@ CREATE TABLE Review (
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
-CREATE TABLE Orders (
-    OrderID INT NOT NULL,
+CREATE TABLE Cart (
+    CartID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
     MItemID INT NOT NULL,
+    Quantity INT NOT NULL default 1,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (MItemID) REFERENCES Menu(MItemID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Orders (
+    OrderID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    MItemID INT NOT NULL,
+    Quantity INT NOT NULL,
+    TimeDate datetime NOT NULL,
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (MItemID) REFERENCES Menu(MItemID) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -128,15 +138,17 @@ CREATE TABLE Reservations (
     FOREIGN KEY (TableID) REFERENCES Tables(TableID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Tables (
+CREATE TABLE Tables (   -- it will be like hard coded so i have allowed upto 15 seats so just make sure to insert only upto 15 seats from here.
     TableID INT AUTO_INCREMENT PRIMARY KEY,
     NumberOfSeats INT NOT NULL
 );
 
-insert into Tables (NumberOfSeats) values(1),(2),(2),(2),(3),(3);
+insert into Tables (NumberOfSeats) values(1),(2),(2),(2),(3),(3); 
 select * from Reservations;
 select * from Tables;
-
 select * from Category;
-drop table Tables;
-
+select * from Menu;
+select * from Review;
+select * from User;
+select * from Orders;
+select * from Cart;

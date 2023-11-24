@@ -2,6 +2,7 @@ import json
 from flask import Flask, send_file, request, redirect, render_template, jsonify, make_response,url_for
 import mysql.connector
 import io
+from datetime import datetime
 
 app = Flask(__name__, template_folder='FrontEnd/templates', static_folder='FrontEnd/static')
 
@@ -55,10 +56,10 @@ def handle_login():
         global login_user
         login_user = email
 
-        if user[0]=='1':
-            return '' #return render_template('admin.html')
+        if user[0]==1:
+            return admin_home()
         else:
-            return handle_menu()
+            return homepage()
     else:
         print('Error---------------------------------------------------------------------------------------')
 
@@ -74,9 +75,122 @@ def handle_menu():
     print("categories",categories)
     return render_template('Menu.html', menu=menu, categories=categories)
 
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    if login_user:
+        item_id = request.json['itemId']
+        print(item_id)
+        sql_user = "SELECT UserID FROM User WHERE Email = %s"
+        cursor.execute(sql_user, (login_user,))
+        user = cursor.fetchone()
+        if user:
+            sql = "SELECT * FROM Cart WHERE UserID=%s and MItemID=%s"
+            values = (user[0], item_id)
+            cursor.execute(sql, values)
+            exist = cursor.fetchone()
+            if exist:
+                return jsonify({'msg': ' already exists in the cart'})
+            else:
+                insert_query = "INSERT INTO Cart (UserID, MItemID) VALUES (%s, %s)"
+                values = (user[0], item_id)
+                cursor.execute(insert_query, values)
+                db.commit()
+                return jsonify({'msg': ' added to cart successfully'})
+        else:
+            return jsonify({'msg': 'User not found'}), 400
+    else:
+        return jsonify({'msg': 'Login is required for adding item to cart'}), 401
+
+
 @app.route('/Cart')
 def cart():
-    return render_template('Cart.html')
+    if login_user:
+        sql_user = "SELECT UserID FROM User WHERE Email = %s"
+        cursor.execute(sql_user, (login_user,))
+        user = cursor.fetchone()
+        sql = "SELECT m.*,c.Quantity FROM Menu m, Cart c WHERE UserID=%s and m.MItemID=c.MItemID"
+        values = (user[0],)
+        cursor.execute(sql, values)
+        cart = cursor.fetchall()
+        
+        sql = "SELECT SUM(m.Price * c.Quantity) AS TotalPrice FROM Cart c, Menu m WHERE UserID=%s and m.MItemID=c.MItemID"
+        values = (user[0],)
+        cursor.execute(sql, values)
+        total = cursor.fetchone()
+        total_price = total[0] if total and total[0] is not None else 0
+        tax = total_price % 2 if total_price else 0
+        return render_template('Cart.html', cart=cart, total=total_price, tax=tax)
+    else:
+        return "Login required"
+
+@app.route('/remove_from_cart', methods=['POST'])
+def remove_from_cart():
+    if login_user:
+        item_id = request.json['itemId']
+        print(item_id)
+        sql_user = "SELECT UserID FROM User WHERE Email = %s"
+        cursor.execute(sql_user, (login_user,))
+        user = cursor.fetchone()
+        if user:
+            sql = "Delete FROM Cart WHERE UserID=%s and MItemID=%s"
+            values = (user[0], item_id)
+            cursor.execute(sql, values)
+            db.commit()
+            return jsonify({'redirect_url': url_for('cart')})
+        else:
+            return jsonify({'msg': 'User not found'}), 400
+    else:
+        return jsonify({'msg': 'Login is required for adding item to cart'}), 401
+
+@app.route('/change_quanity', methods=['POST'])
+def change_quanity():
+    if login_user:
+        item_id = request.json['itemId']
+        quantity = request.json['quantity']
+        print(item_id)
+        sql_user = "SELECT UserID FROM User WHERE Email = %s"
+        cursor.execute(sql_user, (login_user,))
+        user = cursor.fetchone()
+        if user:
+            sql = "UPDATE Cart SET Quantity =%s WHERE UserID=%s and MItemID=%s"
+            values = (quantity, user[0], item_id)
+            cursor.execute(sql, values)
+            db.commit()
+            return jsonify({'redirect_url': url_for('cart')})
+        else:
+            return jsonify({'msg': 'User not found'}), 400
+    else:
+        return jsonify({'msg': 'Login is required for adding item to cart'}), 401
+
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    if login_user:
+        sql_user = "SELECT UserID FROM User WHERE Email = %s"
+        cursor.execute(sql_user, (login_user,))
+        user = cursor.fetchone()
+
+        cart_items_query = "SELECT MItemID, Quantity FROM Cart WHERE UserID = %s"
+        cursor.execute(cart_items_query, (user[0],))
+        cart_items = cursor.fetchall()
+
+        if cart_items:
+            order_time = datetime.now()
+            insert_order_query = "INSERT INTO Orders (UserID, MItemID, Quantity, TimeDate) VALUES (%s, %s, %s, %s)"
+            for item in cart_items:
+                values = (user[0], item[0], item[1], order_time)
+                cursor.execute(insert_order_query, values)
+            db.commit()
+
+            delete_cart_query = "DELETE FROM Cart WHERE UserID = %s"
+            cursor.execute(delete_cart_query, (user[0],))
+            db.commit()
+
+            return jsonify({'redirect_url': url_for('cart')})
+        else:
+            return jsonify({'msg': 'Cart is empty'}), 400
+        
+    else:
+        return jsonify({'msg': 'Login is required for checkout'}), 401
 
 
 @app.route('/Reservation', methods=['GET', 'POST'])
@@ -130,7 +244,6 @@ def admin_review():
     cursor.execute("SELECT Rating, COUNT(*) FROM Review GROUP BY Rating ORDER BY Rating DESC")
     rating_counts = cursor.fetchall()
 
-    # Return the rendered template along with reviews as JSON
     return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts)
 
 @app.route('/admin_reviews_json')
@@ -139,7 +252,6 @@ def admin_reviews_json():
     cursor.execute(sql_fetch_reviews)
     reviews = cursor.fetchall()
 
-    # Convert the reviews data to a JSON object
     reviews_json = [{'ReviewID': review[0], 'UserName': review[1], 'Rating': review[2], 'Comments': review[3], 'entry_date': review[4]} for review in reviews]
 
     return jsonify({'reviews': reviews_json})
@@ -156,12 +268,10 @@ def admin_menu():
     sql = "SELECT * FROM Menu"
     cursor.execute(sql)
     menu = cursor.fetchall()
-    #print("menu", menu)  #debug
 
     sql = "SELECT * FROM Category"
     cursor.execute(sql)
     categories = cursor.fetchall()
-    #print("categories", categories)  # debug
 
     return render_template('AdminMenu.html', menu=menu, categories=categories)
 
@@ -234,7 +344,7 @@ def reviews():
 
 @app.route('/Reviews', methods=['GET'])
 def review():
-    sql_fetch_reviews = "SELECT R.ReviewID ,U.UserName, R.Rating, R.Comments FROM Review R, User U where R.UserID = U.UserID ORDER BY ReviewID DESC"
+    sql_fetch_reviews = "SELECT R.ReviewID ,U.UserName, R.Rating, R.Comments FROM Review R, User U where R.UserID = U.UserID ORDER BY ReviewID DESC LIMIT 5"
     cursor.execute(sql_fetch_reviews)
     reviews = cursor.fetchall()
 

@@ -105,7 +105,7 @@
                     <p class="item-description">{{ item[2] }}</p>
                 </div>
                 <span class="item-price">${{ "{:,.2f}".format(item[3]) }}</span>
-                <button class="add-to-cart-button" data-item-name="{{ item[1] }}" data-item-price="{{ item[3] }}">
+                <button class="add-to-cart-button" data-item-id="{{ item[0] }}" data-item-name="{{ item[1] }}" data-item-price="{{ item[3] }}">
                     <i class="material-icons">add_shopping_cart</i>
                 </button>
             </div>
@@ -187,6 +187,36 @@
                 }
             });
         });
+        
+        document.querySelectorAll('.add-to-cart-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const itemId = button.dataset.itemId;
+            const itemName = button.dataset.itemName;
+            const itemPrice = button.dataset.itemPrice;
+
+            // Send the JSON object
+            fetch('/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ itemId: itemId })
+            }).then(response => {
+                // Handle the response
+                if (response.ok) {
+                    // Show success message as an alert
+                    response.json().then(data => alert(itemName + data.msg));
+                } else {
+                    // Show error message as an alert
+                    response.json().then(data => alert(data.msg));
+                }
+            }).catch(error => {
+                // Handle errors
+                console.error('Error adding item to cart:', error);
+            });
+        });
+    });
+
     </script>
     
     
