@@ -477,22 +477,38 @@
 
 
 .separator-menu-class {
-    color: #fff; 
+    color: #fff;
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     font-size: 70px;
     font-weight: bolder;
-    max-width: 400px; 
-    margin: 0 auto; 
-    padding-top: 30%; 
+    max-width: 400px;
+    margin: 0 auto;
+    padding-top: 25%;
+    position: relative;
+    z-index: 1;
 }
+
 #separator-menu {
-    background-image:url('/static/images/menu.jpg');
+    position: relative;
+    background-image: url('/static/images/menu.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: scroll; 
-    height: 600px; 
+    background-attachment: scroll;
+    height: 500px  !important;
 }
+
+#separator-menu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
 body {
     background-color: #fffdec;
     font-family: 'Open Sans', sans-serif;
@@ -571,23 +587,39 @@ body {
 /*================REVIEWS=================*/
 
 .separator-review-class {
-    color: #fff; 
+    color: #f7ca77;
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     font-size: 70px;
     font-weight: bolder;
-    max-width: 400px; 
-    margin: 0 auto; 
-    padding-top: 20%; 
+    max-width: 400px;
+    margin: 0 auto;
+    padding-top: 20%;
+    position: relative;
+    z-index: 1;
 }
+
 #separator-review {
-    background-image:url('/static/images/reviewsB.jpg');
+    position: relative;
+    background-image: url('/static/images/reviewsB.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: scroll; 
-    height: 400px; 
+    background-attachment: scroll;
+    height: 400px;
     margin-top: -2%;
 }
+
+#separator-review::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
 
 /*================CART=================*/
 
@@ -748,23 +780,40 @@ body {
 
 
 /*==============RESERVATION===============*/
-#separator-reservation {
-    background-image:url('/static/images/ReservationB.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: scroll; 
-    height: 600px; 
-}
-.separator-reservation-class{
-    color: #02594d; 
+.separator-reservation-class {
+    color: #c4c3b7;
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     font-size: 70px;
     font-weight: bolder;
-    max-width: 400px; 
-    margin: 0 auto; 
-    padding-top: 30%; 
+    max-width: 400px;
+    margin: 0 auto;
+    padding-top: 23%;
+    position: relative;
+    z-index: 1;
+    margin-left: 32%;
 }
+
+#separator-reservation {
+    position: relative;
+    background-image: url('/static/images/ReservationB.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    height: 500px;
+}
+
+#separator-reservation::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
 .booking-heading {
     font-size: 24px;
     color: #02594d;
@@ -1015,3 +1064,11 @@ body {
 }
 
 /*================ADMIN REVIEW=================*/
+.dropdown-container {
+    display: flex;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 10px;
+}
