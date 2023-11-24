@@ -68,12 +68,17 @@ def handle_menu():
     sql = "SELECT * FROM Menu"
     cursor.execute(sql)
     menu = cursor.fetchall()
-    print("menu",menu)
+    print("menu", menu)
     sql = "SELECT * FROM Category"
     cursor.execute(sql)
     categories = cursor.fetchall()
-    print("categories",categories)
-    return render_template('Menu.html', menu=menu, categories=categories)
+    print("categories", categories)
+
+    #first category as default category
+    default_category = categories[0][1] if categories else None
+
+    return render_template('Menu.html', menu=menu, categories=categories, default_category=default_category)
+
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -273,7 +278,15 @@ def admin_menu():
     cursor.execute(sql)
     categories = cursor.fetchall()
 
-    return render_template('AdminMenu.html', menu=menu, categories=categories)
+    #first category as default category
+    sql_default_category = "SELECT CategoryName FROM Category LIMIT 1"
+    cursor.execute(sql_default_category)
+    default_category_tuple = cursor.fetchone()
+    default_category = default_category_tuple[0] if default_category_tuple else None
+
+    
+    return render_template('AdminMenu.html', menu=menu, categories=categories, default_category=default_category)
+
 
 @app.route('/AdminMenuCategory', methods=['POST'])
 def addCategories():
