@@ -16,10 +16,11 @@
 
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
     <title>Menu</title>
     
 </head>
@@ -97,15 +98,13 @@
 
     <div class="menu-options">
         {% for category in categories %}
-        <button class="menu-button" data-toggle="collapse" data-target="#{{ category[1] }}-section">{{ category[1] }}</button>
-        
+        <button class="menu-button" data-toggle="collapse" data-target="#{{ category[1] }}-section" {% if category[1] == default_category %} aria-expanded="true"{% endif %}>{{ category[1] }}</button>
         {% endfor %}
-        
     </div> 
-
+    
     <div id="menu-section">
         {% for category in categories %}
-        <div id="{{ category[1] }}-section" class="menu-section collapse">
+        <div id="{{ category[1] }}-section" class="menu-section collapse {% if category[1] == default_category %}show{% endif %}">
             <h2 class="item-title">{{ category[1] }}</h2>
             <div class="menu-items">
                 {% for item in menu %}
@@ -123,26 +122,14 @@
         </div>
         {% endfor %}
     </div>
-  
 
     <script>
+  
   // For sections toggling
     const buttons = document.querySelectorAll(".menu-button");
     const menuSections = document.querySelectorAll(".menu-section");
 
-    // Function to show the default section
-    function showDefaultSection() {
-        menuSections.forEach((section) => {
-            section.style.display = "none";
-        });
-
-        const defaultSection = document.querySelector("[data-default='true']");
-
-        if (defaultSection) {
-            defaultSection.style.display = "block";
-        }
-    }
-
+   
     // Event listeners for menu buttons
     buttons.forEach((button) => {
         button.addEventListener("click", () => {
@@ -161,9 +148,7 @@
         });
     });
 
-    // Show the "Coffee" section by default
-    showDefaultSection();
-
+    
     
         // for advance search
         const searchForm = document.getElementById('search-form');
