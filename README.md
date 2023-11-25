@@ -13,7 +13,7 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 - Login - Complete
 - SignUp - Complete
 - Home - Complete
-- Menu - sorting, when some item is searched it should show that item by opening it's category section by itself
+- Menu - sortin +  when some item is searched it should show that item by opening it's category section by itself -
 - Reviews - Complete
 - Reservation - ?
 
