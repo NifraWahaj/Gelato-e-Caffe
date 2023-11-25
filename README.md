@@ -2,23 +2,20 @@
 This website serves as a platform for customers to explore the cafe's menu, conveniently place orders, reserve a spot, and share their valuable feedback through reviews. Behind the scenes, the cafe effortlessly manages its menu, reviews and reservations.
 
 ## Issues
-- AdminReview: not Showing rating of each customer with their review  - FIXED
-- AdminReview: Sorting by rating missing - FIXED
-- AdminReview: View month wise missing - FIXED
-- Reviews.html nav bar style -FIXED
+-  not showing Menu for category who has space in it like Ice cream for both MENU and AdminMenu 
   
 ## Progress Status
 Customer Reviews and Admin Menu are completed except searching in Adm…
 …in Menu and displaying less reviews
 - AdminHome - Complete
 - AdminMenu- Searching left
-- AdminReservation - Tables/seats to be implemented. Time slots fixed. Number of tables fixed each with particular number of seats. Table will be booked if availible seats are greater than or equal to required seats, for that time slot. + Front end done for Reservations and Available tables.
-- AdminReview -front end done for ratings + review + top 10 items sold for each month in current year + sales of each month of current year
-
+- AdminReservation - ?
+- AdminReview - sales graph left
+  
 - Login - Complete
 - SignUp - Complete
 - Home - Complete
-- Menu - ?
+- Menu - sorting,when some item is searched it should show that item by opening it's category section by itself
 - Reviews - Complete
 - Reservation - ?
 
@@ -35,19 +32,11 @@ Customer Reviews and Admin Menu are completed except searching in Adm…
 - View customer reviews and ratings for cafe performance analysis.
 
 
-sorry for making it messy :
-##  :
-- to make adminReviews different we can also add reply for admin only. Users can only view replies (but that's totally optional) - lets leave this out for now, if more functionality are required we can add this.
 
+##  
+- to make adminReviews different we can also add reply for admin only. Users can only view replies (but that's totally optional) - lets leave this out for now, if more functionality are required we can add this.
 - what should be done for showing reviews rn it is showing on all of them in des order of review_id in Reviews.html -- we can show random 6 or 6 5star rated on Reviews.html      --FIXED(showing latest 5 reviews based on des order of review_id)
 - MENU, REVIEW and RESERVATION is not really visible on these pictures so maybe move them a bit high(maybe change pic for reservation, some might find it a bit inappropriate) -  - FIXED  (is that pic is okay?) (is it possible to make it green again and just move it a bit up like instead of showing text at bottom of pic. move them to top) - DONE
 - kindly, put both filters in same row for AdminReviews - FIXED   (try to make it on half half of the page like 50% for each filter in same row) - DONE
 - MENU and AdminMenu(dont include filter) write script so it show coffee section by default - DONE
   
--  , kindly manage sorting too and when some item is searched it should show that item by opening it's category section by itself
-- it is not showing Menu for category who has space in it like Ice cream for both MENU and AdminMenu kindly resolve that
-
-
-
-
-
