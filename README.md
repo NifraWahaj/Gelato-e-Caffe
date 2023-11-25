@@ -5,17 +5,15 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 -  not showing Menu for category who has space in it like Ice cream for both MENU and AdminMenu 
   
 ## Progress Status
-Customer Reviews and Admin Menu are completed except searching in Adm…
-…in Menu and displaying less reviews
 - AdminHome - Complete
 - AdminMenu- Searching left
 - AdminReservation - ?
-- AdminReview - sales graph left
+- AdminReview - sales graph left -
   
 - Login - Complete
 - SignUp - Complete
 - Home - Complete
-- Menu - sorting,when some item is searched it should show that item by opening it's category section by itself
+- Menu - sorting, when some item is searched it should show that item by opening it's category section by itself
 - Reviews - Complete
 - Reservation - ?
 
