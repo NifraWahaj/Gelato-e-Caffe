@@ -7,7 +7,7 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 ## Progress Status
 - AdminHome - Complete
 - AdminMenu- search
-- AdminReservation - ?
+- AdminReservation - Complete
 - AdminReview - sales graph left -
   
 - Login - Complete
@@ -15,7 +15,7 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 - Home - Complete
 - Menu - sortinG + when some item is searched it should show that item by opening it's category section by itself 
 - Reviews - Complete
-- Reservation - ?
+- Reservation - Complete
 
 ## Features
 
