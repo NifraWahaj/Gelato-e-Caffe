@@ -34,8 +34,8 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 ##  
 - to make adminReviews different we can also add reply for admin only. Users can only view replies (but that's totally optional) - lets leave this out for now, if more functionality are required we can add this.
 - what should be done for showing reviews rn it is showing on all of them in des order of review_id in Reviews.html -- we can show random 6 or 6 5star rated on Reviews.html      --FIXED(showing latest 5 reviews based on des order of review_id)
+## CODE FOR THIS NOT PUSHED YET, IN PROGRESS
 - MENU, REVIEW and RESERVATION is not really visible on these pictures so maybe move them a bit high(maybe change pic for reservation, some might find it a bit inappropriate) -  - FIXED  (is that pic is okay?) (is it possible to make it green again and just move it a bit up like instead of showing text at bottom of pic. move them to top) - DONE
 - kindly, put both filters in same row for AdminReviews - FIXED   (try to make it on half half of the page like 50% for each filter in same row) - DONE
 - MENU and AdminMenu(dont include filter) write script so it show coffee section by default - DONE
-  
 - it is not showing Menu for category who has space in it like Ice cream for both MENU and AdminMenu kindly resolve that
