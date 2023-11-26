@@ -6,14 +6,14 @@ This website serves as a platform for customers to explore the cafe's menu, conv
   
 ## Progress Status
 - AdminHome - Complete
-- AdminMenu- DONE
+- AdminMenu- search
 - AdminReservation - ?
 - AdminReview - sales graph left -
   
 - Login - Complete
 - SignUp - Complete
 - Home - Complete
-- Menu - sortinG
+- Menu - sortinG + when some item is searched it should show that item by opening it's category section by itself 
 - Reviews - Complete
 - Reservation - ?
 
@@ -38,4 +38,3 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 - kindly, put both filters in same row for AdminReviews - FIXED   (try to make it on half half of the page like 50% for each filter in same row) - DONE
 - MENU and AdminMenu(dont include filter) write script so it show coffee section by default - DONE
   
-when some item is searched it should show that item by opening it's category section by itself - DONE
