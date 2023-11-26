@@ -38,3 +38,4 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 - kindly, put both filters in same row for AdminReviews - FIXED   (try to make it on half half of the page like 50% for each filter in same row) - DONE
 - MENU and AdminMenu(dont include filter) write script so it show coffee section by default - DONE
   
+- it is not showing Menu for category who has space in it like Ice cream for both MENU and AdminMenu kindly resolve that
