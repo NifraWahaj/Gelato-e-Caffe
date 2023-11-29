@@ -45,9 +45,12 @@
       </div>
       <br>
       <form class="form-inline my-2 my-lg-6" id="search-form">
-         <input class="form-control-menu mr-sm-2" type="search" placeholder="  Search Menu" aria-label="Search">
-         <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit">Search</button>
-      </form>
+        <input class="form-control-menu mr-sm-2" type="search" name="search-query" placeholder="  Search Menu" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit">Search</button>
+    </form>
+    
+
+
       <div style="margin-left: 40%;">
          <button id="add-category-button" class="menu-button">Add Category</button>
          <button id="add-item-button" class="menu-button">Add Item</button>
@@ -100,139 +103,152 @@
          </div>
          {% endfor %}
       </div>
+    
       <script>
-         // For sections toggling
-           const buttons = document.querySelectorAll(".menu-button");
-           const menuSections = document.querySelectorAll(".menu-section");
-         
-          
-           // Event listeners for menu buttons
-           buttons.forEach((button) => {
-               button.addEventListener("click", () => {
-                   menuSections.forEach((section) => {
-                       section.style.display = "none";
-                   });
-         
-                   const targetId = button.getAttribute("data-target");
-                   const targetSection = document.querySelector(targetId);
-         
-                   if (targetSection) {
-                       targetSection.style.display = "block";
-                   }
-                   addCategoryForm.style.display = 'none';
-                   addItemForm.style.display = 'none';
-               });
-           });
-         
-           
-           
-               // for advance search
-               const searchForm = document.getElementById('search-form');
-               const priceFilter = document.getElementById('price-filter');
-               const sortBy = document.getElementById('sort-by');
-         
-               searchForm.addEventListener('submit', function (e) {
-                   e.preventDefault(); // Prevent the form from actually submitting
-         
-                   const searchInput = searchForm.querySelector('input[type="search"]');
-                   if (searchInput.value.trim() !== '') {
-                       //show the price filter and sort options
-                       priceFilter.style.display = 'block';
-                       sortBy.style.display = 'block';
-                   } else {
-                       //if no search input,hide the price filter and sort by options 
-                       priceFilter.style.display = 'none';
-                       sortBy.style.display = 'none';
-                   }
-                   //search functionality/filtering logc..
-               }); 
-         
-               //===============================ADD CATEGORY FORM=============================================
-               const addCategoryButton = document.getElementById('add-category-button');
-               const addCategoryForm = document.getElementById('add-category-form');
-         
-               addCategoryButton.addEventListener('click', function () {
-                   if (addCategoryForm.style.display === 'none' || addCategoryForm.style.display === '') {
-                       addCategoryForm.style.display = 'block';
-                   } else {
-                       addCategoryForm.style.display = 'none';
-                   }
-                   addItemForm.style.display = 'none';
-               });
-               // Form submission
-               const categoryForm = document.getElementById('category-form');
-               categoryForm.addEventListener('submit', async (event) => {
-                   event.preventDefault();
-                   const categoryName = document.getElementById('category-name').value;
-                   
-                   const requestOptions = {
-                       method: 'POST',
-                       headers: {
-                           'Content-Type': 'application/json' 
-                       },
-                       body: JSON.stringify({ categoryName })
-                   };
-                   
-                   try {
-                       const response = await fetch('/AdminMenuCategory', requestOptions);
-                       const { msg, redirect_url } = await response.json();
-                       if (redirect_url) {
-                           window.location.href = redirect_url;
-                       }
-                       else{
-                           alert(msg);
-                       }
-                       addCategoryForm.style.display = 'none';
-                       
-                   } catch (error) {
-                       console.error('Error:', error);              
-                   }
-               });
-               //================================ADD ITEM FORM============================================
-               const addItemButton = document.getElementById('add-item-button');
-               const addItemForm = document.getElementById('add-item-form');
-         
-               addItemButton.addEventListener('click', function () {
-                   if (addItemForm.style.display === 'none' || addItemForm.style.display === '') {
-                       addItemForm.style.display = 'block';
-                   } else {
-                       addItemForm.style.display = 'none';
-                   }
-               });
-               // Form submission
-               const itemForm = document.getElementById('item-form');
-               itemForm.addEventListener('submit', async (event) => {
-                   
-                   event.preventDefault();
-                   const ItemName = document.getElementById('item-name').value;
-                   const ItemPrice = document.getElementById('item-price').value;
-                   const ItemDescription= document.getElementById('item-description').value;
-                   const CategoryName = document.getElementById('item-category').value;
-                   const requestOptions = {
-                       method: 'POST',
-                       headers: {
-                           'Content-Type': 'application/json' 
-                       },
-                       body: JSON.stringify({ ItemName, ItemPrice, ItemDescription, CategoryName})
-                   };
-                   
-                   try {
-                       const response = await fetch('/AdminMenuItem', requestOptions);
-                       const { msg, redirect_url } = await response.json();
-                       if (redirect_url) {
-                           window.location.href = redirect_url;
-                       }
-                       else{
-                           alert(msg);
-                       }
-                       addItemForm.style.display = 'none';
-                       
-                   } catch (error) {
-                       console.error('Error:', error);              
-                   }
-               });
-         
-           
-      </script>
+        // For sections toggling
+        const buttons = document.querySelectorAll(".menu-button");
+        const menuSections = document.querySelectorAll(".menu-section");
+
+        // Event listeners for menu buttons
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                menuSections.forEach((section) => {
+                    section.style.display = "none";
+                });
+
+                const targetId = button.getAttribute("data-target");
+                const targetSection = document.querySelector(targetId);
+
+                if (targetSection) {
+                    targetSection.style.display = "block";
+                }
+                addCategoryForm.style.display = 'none';
+                addItemForm.style.display = 'none';
+            });
+        });
+
+        //===============================ADD CATEGORY FORM=============================================
+        const addCategoryButton = document.getElementById('add-category-button');
+        const addCategoryForm = document.getElementById('add-category-form');
+
+        addCategoryButton.addEventListener('click', function () {
+            if (addCategoryForm.style.display === 'none' || addCategoryForm.style.display === '') {
+                addCategoryForm.style.display = 'block';
+            } else {
+                addCategoryForm.style.display = 'none';
+            }
+            addItemForm.style.display = 'none';
+        });
+        // Form submission
+        const categoryForm = document.getElementById('category-form');
+        categoryForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const categoryName = document.getElementById('category-name').value;
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ categoryName })
+            };
+
+            try {
+                const response = await fetch('/AdminMenuCategory', requestOptions);
+                const { msg, redirect_url } = await response.json();
+                if (redirect_url) {
+                    window.location.href = redirect_url;
+                } else {
+                    alert(msg);
+                }
+                addCategoryForm.style.display = 'none';
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+        //================================ADD ITEM FORM============================================
+        const addItemButton = document.getElementById('add-item-button');
+        const addItemForm = document.getElementById('add-item-form');
+
+        addItemButton.addEventListener('click', function () {
+            if (addItemForm.style.display === 'none' || addItemForm.style.display === '') {
+                addItemForm.style.display = 'block';
+            } else {
+                addItemForm.style.display = 'none';
+            }
+        });
+        // Form submission
+        const itemForm = document.getElementById('item-form');
+        itemForm.addEventListener('submit', async (event) => {
+
+            event.preventDefault();
+            const ItemName = document.getElementById('item-name').value;
+            const ItemPrice = document.getElementById('item-price').value;
+            const ItemDescription = document.getElementById('item-description').value;
+            const CategoryName = document.getElementById('item-category').value;
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ItemName, ItemPrice, ItemDescription, CategoryName })
+            };
+
+            try {
+                const response = await fetch('/AdminMenuItem', requestOptions);
+                const { msg, redirect_url } = await response.json();
+                if (redirect_url) {
+                    window.location.href = redirect_url;
+                } else {
+                    alert(msg);
+                }
+                addItemForm.style.display = 'none';
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+
+
+<!-- =========================SEARCHING =========================-->
+<!-- issue-->
+<script>
+   console.log("Script executed");
+
+const searchForm = document.getElementById('search-form');
+searchForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const searchQuery = document.getElementById('search-query').value;
+    console.log(`Search Query: ${searchQuery}`);
+
+    const searchResultCategory = document.querySelector(`[data-category='${searchQuery}']`);
+    console.log('Search Result Category:', searchResultCategory);
+
+    if (searchResultCategory) {
+        // FOUND
+        console.log('Opening Search Result Category');
+
+        menuSections.forEach((section) => {
+            section.style.display = "none";
+        });
+        const targetId = searchResultCategory.getAttribute("data-target");
+        console.log('Target ID:', targetId);
+        const targetSection = document.querySelector(targetId);
+
+        if (targetSection) {
+            targetSection.style.display = "block";
+            console.log('Target Section Displayed');
+        }
+    } else {
+        alert('No matching items found! ');
+    }
+});
+
+</script>
+
+
    </body>
 </html>
