@@ -5,7 +5,7 @@ This website serves as a platform for customers to explore the cafe's menu, conv
   
 ## Progress Status
 - AdminHome - Complete
-- AdminMenu- search
+- AdminMenu- search query is working but prob with js script
 - AdminReservation - Complete
 - AdminReview - sales graph left -
   
