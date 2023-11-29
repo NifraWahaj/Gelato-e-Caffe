@@ -278,14 +278,27 @@ def admin_menu():
     cursor.execute(sql)
     categories = cursor.fetchall()
 
-    #first category as default category
+    #first category as default 
     sql_default_category = "SELECT CategoryName FROM Category LIMIT 1"
     cursor.execute(sql_default_category)
     default_category_tuple = cursor.fetchone()
     default_category = default_category_tuple[0] if default_category_tuple else None
 
+    search_query = request.args.get('search-query', '')
+
+    if search_query:
+            sql = f"""
+                SELECT Menu.*, Category.CategoryName
+                FROM Menu
+                JOIN Category ON Menu.CategoryID = Category.CategoryID
+                WHERE Menu.MenuItem LIKE '{search_query}'
+            """
+            print(f"Search Query SQL: {sql}")
     
-    return render_template('AdminMenu.html', menu=menu, categories=categories, default_category=default_category)
+
+    print(f"Final SQL: {sql}")
+
+    return render_template('AdminMenu.html', menu=menu, default_category=default_category, categories=categories)
 
 
 @app.route('/AdminMenuCategory', methods=['POST'])
