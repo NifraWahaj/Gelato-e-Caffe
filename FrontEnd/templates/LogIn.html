@@ -67,7 +67,10 @@
                   </div>
                   <div class="col-md-6 col-lg-7 d-flex align-items-center">
                     <div class="card-body p-4 p-lg-5 text-black">
-      
+                      {% if error %}
+                      <div class="error-message">{{ error }}</div>
+                  {% endif %}
+              
                       <form action="/LogIn" method="post">
                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-family: 'Open Sans', sans-serif; font-weight: bold;">Log In</h5>
       
@@ -101,6 +104,6 @@
         </div>
       </section>
 
-    
+
 </body>
 </html>
