@@ -47,11 +47,11 @@ def handle_login():
     email = request.form['email']
     password = request.form['password']
 
-    sql = "SELECT * FROM User WHERE Email=%s and password=%s"
-    values = (email, password)
-    cursor.execute(sql, values)
-    user = cursor.fetchone()
-
+    cursor.callproc('GetUserByEmailAndPassword', (email, password))
+    results = cursor.stored_results()
+    for result in results:
+        user=result.fetchone()
+    print(user)
     if user:
         global login_user
         login_user = email
