@@ -27,42 +27,66 @@ def signup():
 def login():
     return render_template('LogIn.html')
 
+# SIGN UP STORED PROCEDURE
 @app.route('/SignUp', methods=['POST'])
 def handle_signup():
-    username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
+    try:
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
 
-    sql = "INSERT INTO User (UserName, Email, password) VALUES (%s, %s, %s)"
-    values = (username, email, password)
-    cursor.execute(sql, values)
-    db.commit()
+        obj = db.cursor()
+        args = [email]
+        obj.callproc('GetUserByEmail', args)
+        result = obj.fetchone()
 
-    global login_user 
-    login_user = email
-    return handle_menu()
-    
+        print(f"Result: {result}")
+
+        # resultnone
+        if result is not None and result[0] is not None:
+            return jsonify({'msg': 'User already exists'}), 400
+
+        # insert a new user
+        obj = db.cursor()
+        args = [username, email, password]
+        obj.callproc('InsertUser', args)
+        db.commit()
+
+        return jsonify({'success': True}), 200
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return jsonify({'error': str(err)}), 500
+
+
+
+# LOGIN STORED PROCEDURE
 @app.route('/LogIn', methods=['POST'])
 def handle_login():
-    email = request.form['email']
-    password = request.form['password']
+    try:
+        email = request.form['email'].strip()
+        password = request.form['password'].strip()
 
-    cursor.callproc('GetUserByEmailAndPassword', (email, password))
-    results = cursor.stored_results()
-    for result in results:
-        user=result.fetchone()
-    print(user)
-    if user:
-        global login_user
-        login_user = email
+        cursor.callproc('GetUserByEmailAndPassword', (email, password))
+        results = cursor.stored_results()
+        for result in results:
+            user=result.fetchone()
+        print(user)
+        if user:
+            global login_user
+            login_user = email
 
-        if user[0] == 1:
-            return admin_home()
+            if user[0] == 1:
+                return admin_home()
+            else:
+                return homepage()
         else:
-            return homepage()
-    else:
-        error_message = "Invalid email or password. Please try again."
-        return render_template('LogIn.html', error=error_message)
+            error_message = "Invalid email or password. Please try again."
+            return jsonify({'error': error_message}), 401
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return jsonify({'error': str(err)}), 500
 
 @app.route('/menu', methods=['GET'])
 def handle_menu():
