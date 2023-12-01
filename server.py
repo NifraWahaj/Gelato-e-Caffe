@@ -56,12 +56,13 @@ def handle_login():
         global login_user
         login_user = email
 
-        if user[0]==1:
+        if user[0] == 1:
             return admin_home()
         else:
             return homepage()
     else:
-        print('Error---------------------------------------------------------------------------------------')
+        error_message = "Invalid email or password. Please try again."
+        return render_template('LogIn.html', error=error_message)
 
 @app.route('/menu', methods=['GET'])
 def handle_menu():
