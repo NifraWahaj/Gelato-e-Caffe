@@ -31,3 +31,5 @@ This website serves as a platform for customers to explore the cafe's menu, conv
 ## 
 - MENU and AdminMenu(dont include filter) write script so it show coffee section by default - shows 1st category by default
 - it is not showing Menu for category who has space in it like Ice cream for both MENU and AdminMenu kindly resolve that -FIXED
+
+- Stored procedures implemented for Login and SignUp.
