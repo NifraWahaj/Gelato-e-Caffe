@@ -274,7 +274,45 @@ def admin_review():
     cursor.execute("SELECT Rating, COUNT(*) FROM Review GROUP BY Rating ORDER BY Rating DESC")
     rating_counts = cursor.fetchall()
 
-    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts)
+
+    #
+    selected_month = request.args.get('month', 'all')
+
+    if selected_month == 'all':
+        sql_top_items = """
+            SELECT m.MenuItem, SUM(o.Quantity) as TotalQuantity
+            FROM Orders o
+            JOIN Menu m ON o.MItemID = m.MItemID
+            GROUP BY o.MItemID
+            ORDER BY TotalQuantity DESC
+            LIMIT 10
+        """
+        cursor.execute(sql_top_items)
+    else:
+        sql_top_items = """
+            SELECT m.MenuItem, SUM(o.Quantity) as TotalQuantity
+            FROM Orders o
+            JOIN Menu m ON o.MItemID = m.MItemID
+            WHERE MONTH(o.TimeDate) = %s
+            GROUP BY o.MItemID
+            ORDER BY TotalQuantity DESC
+            LIMIT 10
+        """
+        cursor.execute(sql_top_items, (selected_month,))
+
+    top_items = cursor.fetchall()
+
+    item_labels = [item[0] for item in top_items]
+    item_quantities = [item[1] for item in top_items]
+
+    cursor.execute("SELECT MONTH(TimeDate) as month, SUM(Quantity * Price) as amount FROM Orders o JOIN Menu m ON o.MItemID = m.MItemID GROUP BY month ORDER BY month")
+    sales_data = cursor.fetchall()
+
+    cursor.execute("SELECT DISTINCT MONTH(TimeDate) as month FROM Orders ORDER BY month")
+    months = [str(month[0]) for month in cursor.fetchall()]
+
+
+    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts, item_labels=item_labels, item_quantities=item_quantities, top_items=top_items, sales_data=sales_data, months=months)
 
 @app.route('/admin_reviews_json')
 def admin_reviews_json():
