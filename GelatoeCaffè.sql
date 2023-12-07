@@ -205,13 +205,13 @@ SHOW PROCEDURE STATUS LIKE 'GetUserByEmailAndPassword';
 -- this is returning the entire table instead of just userID
 --   sql_user = "SELECT UserID FROM User WHERE Email = %s"
 DROP PROCEDURE IF EXISTS GetUserByEmail;
-DELIMITER //
+DELIMITER 
 CREATE PROCEDURE GetUserByEmail(IN userEmail VARCHAR(250))
 BEGIN
     SELECT UserID
     FROM User
     WHERE Email = userEmail;
-END //
+END 
 DELIMITER ;
 CALL GetUserByEmail('user1@example.com');
 

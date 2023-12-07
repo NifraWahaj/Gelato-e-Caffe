@@ -75,8 +75,9 @@ def handle_login():
         if user:
             global login_user
             login_user = email
-
+            print(user[0])
             if user[0] == 1:
+                print("hiiiii")
                 return admin_home()
             else:
                 return homepage()

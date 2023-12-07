@@ -99,43 +99,5 @@
           </div>
         </div>
       </section>
-
-
-<script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();  
-
-    const formData = new FormData(event.target);
-    const email = formData.get('email');
-    const password = formData.get('password');
-
-    // Send 
-    fetch('/LogIn', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        'email': email,
-        'password': password,
-      }),
-    })
-    .then(response => {
-      if (!response.ok) {
-        //  unsuccessful
-        return response.json().then(data => {
-          alert(data.error);
-        });
-      } else {
-        //  successflogin
-        window.location.href = '/'; 
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  });
-</script>
-
 </body>
 </html>
