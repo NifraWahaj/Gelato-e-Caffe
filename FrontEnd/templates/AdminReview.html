@@ -85,8 +85,6 @@
          .custom-btn:hover {
          background-color: #d9534f;
          }
-
-
       </style>
       <!-- Chart.js -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -176,16 +174,16 @@
          </div>
          <br><br>
 
-         <div class="dropdown-container">
-            <!-- show month wise -->
-            <div class="form-group">
+
+         <div style="display: flex; justify-content: space-between;">
+            <!-- show month wise  -->
+            <div class="form-group" style="width: 48%;">
                 <label for="monthSelect-review">Select Month:</label>
                 <select class="form-control" id="monthSelect-review" style="width: 100%;">
                 </select>
             </div>
-        
             <!-- sorting by rating -->
-            <div class="form-group">
+            <div style="width: 48%;">
                 <label for="ratingSort">Sort by Rating:</label>
                 <select class="form-control" id="ratingSort" style="width: 100%;">
                     <option value="all">All Ratings</option>
@@ -198,8 +196,7 @@
             </div>
         </div>
         
-        
-        
+
         <!-- REVIEW-->
         <div class="container">
             <h2 class="text-center">Reviews</h2>
@@ -207,31 +204,51 @@
                 <!-- Reviews will be dynamically rendered here -->
             </div>
         </div>
-
-
-         <!--TTOP 10 ITEMS SOLD -->
-         <h2 class="text-center">Top 10 Items Sold</h2>
-         <div class="form-group">
-            <label for="monthSelect">Select Month:</label>
+   <!-- without this reviews drop down/ etc dont-->
+        <div class="form-group">
+            <label for="monthSelect">Select Mont222:</label>
             <select class="form-control" id="monthSelect">
             </select>
          </div>
-         <div class="row justify-content-center">
-            <div class="col-md-6">
-               <div class="card">
-                  <div class="card-body">
-                     <canvas id="soldItemsChart"></canvas>
-                     <script>
-                        var itemLabels = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10"];
-                        var itemQuantities = [30, 25, 20, 18, 15, 12, 10, 8, 6, 5]; //quantities sold
-                        
+
+
+        
+      </div>
+
+              <!-- TOP 10 ITEMS SOLD -->
+    <h2 class="text-center">Top 10 Items Sold</h2>
+    <div class="form-group "style="width: 71%; margin-left:12%;">
+        <label for="monthSelect" style="margin-left:40px;" >Select Month:</label>
+        <select id="monthSelect" class="form-control" style="margin-left:40px;">
+            {% for month in months %}
+                <option value="{{ month }}">{{ month }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="soldItemsChart"></canvas>
+                    <script>
+                        var topItemsData = {{ top_items | tojson | safe }};
+
+                        var itemLabels = topItemsData.map(function(item) {
+                            return item[0];
+                        });
+
+                        var itemQuantities = topItemsData.map(function(item) {
+                            return item[1];
+                        });
+
                         var soldItemsChart = new Chart("soldItemsChart", {
                             type: "pie",
                             data: {
                                 labels: itemLabels,
                                 datasets: [{
                                     data: itemQuantities,
-                                    backgroundColor: ["#FF6384", "#36A2EB", "#ff8b3d", "#4BC0C0", "#9966FF", "#FF99CC", "#66FF66", "#FFD700", "#0a417a", "#8464a0"]
+                                    backgroundColor: ["#FF6384", "#36A2EB", "#ff8b3d", "#4BC0C0", "#9966FF", "#FF99CC", "#AFE1AF", "#FFD700", "#0a417a", "#8464a0"]
                                 }]
                             },
                             options: {
@@ -241,71 +258,49 @@
                                 }
                             }
                         });
-                     </script>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
 
-      <!--TOTAL SALES IN A YEAR-->
-      <br><br>
-      <h2 class="text-center">Total Sales This Year</h2>
-      <canvas id="SalesChart" style="width: 100%; max-width: 900px; margin-left: 20%;"></canvas>
-      <script>
-         // get month until curr month
-         function getMonthLabels() {
-             const months = [
-                 "January", "February", "March", "April",
-                 "May", "June", "July", "August",
-                 "September", "October", "November", "December"
-             ];
-         
-             const currentMonthIndex = new Date().getMonth();
-             return months.slice(0, currentMonthIndex + 1);
-         }
-         
-         // sample sale data
-         const yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
-         const xValues = getMonthLabels();
-         
-         new Chart("SalesChart", {
-             type: "line",
-             data: {
-                 labels: xValues,
-                 datasets: [{
-                     label: 'Sales',
-                     fill: false,
-                     lineTension: 0,
-                     backgroundColor: "rgba(0,0,255,1.0)",
-                     borderColor: "rgba(0,0,255,0.1)",
-                     data: yValues
-                 }]
-             },
-             options: {
-                 scales: {
-                     xAxes: [{
-                         scaleLabel: {
-                             display: true,
-                             labelString: 'Month',
-                             fontSize: 18
-                         }
-                     }],
-                     yAxes: [{
-                         scaleLabel: {
-                             display: true,
-                             labelString: 'Sales $',
-                             fontSize: 18
-                         },
-                         ticks: { //to be adjusted dynamically
-                             min: 6, 
-                             max: 16 
-                         }
-                     }]
-                 }
-             }
-         });
-      </script>
+                        document.getElementById('monthSelect').addEventListener('change', function() {
+                            var selectedMonth = this.value;
+
+                            fetch(`/update_chart?month=${selectedMonth}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data);
+                                    itemLabels = data.map(item => item[0]);
+                                    itemQuantities = data.map(item => item[1]);
+
+                                    soldItemsChart.data.labels = itemLabels;
+                                    soldItemsChart.data.datasets[0].data = itemQuantities;
+                                    soldItemsChart.update();
+                                })
+                                .catch(error => console.error('Error:', error));
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('monthSelect').addEventListener('change', function() {
+    var selectedMonth = this.value;
+
+    fetch(`/update_chart?month=${selectedMonth}`)
+        .then(response => response.json())
+        .then(data => {
+            itemLabels = data.map(item => item[0]);
+            itemQuantities = data.map(item => item[1]);
+
+            soldItemsChart.data.labels = itemLabels;
+            soldItemsChart.data.datasets[0].data = itemQuantities;
+            soldItemsChart.update();
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+    </script>
+
+     
 
       
       <script>
