@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <!-- Google Fonts Link -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -67,10 +66,7 @@
                   </div>
                   <div class="col-md-6 col-lg-7 d-flex align-items-center">
                     <div class="card-body p-4 p-lg-5 text-black">
-                      {% if error %}
-                      <div class="error-message">{{ error }}</div>
-                  {% endif %}
-              
+      
                       <form action="/LogIn" method="post">
                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-family: 'Open Sans', sans-serif; font-weight: bold;">Log In</h5>
       
@@ -104,6 +100,42 @@
         </div>
       </section>
 
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();  
+
+    const formData = new FormData(event.target);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    // Send 
+    fetch('/LogIn', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        'email': email,
+        'password': password,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        //  unsuccessful
+        return response.json().then(data => {
+          alert(data.error);
+        });
+      } else {
+        //  successflogin
+        window.location.href = '/'; 
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
+</script>
 
 </body>
 </html>
