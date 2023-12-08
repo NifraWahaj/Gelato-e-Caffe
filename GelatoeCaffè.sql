@@ -1,5 +1,5 @@
-create database gelatoecaffè;
-use gelatoecaffè;
+create database gelatoecaffee;
+use gelatoecaffee;
 
 create table User(
 UserID int auto_increment primary key,
@@ -12,7 +12,6 @@ create table Category(
 CategoryID int auto_increment primary key,
 CategoryName varchar(250) unique not null 
 );
-drop table Category;
 
 create table Menu(
 MItemID int auto_increment primary key,
@@ -22,7 +21,6 @@ Price int not null,
 CategoryID int not null,
 FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID) ON DELETE CASCADE ON UPDATE CASCADE
 );
-drop table Menu;
 
 CREATE TABLE Review (
     ReviewID INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,7 +50,6 @@ CREATE TABLE Orders (
     FOREIGN KEY (MItemID) REFERENCES Menu(MItemID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-drop table Orders;
 
 INSERT INTO User (UserName, Email, Password) VALUES
 ('Admin', 'admin@example.com', '1234'),
@@ -78,6 +75,18 @@ INSERT INTO Menu (MenuItem, Description, Price, CategoryID) VALUES
 ('Iced Tea', 'Chilled tea with ice', 2, 3),
 ('Pancakes', 'Fluffy pancakes with syrup', 7, 4);
 
+INSERT INTO Menu (MenuItem, Description, Price, CategoryID) VALUES
+('Latte', 'Espresso with a lot of steamed milk', 4, 1),
+('Vanilla Gelato', 'Smooth vanilla ice cream', 5, 2),
+('Lemonade', 'Refreshing lemon-flavored drink', 3, 3),
+('Eggs Benedict', 'Poached eggs on an English muffin with hollandaise sauce', 9, 4),
+('Cheesecake', 'Creamy cheesecake with a graham cracker crust', 6, 5),
+('Americano', 'Diluted espresso with hot water', 3, 1),
+('Strawberry Gelato', 'Sweet strawberry-flavored ice cream', 5, 2),
+('Orange Juice', 'Freshly squeezed orange juice', 4, 3),
+('Avocado Toast', 'Sliced avocado on toasted bread', 8, 4),
+('Mango Sorbet', 'Refreshing mango-flavored sorbet', 6, 5);
+
 
 INSERT INTO Review (UserID, Rating, Comments) VALUES
 (5, 5, 'Great coffee!'),
@@ -86,7 +95,6 @@ INSERT INTO Review (UserID, Rating, Comments) VALUES
 (4, 5, 'Best brunch in town!'),
 (5, 4, 'Yummy desserts!');
 
-select * from Review;
 INSERT INTO Review (UserID, Rating, Comments, entry_date) VALUES
 (5, 1, 'Needs improvement in service', '2023-10-20'),
 (2, 4, 'Great service!', '2023-01-01'),
@@ -112,12 +120,40 @@ INSERT INTO Review (UserID, Rating, Comments, entry_date) VALUES
 
 
 INSERT INTO Orders (UserID, MItemID, Quantity, TimeDate) VALUES
-(1, 3, 2, '2023-11-25 12:30:00'),
-(2, 3, 1, '2023-11-25 13:45:00'),
+(1, 1, 22, '2023-11-25 12:30:00'),
+(2, 2, 12, '2023-11-25 13:45:00'),
 (2, 3, 10, '2023-11-25 13:45:00'),
-(3, 4, 3, '2023-11-25 14:30:00'),
-(4, 2, 1, '2023-11-25 15:15:00'),
-(5, 5, 2, '2023-11-25 16:00:00');
+(3, 4, 43, '2023-11-25 14:30:00'),
+(4, 5, 24, '2023-11-25 15:15:00'),
+(4, 6, 1, '2023-11-25 15:15:00'),
+(4, 7, 22, '2023-11-25 15:15:00'),
+(4, 8, 11, '2023-11-25 15:15:00'),
+(4, 9, 12, '2023-11-25 15:15:00'),
+(4, 10, 31, '2023-11-25 15:15:00'),
+(4, 11, 41, '2023-11-25 15:15:00'),
+(4, 1, 91, '2023-11-25 15:15:00'),
+(4, 3, 21, '2023-11-25 15:15:00'),
+(5, 5, 22, '2023-11-25 16:00:00');
+
+
+INSERT INTO Orders (UserID, MItemID, Quantity, TimeDate) VALUES
+(1, 1, 22, '2023-10-25 12:30:00'),
+(2, 2, 12, '2023-10-25 13:45:00'),
+(2, 3, 10, '2023-10-25 13:45:00'),
+(3, 4, 43, '2023-10-25 14:30:00'),
+(4, 5, 24, '2023-09-25 15:15:00'),
+(4, 6, 1, '2023-09-25 15:15:00'),
+(4, 7, 22, '2023-09-25 15:15:00'),
+(4, 8, 11, '2023-09-25 15:15:00'),
+(4, 9, 12, '2023-09-25 15:15:00'),
+(4, 10, 31, '2023-09-25 15:15:00'),
+(4, 11, 41, '2023-10-25 15:15:00'),
+(4, 1, 91, '2023-09-25 15:15:00'),
+(4, 3, 21, '2023-09-25 15:15:00'),
+(5, 5, 22, '2023-09-25 16:00:00');
+
+INSERT INTO Orders (UserID, MItemID, Quantity, TimeDate) VALUES
+(1, 1, 22, '2023-07-25 12:30:00');
 
 INSERT INTO Cart (UserID, MItemID, Quantity) VALUES
 (1, 1, 2),
@@ -198,20 +234,21 @@ SHOW PROCEDURE STATUS LIKE 'GetUserByEmailAndPassword';
 
 -- ========================= menu ===============================
 -- sql = "SELECT * FROM Menu"
-
+CALL GetAllMenuItems();
 -- sql = "SELECT * FROM Category"
+CALL GetAllCategories();
 
 -- ========================= add_to_cart ===============================
--- this is returning the entire table instead of just userID
+
 --   sql_user = "SELECT UserID FROM User WHERE Email = %s"
 DROP PROCEDURE IF EXISTS GetUserByEmail;
-DELIMITER 
+DELIMITER //
 CREATE PROCEDURE GetUserByEmail(IN userEmail VARCHAR(250))
 BEGIN
     SELECT UserID
     FROM User
     WHERE Email = userEmail;
-END 
+END //
 DELIMITER ;
 CALL GetUserByEmail('user1@example.com');
 
@@ -299,8 +336,10 @@ END //
 DELIMITER ;
 
 CALL DeleteCartItem(1, 1);
-Delete FROM Cart ;
+select * from cart;
+
 SHOW PROCEDURE STATUS LIKE 'DeleteCartItem';
+SET SQL_SAFE_UPDATES = 0;
 
 -- ========================= change_quanity ===============================
 
@@ -308,9 +347,8 @@ SHOW PROCEDURE STATUS LIKE 'DeleteCartItem';
 CALL GetUserByEmail('user1@example.com');
 
 -- sql = "UPDATE Cart SET Quantity =%s WHERE UserID=%s and MItemID=%s"
-
-DELIMITER //
 DROP PROCEDURE IF EXISTS UpdateCartQuantity;
+DELIMITER //
 CREATE PROCEDURE UpdateCartQuantity(
     IN cartQuantity INT,
     IN userIdParam INT,
@@ -503,9 +541,9 @@ BEGIN
     LIMIT 10;
 END //
 DELIMITER ;
-CALL GetTop10ItemsByMonth(11);
+CALL GetTop10ItemsByMonth(10);
 
--- "SELECT MONTH(TimeDate) as month, SUM(Quantity * Price) as amount FROM Orders o JOIN Menu m ON o.MItemID = m.MItemID GROUP BY month ORDER BY month"
+-- "SELECT MONTH(TimeDate) as month, SUM(Quantity * Price) as amount FROM Orders o JOIN Menu m ON o.MItemID = m.MItemID GROUPSELECT DISTINCT MONTH(TimeDate) as month FSELECT DISTINCT MONTH(TimeDate) as month FROM Orders ORDER BY monthROM Orders ORDER BY month BY month ORDER BY month"
 DELIMITER //
 
 CREATE PROCEDURE GetMonthlyAmounts()
