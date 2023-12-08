@@ -54,10 +54,10 @@
          <h3 class="separator-menu-class">MENU</h3>
       </div>
       <br>
-      <form class="form-inline my-2 my-lg-6" id="search-form" method="post" action="{{ url_for('handle_menu') }}">
-         <input class="form-control-menu mr-sm-2" type="search" name="search_query" id="search-query" placeholder="Search Our Menu" aria-label="Search">
+      <form class="form-inline my-2 my-lg-6" id="search-form">
+         <input class="form-control-menu mr-sm-2" type="search" placeholder="Search Our Menu" aria-label="Search">
          <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit">Search</button>
-      </form>
+     </form>
       
     
       <div class="menu-options">
@@ -155,7 +155,23 @@
                  });
              });
          });
-         
+         document.getElementById("search-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const searchTerm = document.querySelector(".form-control-menu").value.toLowerCase();
+            const items = document.querySelectorAll(".item-name");
+
+            items.forEach((item) => {
+                const itemName = item.textContent.toLowerCase();
+                const itemParent = item.closest(".menu-item");
+
+                if (itemName.includes(searchTerm)) {
+                    itemParent.style.display = "block";
+                } else {
+                    itemParent.style.display = "none";
+                }
+            });
+        });
       </script>
       <div id="footer-section">
          <div class="left-section">

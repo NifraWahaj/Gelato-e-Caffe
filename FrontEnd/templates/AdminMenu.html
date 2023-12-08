@@ -49,7 +49,7 @@
       </div>
       <br>
       <form class="form-inline my-2 my-lg-6" id="search-form">
-        <input class="form-control-menu mr-sm-2" type="search" name="search-query" placeholder="  Search Menu" aria-label="Search">
+        <input class="form-control-menu mr-sm-2" type="search" placeholder="Search Our Menu" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit">Search</button>
     </form>
     
@@ -221,35 +221,23 @@
 <script>
    console.log("Script executed");
 
-const searchForm = document.getElementById('search-form');
-searchForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+   document.getElementById("search-form").addEventListener("submit", function (e) {
+            e.preventDefault();
 
-    const searchQuery = document.getElementById('search-query').value;
-    console.log(`Search Query: ${searchQuery}`);
+            const searchTerm = document.querySelector(".form-control-menu").value.toLowerCase();
+            const items = document.querySelectorAll(".item-name");
 
-    const searchResultCategory = document.querySelector(`[data-category='${searchQuery}']`);
-    console.log('Search Result Category:', searchResultCategory);
+            items.forEach((item) => {
+                const itemName = item.textContent.toLowerCase();
+                const itemParent = item.closest(".menu-item");
 
-    if (searchResultCategory) {
-        // FOUND
-        console.log('Opening Search Result Category');
-
-        menuSections.forEach((section) => {
-            section.style.display = "none";
+                if (itemName.includes(searchTerm)) {
+                    itemParent.style.display = "block";
+                } else {
+                    itemParent.style.display = "none";
+                }
+            });
         });
-        const targetId = searchResultCategory.getAttribute("data-target");
-        console.log('Target ID:', targetId);
-        const targetSection = document.querySelector(targetId);
-
-        if (targetSection) {
-            targetSection.style.display = "block";
-            console.log('Target Section Displayed');
-        }
-    } else {
-        alert('No matching items found! ');
-    }
-});
 
 </script>
 
