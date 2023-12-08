@@ -9,22 +9,26 @@ from flask import session
 app = Flask(__name__, template_folder='FrontEnd/templates', static_folder='FrontEnd/static')
 
 login_user = ''
+
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="patanahi",
-    database="gelatoecaffè"
+    password="r13Bne3@7",
+    database="gelatoecaffee"
 )
 cursor = db.cursor()
 @app.route('/')
 def homepage():
-    return render_template('Home.html')
+    is_logged_in = 'login_user' in session
+    return render_template('Home.html', is_logged_in=is_logged_in)
+
 
 @app.route('/logout')
 def handle_logout():
 
     # session.pop('is_logged_in', None) to remove the 'is_logged_in' key
+    session.pop('login_user', None) 
     session.clear() 
     return redirect(url_for('homepage'))
 
@@ -83,9 +87,11 @@ def handle_login():
             user=result.fetchone()
         print(user)
         if user:
+            
             global login_user
             login_user = email
-            print(login_user)
+            session['login_user'] = email  # Store user information in session
+           # print(login_user)
 
             if user[0] == 1:
                 return admin_home()
@@ -102,6 +108,7 @@ def handle_login():
 # MENU STORED PROCEDURE DONE
 @app.route('/menu', methods=['GET'])
 def handle_menu():
+    is_logged_in = 'login_user' in session
     cursor.callproc("GetAllMenuItems")
     results_menu = cursor.stored_results()
     for result_menu in results_menu:
@@ -116,7 +123,7 @@ def handle_menu():
 
     default_category = categories[0][1] if categories else None
 
-    return render_template('Menu.html', menu=menu, categories=categories, default_category=default_category)
+    return render_template('Menu.html', menu=menu, categories=categories, default_category=default_category, is_logged_in=is_logged_in)
 
 ##  instead of 'already exists in the cart' its inserting duplicates   -- Fixed
 @app.route('/add_to_cart', methods=['POST'])
@@ -158,6 +165,7 @@ def add_to_cart():
 # Cart STORED PROCEDURE DONE
 @app.route('/Cart')
 def cart():
+    is_logged_in = 'login_user' in session
     if login_user:
         cursor.callproc("GetUserByEmail", (login_user,))
         results = cursor.stored_results()
@@ -189,9 +197,9 @@ def cart():
         total_price = total_price if total_price is not None else 0
 
         tax = total_price % 2 if total_price else 0
-        return render_template('Cart.html', cart=cart, total=total_price, tax=tax)
+        return render_template('Cart.html', cart=cart, total=total_price, tax=tax, is_logged_in=is_logged_in)
     else:
-        return "Login required"
+        return redirect(url_for('login'))
 
 # remove_from_cart STORED PROCEDURE DONE
 @app.route('/remove_from_cart', methods=['POST'])
@@ -242,19 +250,18 @@ def change_quanity():
     else:
         return jsonify({'msg': 'Login is required for adding item to cart'}), 401
 
-#left
+#not working even without procedures
 @app.route('/checkout', methods=['POST'])
 def checkout():
-    if login_user:
-        cursor.callproc("GetUserByEmail", (login_user,))
-        results = cursor.stored_results()
-        for result in results:
-            user = result.fetchone()
+    is_logged_in = 'login_user' in session
+    if is_logged_in:
+        sql_user = "SELECT UserID FROM User WHERE Email = %s"
+        cursor.execute(sql_user, (login_user,))
+        user = cursor.fetchone()
 
         cart_items_query = "SELECT MItemID, Quantity FROM Cart WHERE UserID = %s"
         cursor.execute(cart_items_query, (user[0],))
         cart_items = cursor.fetchall()
-        
 
         if cart_items:
             order_time = datetime.now()
@@ -278,19 +285,21 @@ def checkout():
 # RESERVATION STORED PROCEDURE DONE
 @app.route('/Reservation', methods=['GET', 'POST'])
 def reservation():
+    is_logged_in = 'login_user' in session
     if request.method == 'POST':
-        if login_user:
+        if is_logged_in:
             name = request.form['name']
             date = request.form['date']
             time_slot = request.form['time-slot']
             seats = request.form['seats']
-            print(name,date,time_slot,seats)
-
+            #print(name,date,time_slot,seats)
 
             cursor.callproc("GetUserByEmail", (login_user,)) #
             results = cursor.stored_results()
             for result in results:
                 user=result.fetchone()
+            
+           
 
             cursor.callproc("GetAvailableTable", (seats, date, time_slot)) #
             results = cursor.stored_results()
@@ -301,7 +310,7 @@ def reservation():
                 if table:
                     table_id = table[0]
                     user_id = user[0]
-                    print("hehe:",name, date, seats, time_slot, user_id, table_id)
+                    #print("hehe:",name, date, seats, time_slot, user_id, table_id)
 
                     cursor.callproc("InsertReservation", (name, date, seats, time_slot, user_id, table_id)) #
 
@@ -309,7 +318,7 @@ def reservation():
                   
                     db.commit()
 
-                    return render_template('Reservation.html',table_Number=table_id)
+                    return render_template('Reservation.html',table_Number=table_id,is_logged_in=is_logged_in)
 
                 else:
                     return "No available tables for the requested number of seats."
@@ -318,29 +327,18 @@ def reservation():
         else:
             return "Login required"
     else:
-        return render_template('Reservation.html')
+        return render_template('Reservation.html',is_logged_in=is_logged_in)
    
 @app.route('/AdminHome')
 def admin_home():
-    is_logged_in = session.get('is_logged_in', False)
-    return render_template('AdminHome.html', is_logged_in=is_logged_in)
-
-def get_sales_data():
-            # Assuming TimeDate is a datetime column in your Orders table
-    cursor.execute("SELECT MONTHNAME(TimeDate) AS Month, SUM(Quantity) AS TotalSales "
-                           "FROM Orders "
-                           "WHERE YEAR(TimeDate) = YEAR(CURDATE()) "
-                           "GROUP BY Month "
-                           "ORDER BY Month")
-    result = cursor.fetchall()        # Convert the result into separate lists for x and y values
-    x_values = [row['Month'] for row in result]
-    y_values = [row['TotalSales'] for row in result]
-
-    return x_values, y_values
+    is_logged_in = 'login_user' in session  
+    return render_template('AdminHome.html',is_logged_in=is_logged_in)
 
 # ADMINREVIEW STORED PROCEDURE DONE
 @app.route('/AdminReview')
 def admin_review():
+    is_logged_in = 'login_user' in session  
+
     cursor.callproc("GetReviewCount") #
     results = cursor.stored_results()
     for result in results:
@@ -390,7 +388,7 @@ def admin_review():
     item_quantities = [item[1] for item in top_items]
         
 
-    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts, item_labels=item_labels, item_quantities=item_quantities, top_items=top_items)
+    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts, item_labels=item_labels, item_quantities=item_quantities, top_items=top_items,is_logged_in=is_logged_in)
 
 # admin_reviews_json STORED PROCEDURE DONE
 @app.route('/admin_reviews_json')
@@ -414,6 +412,7 @@ def admin_reviews_json():
 # AdminReservation STORED PROCEDURE DONE
 @app.route('/AdminReservation')
 def admin_reservation():
+    is_logged_in = 'login_user' in session  
     cursor.callproc("GetReservationsWithTables")
     results = cursor.stored_results()
 
@@ -422,12 +421,12 @@ def admin_reservation():
         for reservation in result.fetchall():
             reservations.append(reservation)
 
-    return render_template('AdminReservation.html', reservations=reservations)
+    return render_template('AdminReservation.html', reservations=reservations,is_logged_in=is_logged_in)
 
 # AdminReservation STORED PROCEDURE -search_query proc left
 @app.route('/AdminMenu', methods=['GET'])
 def admin_menu():
-
+    is_logged_in = 'login_user' in session  
     cursor.callproc("GetAllMenuItems")
     results_menu = cursor.stored_results()
 
@@ -465,9 +464,10 @@ def admin_menu():
             print(f"Search Query SQL: {sql}")
     
 
+
     #print(f"Final SQL: {sql}")
 
-    return render_template('AdminMenu.html', menu=menu, default_category=default_category, categories=categories)
+    return render_template('AdminMenu.html', menu=menu, default_category=default_category, categories=categories,is_logged_in=is_logged_in)
 
 # AdminMenuCategory STORED PROCEDURE DONE
 @app.route('/AdminMenuCategory', methods=['POST'])
@@ -512,6 +512,7 @@ def addMenuItems():
 # Reviews STORED PROCEDURE DONE
 @app.route('/Reviews', methods=['POST'])
 def reviews():
+
     if login_user:
         comment = request.form['comment']
         rating = int(request.form['rating']) 
@@ -540,7 +541,7 @@ def reviews():
 # Reviews STORED PROCEDURE DONE
 @app.route('/Reviews', methods=['GET'])
 def review():
-
+    is_logged_in = 'login_user' in session  
 
     cursor.callproc("FetchReviews")
     results = cursor.stored_results()
@@ -569,36 +570,7 @@ def review():
             rating_counts.append(row)
 
     print(reviews)
-    return render_template('Reviews.html', reviews=reviews,total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts)
-
-# Update your /search route
-@app.route('/search', methods=['GET', 'POST'])
-def search_items():
-    try:
-        data = request.json
-        keyword = data.get('keyword', '').lower()
-
-        if not keyword:
-            return jsonify({'msg': 'Please provide a search keyword'}), 400
-
-        sql = "SELECT * FROM Menu WHERE LOWER(MenuItem) LIKE %s"
-        values = ('%' + keyword + '%',)
-        cursor.execute(sql, values)
-        items = cursor.fetchall()
-
-        item_list = [
-            {'item_id': item[0], 'item_name': item[1], 'category_id': item[4]}
-            for item in items
-        ]
-
-        if items:
-            return jsonify({'results': item_list})
-        else:
-            return jsonify({'msg': 'No items found for the given keyword'})
-
-    except Exception as e:
-        print("An error occurred:", str(e))
-        return jsonify({'msg': 'An error occurred on the server'}), 500
+    return render_template('Reviews.html', reviews=reviews,total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts,is_logged_in=is_logged_in)
 
 
 if __name__ == '__main__':
