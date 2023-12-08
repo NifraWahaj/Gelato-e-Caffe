@@ -38,12 +38,15 @@
                 <li class="nav-item active">
                    <a class="nav-link" href="{{ url_for('admin_review') }}">Reviews <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('admin_reservation') }}#">Reservation <span class="sr-only">(current)</span></a>
-                 
-                </li>
+    
             </ul>
-            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('handle_login') }}">Log Out</a>
+
+            {% if is_logged_in %}
+            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('handle_logout') }}">Log Out</a>
+            {% else %}
+            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>
+            {% endif %}
+
         </div>
     </nav>
     <!-- ======= Home Image ======= -->
