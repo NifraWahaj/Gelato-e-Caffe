@@ -359,6 +359,8 @@ def admin_review():
 
     #
     selected_month = request.args.get('month', 'all')
+    app.logger.info(f"Selected month: {selected_month}")
+
 
     if selected_month == 'all':
         sql_top_items = """
@@ -386,9 +388,15 @@ def admin_review():
 
     item_labels = [item[0] for item in top_items]
     item_quantities = [item[1] for item in top_items]
-        
 
-    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts, item_labels=item_labels, item_quantities=item_quantities, top_items=top_items,is_logged_in=is_logged_in)
+    if request.headers.get('Content-Type') == 'application/json':
+        # If the request wants JSON, return JSON data
+        chart_data = [{'item': item[0], 'quantity': item[1]} for item in top_items]
+        return jsonify(chart_data)
+
+    return render_template('AdminReview.html', total_reviews=total_reviews, avg_rating=avg_rating,
+                           rating_counts=rating_counts, item_labels=item_labels, item_quantities=item_quantities,
+                           top_items=top_items, is_logged_in=is_logged_in)
 
 # admin_reviews_json STORED PROCEDURE DONE
 @app.route('/admin_reviews_json')
