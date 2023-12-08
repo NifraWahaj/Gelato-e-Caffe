@@ -54,10 +54,16 @@
                     <a class="nav-link" href="#About-Us-section">About Us <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <a class=" custom-cart-button" href="{{ url_for('cart') }}">
+            <a class=" custom-cart-button" href="/Cart">
                 <i class="material-icons" >shopping_cart</i>
-            </a>
-           <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>  
+                </a>
+            
+          <!--<a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>   -->
+          {% if is_logged_in %}
+          <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('handle_logout') }}">Log Out</a>
+          {% else %}
+          <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>
+          {% endif %}
         </div>
     </nav>
     <!-- ======= Home Image ======= -->
