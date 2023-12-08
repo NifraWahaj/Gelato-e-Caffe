@@ -3,10 +3,14 @@ from flask import Flask, send_file, request, redirect, render_template, jsonify,
 import mysql.connector
 import io
 from datetime import datetime
+from flask import redirect, url_for, jsonify
+from flask import session
 
 app = Flask(__name__, template_folder='FrontEnd/templates', static_folder='FrontEnd/static')
 
 login_user = ''
+is_logged_in = False
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -14,10 +18,16 @@ db = mysql.connector.connect(
     database="gelatoecaffè"
 )
 cursor = db.cursor()
-
 @app.route('/')
 def homepage():
     return render_template('Home.html')
+
+@app.route('/logout')
+def handle_logout():
+
+    # session.pop('is_logged_in', None) to remove the 'is_logged_in' key
+    session.clear() 
+    return redirect(url_for('homepage'))
 
 @app.route('/SignUp', methods=['GET'])
 def signup():
@@ -58,26 +68,27 @@ def handle_signup():
         print(f"Error: {err}")
         return jsonify({'error': str(err)}), 500
 
-
-
-# LOGIN STORED PROCEDURE
+# LOGIN STORED PROCEDURE 
 @app.route('/LogIn', methods=['POST'])
 def handle_login():
     try:
         email = request.form['email'].strip()
         password = request.form['password'].strip()
 
-        cursor.callproc('GetUserByEmailAndPassword', (email, password))
+        cursor.callproc('GetUserByEmailAndPassword', (email, password)) #works
         results = cursor.stored_results()
         for result in results:
             user=result.fetchone()
         print(user)
         if user:
             global login_user
+            global is_logged_in
+            #session['login_user'] = email #
+            session['is_logged_in'] = True
             login_user = email
-            print(user[0])
+            print(login_user)
+
             if user[0] == 1:
-                print("hiiiii")
                 return admin_home()
             else:
                 return homepage()
@@ -89,83 +100,117 @@ def handle_login():
         print(f"Error: {err}")
         return jsonify({'error': str(err)}), 500
 
+# MENU STORED PROCEDURE DONE
 @app.route('/menu', methods=['GET'])
 def handle_menu():
-    sql = "SELECT * FROM Menu"
-    cursor.execute(sql)
-    menu = cursor.fetchall()
-    print("menu", menu)
-    sql = "SELECT * FROM Category"
-    cursor.execute(sql)
-    categories = cursor.fetchall()
-    print("categories", categories)
+    cursor.callproc("GetAllMenuItems")
+    results_menu = cursor.stored_results()
+    for result_menu in results_menu:
+        menu = result_menu.fetchall()
 
-    #first category as default category
+    cursor.callproc("GetAllCategories")
+    results_categories = cursor.stored_results()
+    categories = []
+    for result_categories in results_categories:
+        for row in result_categories.fetchall():
+            categories.append(row)
+
     default_category = categories[0][1] if categories else None
 
     return render_template('Menu.html', menu=menu, categories=categories, default_category=default_category)
 
-
+##  instead of 'already exists in the cart' its inserting duplicates
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     if login_user:
         item_id = request.json['itemId']
         print(item_id)
-        sql_user = "SELECT UserID FROM User WHERE Email = %s"
-        cursor.execute(sql_user, (login_user,))
-        user = cursor.fetchone()
+        
+        cursor.callproc("GetUserByEmail", (login_user,))
+        results = cursor.stored_results()
+        for result in results:
+            user = result.fetchone()
+        print(user)
+
         if user:
-            sql = "SELECT * FROM Cart WHERE UserID=%s and MItemID=%s"
-            values = (user[0], item_id)
-            cursor.execute(sql, values)
+            #sql = "SELECT * FROM Cart WHERE UserID=%s and MItemID=%s"
+            #values = (user[0], item_id)
+            #cursor.execute(sql, values)
+            #exist = cursor.fetchone()
+
+            cursor.callproc("GetCartByUserIDAndMItemID", (user[0], item_id))
             exist = cursor.fetchone()
+
             if exist:
                 return jsonify({'msg': ' already exists in the cart'})
             else:
-                insert_query = "INSERT INTO Cart (UserID, MItemID) VALUES (%s, %s)"
-                values = (user[0], item_id)
-                cursor.execute(insert_query, values)
+                #insert_query = "INSERT INTO Cart (UserID, MItemID) VALUES (%s, %s)"
+                #values = (user[0], item_id)
+                #cursor.execute(insert_query, values)
+                cursor.callproc("InsertIntoCart", (user[0], item_id))
                 db.commit()
+
                 return jsonify({'msg': ' added to cart successfully'})
         else:
             return jsonify({'msg': 'User not found'}), 400
     else:
         return jsonify({'msg': 'Login is required for adding item to cart'}), 401
 
-
+# Cart STORED PROCEDURE DONE
 @app.route('/Cart')
 def cart():
     if login_user:
-        sql_user = "SELECT UserID FROM User WHERE Email = %s"
-        cursor.execute(sql_user, (login_user,))
-        user = cursor.fetchone()
-        sql = "SELECT m.*,c.Quantity FROM Menu m, Cart c WHERE UserID=%s and m.MItemID=c.MItemID"
-        values = (user[0],)
-        cursor.execute(sql, values)
-        cart = cursor.fetchall()
-        
-        sql = "SELECT SUM(m.Price * c.Quantity) AS TotalPrice FROM Cart c, Menu m WHERE UserID=%s and m.MItemID=c.MItemID"
-        values = (user[0],)
-        cursor.execute(sql, values)
-        total = cursor.fetchone()
-        total_price = total[0] if total and total[0] is not None else 0
+        cursor.callproc("GetUserByEmail", (login_user,)) #
+        results = cursor.stored_results()
+        for result in results:
+            user=result.fetchone()
+
+        cursor.callproc("GetMenuAndCartByUserID", (user[0],))
+        results_menu_cart = cursor.stored_results()
+
+        # first result set 
+        result_menu_cart = next(results_menu_cart, None)
+
+        if result_menu_cart:
+            cart = result_menu_cart.fetchall()
+        else:
+            cart = []
+    
+
+        cursor.callproc("CalculateTotalPrice", (user[0],))
+        results_total_price = cursor.stored_results()
+
+        result_total_price = next(results_total_price, None)
+
+        if result_total_price:
+            total_price = result_total_price.fetchone()[0]
+        else:
+            total_price = 0 
+
+        total_price = total_price if total_price is not None else 0
+
         tax = total_price % 2 if total_price else 0
         return render_template('Cart.html', cart=cart, total=total_price, tax=tax)
     else:
         return "Login required"
 
+# remove_from_cart STORED PROCEDURE DONE
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
     if login_user:
         item_id = request.json['itemId']
         print(item_id)
-        sql_user = "SELECT UserID FROM User WHERE Email = %s"
-        cursor.execute(sql_user, (login_user,))
-        user = cursor.fetchone()
+
+        cursor.callproc("GetUserByEmail", (login_user,))
+        results = cursor.stored_results()
+        for result in results:
+            user = result.fetchone()
+
         if user:
-            sql = "Delete FROM Cart WHERE UserID=%s and MItemID=%s"
-            values = (user[0], item_id)
-            cursor.execute(sql, values)
+            #sql = "Delete FROM Cart WHERE UserID=%s and MItemID=%s"
+            #values = (user[0], item_id)
+            #cursor.execute(sql, values)
+            cursor.callproc("DeleteCartItem", (user[0], item_id))
             db.commit()
             return jsonify({'redirect_url': url_for('cart')})
         else:
@@ -173,19 +218,24 @@ def remove_from_cart():
     else:
         return jsonify({'msg': 'Login is required for adding item to cart'}), 401
 
+# change_quanity STORED PROCEDURE DONE
 @app.route('/change_quanity', methods=['POST'])
 def change_quanity():
     if login_user:
         item_id = request.json['itemId']
         quantity = request.json['quantity']
         print(item_id)
-        sql_user = "SELECT UserID FROM User WHERE Email = %s"
-        cursor.execute(sql_user, (login_user,))
-        user = cursor.fetchone()
+        
+        cursor.callproc("GetUserByEmail", (login_user,))
+        results = cursor.stored_results()
+        for result in results:
+            user = result.fetchone()
+
         if user:
-            sql = "UPDATE Cart SET Quantity =%s WHERE UserID=%s and MItemID=%s"
-            values = (quantity, user[0], item_id)
-            cursor.execute(sql, values)
+            #sql = "UPDATE Cart SET Quantity =%s WHERE UserID=%s and MItemID=%s"
+            #values = (quantity, user[0], item_id)
+            #cursor.execute(sql, values)
+            cursor.callproc("UpdateCartQuantity", (quantity, user[0], item_id))
             db.commit()
             return jsonify({'redirect_url': url_for('cart')})
         else:
@@ -193,16 +243,19 @@ def change_quanity():
     else:
         return jsonify({'msg': 'Login is required for adding item to cart'}), 401
 
+#left
 @app.route('/checkout', methods=['POST'])
 def checkout():
     if login_user:
-        sql_user = "SELECT UserID FROM User WHERE Email = %s"
-        cursor.execute(sql_user, (login_user,))
-        user = cursor.fetchone()
+        cursor.callproc("GetUserByEmail", (login_user,))
+        results = cursor.stored_results()
+        for result in results:
+            user = result.fetchone()
 
         cart_items_query = "SELECT MItemID, Quantity FROM Cart WHERE UserID = %s"
         cursor.execute(cart_items_query, (user[0],))
         cart_items = cursor.fetchall()
+        
 
         if cart_items:
             order_time = datetime.now()
@@ -223,7 +276,7 @@ def checkout():
     else:
         return jsonify({'msg': 'Login is required for checkout'}), 401
 
-
+# RESERVATION STORED PROCEDURE DONE
 @app.route('/Reservation', methods=['GET', 'POST'])
 def reservation():
     if request.method == 'POST':
@@ -233,19 +286,28 @@ def reservation():
             time_slot = request.form['time-slot']
             seats = request.form['seats']
             print(name,date,time_slot,seats)
-            sql_user = "SELECT UserID FROM User WHERE Email = %s"
-            cursor.execute(sql_user, (login_user,))
-            user = cursor.fetchone()
-            cursor.execute("SELECT TableID FROM Tables WHERE NumberOfSeats >= %s AND TableID NOT IN (SELECT TableID FROM Reservations WHERE ReservationDate = %s AND TimeSlot = %s) ORDER BY NumberOfSeats ASC LIMIT 1", (seats, date, time_slot))
-            table = cursor.fetchone()
+
+
+            cursor.callproc("GetUserByEmail", (login_user,)) #
+            results = cursor.stored_results()
+            for result in results:
+                user=result.fetchone()
+
+            cursor.callproc("GetAvailableTable", (seats, date, time_slot)) #
+            results = cursor.stored_results()
+            for result in results:
+                table = result.fetchone()
+           
             if user:
                 if table:
                     table_id = table[0]
                     user_id = user[0]
                     print("hehe:",name, date, seats, time_slot, user_id, table_id)
-                    insert_query = "INSERT INTO Reservations (CustomerName, ReservationDate, NumberOfSeats, TimeSlot, UserID, TableID) VALUES (%s, %s, %s, %s, %s, %s)"
-                    values = (name, date, seats, time_slot, user_id, table_id)
-                    cursor.execute(insert_query, values)
+
+                    cursor.callproc("InsertReservation", (name, date, seats, time_slot, user_id, table_id)) #
+
+                    #insert_query = "INSERT INTO Reservations (CustomerName, ReservationDate, NumberOfSeats, TimeSlot, UserID, TableID) VALUES (%s, %s, %s, %s, %s, %s)"
+                  
                     db.commit()
 
                     return render_template('Reservation.html',table_Number=table_id)
@@ -259,21 +321,43 @@ def reservation():
     else:
         return render_template('Reservation.html')
    
-
 @app.route('/AdminHome')
 def admin_home():
-    return render_template('AdminHome.html')
+    is_logged_in = session.get('is_logged_in', False)
+    return render_template('AdminHome.html', is_logged_in=is_logged_in)
 
+def get_sales_data():
+            # Assuming TimeDate is a datetime column in your Orders table
+    cursor.execute("SELECT MONTHNAME(TimeDate) AS Month, SUM(Quantity) AS TotalSales "
+                           "FROM Orders "
+                           "WHERE YEAR(TimeDate) = YEAR(CURDATE()) "
+                           "GROUP BY Month "
+                           "ORDER BY Month")
+    result = cursor.fetchall()        # Convert the result into separate lists for x and y values
+    x_values = [row['Month'] for row in result]
+    y_values = [row['TotalSales'] for row in result]
+
+    return x_values, y_values
+
+# ADMINREVIEW STORED PROCEDURE DONE
 @app.route('/AdminReview')
 def admin_review():
-    cursor.execute("SELECT COUNT(*) FROM Review")
-    total_reviews = cursor.fetchone()[0]
+    cursor.callproc("GetReviewCount") #
+    results = cursor.stored_results()
+    for result in results:
+        total_reviews = result.fetchone()[0]
 
-    cursor.execute("SELECT AVG(Rating) FROM Review")
-    avg_rating = cursor.fetchone()[0]
+    cursor.callproc("CalculateAverageRating")
+    results = cursor.stored_results()
+    for result in results:
+        avg_rating = result.fetchone()[0]
 
-    cursor.execute("SELECT Rating, COUNT(*) FROM Review GROUP BY Rating ORDER BY Rating DESC")
-    rating_counts = cursor.fetchall()
+    cursor.callproc("GetReviewCounts")
+    results = cursor.stored_results()
+    rating_counts = []
+    for result in results:
+        for row in result.fetchall():
+            rating_counts.append(row)
 
 
     #
@@ -305,48 +389,70 @@ def admin_review():
 
     item_labels = [item[0] for item in top_items]
     item_quantities = [item[1] for item in top_items]
+        
 
-    cursor.execute("SELECT MONTH(TimeDate) as month, SUM(Quantity * Price) as amount FROM Orders o JOIN Menu m ON o.MItemID = m.MItemID GROUP BY month ORDER BY month")
-    sales_data = cursor.fetchall()
+    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts, item_labels=item_labels, item_quantities=item_quantities, top_items=top_items)
 
-    cursor.execute("SELECT DISTINCT MONTH(TimeDate) as month FROM Orders ORDER BY month")
-    months = [str(month[0]) for month in cursor.fetchall()]
-
-
-    return render_template('AdminReview.html',total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts, item_labels=item_labels, item_quantities=item_quantities, top_items=top_items, sales_data=sales_data, months=months)
-
+# admin_reviews_json STORED PROCEDURE DONE
 @app.route('/admin_reviews_json')
 def admin_reviews_json():
-    sql_fetch_reviews = "SELECT R.ReviewID, U.UserName, R.Rating, R.Comments, R.entry_date FROM Review R, User U WHERE R.UserID = U.UserID ORDER BY ReviewID DESC"
-    cursor.execute(sql_fetch_reviews)
-    reviews = cursor.fetchall()
+    cursor.callproc("GetReviewsWithUsers")
+    results = cursor.stored_results()
 
-    reviews_json = [{'ReviewID': review[0], 'UserName': review[1], 'Rating': review[2], 'Comments': review[3], 'entry_date': review[4]} for review in reviews]
+    reviews = []
+    for result in results:
+        for review in result.fetchall():
+            reviews.append({
+                'ReviewID': review[0],
+                'UserName': review[1],
+                'Rating': review[2],
+                'Comments': review[3],
+                'entry_date': review[4]
+            })
 
-    return jsonify({'reviews': reviews_json})
+    return jsonify({'reviews': reviews})
 
+# AdminReservation STORED PROCEDURE DONE
 @app.route('/AdminReservation')
 def admin_reservation():
-    sql = "SELECT * FROM Reservations r, Tables t where r.TableID = t.TableID Order by ReservationDate, TimeSlot"
-    cursor.execute(sql)
-    reservations = cursor.fetchall()
+    cursor.callproc("GetReservationsWithTables")
+    results = cursor.stored_results()
+
+    reservations = []
+    for result in results:
+        for reservation in result.fetchall():
+            reservations.append(reservation)
+
     return render_template('AdminReservation.html', reservations=reservations)
 
+# AdminReservation STORED PROCEDURE -search_query proc left
 @app.route('/AdminMenu', methods=['GET'])
 def admin_menu():
-    sql = "SELECT * FROM Menu"
-    cursor.execute(sql)
-    menu = cursor.fetchall()
 
-    sql = "SELECT * FROM Category"
-    cursor.execute(sql)
-    categories = cursor.fetchall()
+    cursor.callproc("GetAllMenuItems")
+    results_menu = cursor.stored_results()
+
+    menu = []
+    for result in results_menu:
+        for item in result.fetchall():
+            menu.append(item)
+
+    cursor.callproc("GetAllCategories")
+    results_categories = cursor.stored_results()
+
+    categories = []
+    for result in results_categories:
+        for category in result.fetchall():
+            categories.append(category)
 
     #first category as default 
-    sql_default_category = "SELECT CategoryName FROM Category LIMIT 1"
-    cursor.execute(sql_default_category)
-    default_category_tuple = cursor.fetchone()
-    default_category = default_category_tuple[0] if default_category_tuple else None
+    cursor.callproc("GetFirstCategoryName")
+    result_first_category = cursor.stored_results()
+
+    for result in result_first_category:
+        default_category_tuple = result.fetchone()
+        default_category = default_category_tuple[0] if default_category_tuple else None
+        break 
 
     search_query = request.args.get('search-query', '')
 
@@ -360,18 +466,17 @@ def admin_menu():
             print(f"Search Query SQL: {sql}")
     
 
-    print(f"Final SQL: {sql}")
+    #print(f"Final SQL: {sql}")
 
     return render_template('AdminMenu.html', menu=menu, default_category=default_category, categories=categories)
 
-
+# AdminMenuCategory STORED PROCEDURE DONE
 @app.route('/AdminMenuCategory', methods=['POST'])
 def addCategories():
     CategoryName = request.json['categoryName']
     print("CategoryName:", CategoryName)
-    sql = "INSERT INTO Category(CategoryName) VALUES (%s)"
-    values = (CategoryName,) 
-    cursor.execute(sql, values)
+    
+    cursor.callproc("InsertCategory", (CategoryName,))
     db.commit()
 
     if cursor.rowcount > 0:
@@ -379,9 +484,7 @@ def addCategories():
     else:
         return jsonify({'msg': "Sorry, the category could not be added"})
 
-
-
-
+# AdminMenuItem STORED PROCEDURE DONE
 @app.route('/AdminMenuItem', methods=['POST'])
 def addMenuItems():
     ItemName = request.json['ItemName']
@@ -389,15 +492,15 @@ def addMenuItems():
     ItemDescription = request.json['ItemDescription']
     ItemCategory = request.json['CategoryName']
 
-    sql1 = "SELECT CategoryID FROM Category WHERE CategoryName=%s"
-    values1 = (ItemCategory,)
-    cursor.execute(sql1, values1)
-    categoryID = cursor.fetchone()
+  
+    cursor.callproc('GetCategoryIdByCategoryName', (ItemCategory,))
+
+    results = cursor.stored_results()
+    for result in results:
+            categoryID=result.fetchone()
 
     if categoryID:
-        sql2 = "INSERT INTO Menu(MenuItem, Description, Price, CategoryID) VALUES (%s, %s, %s, %s)"
-        values2 = (ItemName, ItemDescription, ItemPrice, categoryID[0])
-        cursor.execute(sql2, values2)
+        cursor.callproc("InsertMenu", (ItemName, ItemDescription, ItemPrice, categoryID[0]))
         db.commit()
         if cursor.rowcount > 0:
             return jsonify({'redirect_url': url_for('admin_menu')})
@@ -407,23 +510,26 @@ def addMenuItems():
         return jsonify({'msg': "Sorry, this category does not exist"})
 
 
-
+# Reviews STORED PROCEDURE DONE
 @app.route('/Reviews', methods=['POST'])
 def reviews():
     if login_user:
         comment = request.form['comment']
         rating = int(request.form['rating']) 
 
-        sql_user = "SELECT UserID FROM User WHERE Email = %s"
-        cursor.execute(sql_user, (login_user,))
-        user = cursor.fetchone()
+        cursor.callproc("GetUserByEmail", (login_user,))
+        results = cursor.stored_results()
+        for result in results:
+            user = result.fetchone()
+        
 
         if user:
             user_id = user[0]
 
-            sql_insert_review = "INSERT INTO Review (UserID, Rating, Comments) VALUES (%s, %s, %s)"
+            insert_review_proc = "InsertReview"
             review_values = (user_id, rating, comment)
-            cursor.execute(sql_insert_review, review_values)
+
+            cursor.callproc(insert_review_proc, review_values)
             db.commit()
 
             return review()
@@ -432,23 +538,69 @@ def reviews():
     else:
         return "Login required"
 
+# Reviews STORED PROCEDURE DONE
 @app.route('/Reviews', methods=['GET'])
 def review():
-    sql_fetch_reviews = "SELECT R.ReviewID ,U.UserName, R.Rating, R.Comments FROM Review R, User U where R.UserID = U.UserID ORDER BY ReviewID DESC LIMIT 5"
-    cursor.execute(sql_fetch_reviews)
-    reviews = cursor.fetchall()
 
-    cursor.execute("SELECT COUNT(*) FROM Review")
-    total_reviews = cursor.fetchone()[0]
 
-    cursor.execute("SELECT AVG(Rating) FROM Review")
-    avg_rating = cursor.fetchone()[0]
+    cursor.callproc("FetchReviews")
+    results = cursor.stored_results()
 
-    cursor.execute("SELECT Rating, COUNT(*) FROM Review GROUP BY Rating ORDER BY Rating DESC")
-    rating_counts = cursor.fetchall()
+    # Fetch the results from the stored procedure
+    reviews = []
+    for result in results:
+        for review in result.fetchall():
+            reviews.append(review)
+
+    cursor.callproc("GetReviewCount") #
+    results = cursor.stored_results()
+    for result in results:
+        total_reviews = result.fetchone()[0]
+
+    cursor.callproc("CalculateAverageRating")
+    results = cursor.stored_results()
+    for result in results:
+        avg_rating = result.fetchone()[0]
+
+    cursor.callproc("GetReviewCounts")
+    results = cursor.stored_results()
+    rating_counts = []
+    for result in results:
+        for row in result.fetchall():
+            rating_counts.append(row)
 
     print(reviews)
     return render_template('Reviews.html', reviews=reviews,total_reviews=total_reviews, avg_rating=avg_rating, rating_counts=rating_counts)
+
+# Update your /search route
+@app.route('/search', methods=['GET', 'POST'])
+def search_items():
+    try:
+        data = request.json
+        keyword = data.get('keyword', '').lower()
+
+        if not keyword:
+            return jsonify({'msg': 'Please provide a search keyword'}), 400
+
+        sql = "SELECT * FROM Menu WHERE LOWER(MenuItem) LIKE %s"
+        values = ('%' + keyword + '%',)
+        cursor.execute(sql, values)
+        items = cursor.fetchall()
+
+        item_list = [
+            {'item_id': item[0], 'item_name': item[1], 'category_id': item[4]}
+            for item in items
+        ]
+
+        if items:
+            return jsonify({'results': item_list})
+        else:
+            return jsonify({'msg': 'No items found for the given keyword'})
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return jsonify({'msg': 'An error occurred on the server'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
