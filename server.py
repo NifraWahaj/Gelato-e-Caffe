@@ -29,7 +29,8 @@ def handle_logout():
 
     # session.pop('is_logged_in', None) to remove the 'is_logged_in' key
     session.pop('login_user', None) 
-    session.clear() 
+    session.clear()
+    login_user = ''
     return redirect(url_for('homepage'))
 
 @app.route('/SignUp', methods=['GET'])
@@ -196,7 +197,7 @@ def cart():
 
         total_price = total_price if total_price is not None else 0
 
-        tax = total_price % 2 if total_price else 0
+        tax =  (total_price*2)/100
         return render_template('Cart.html', cart=cart, total=total_price, tax=tax, is_logged_in=is_logged_in)
     else:
         return redirect(url_for('login'))
