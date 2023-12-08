@@ -1,5 +1,5 @@
-create database gelatoecaffee;
-use gelatoecaffee;
+create database gelatoecaffè;
+use gelatoecaffè;
 
 create table User(
 UserID int auto_increment primary key,
