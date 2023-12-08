@@ -44,7 +44,11 @@
          <a class=" custom-cart-button" href="/Cart">
          <i class="material-icons" >shopping_cart</i>
          </a>
-         <a class="btn btn-custom my-2 my-sm-0" href="/LogIn">Log In</a>
+         {% if is_logged_in %}
+         <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('handle_logout') }}">Log Out</a>
+         {% else %}
+         <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>
+         {% endif %}
       </nav>
       <div id="separator-menu">
          <h3 class="separator-menu-class">MENU</h3>
@@ -54,20 +58,8 @@
          <input class="form-control-menu mr-sm-2" type="search" name="search_query" id="search-query" placeholder="Search Our Menu" aria-label="Search">
          <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit">Search</button>
       </form>
-      <!-- Price Filter (hidden by default) -->
-      <div class="price-filter" id="price-filter" style="display: none;">
-         <label for="min-price"></label>
-         <input type="number" id="min-price" placeholder="Min" min="0">
-         <label for="max-price"></label>
-         <input type="number" id="max-price" placeholder="Max">
-         <button id="apply-filter">Filter</button>
-         <!-- Sort by price (hidden by default) -->
-         <label for="price-sort" style="margin-left: 19%; font-size: 16px;">Price:</label>
-         <select id="price-sort">
-            <option value="asc">Low to High</option>
-            <option value="desc">High to Low</option>
-         </select>
-      </div>
+      
+    
       <div class="menu-options">
          {% for category in categories %}
          {% set category_id = category[1].replace(' ', '_') %}
@@ -134,56 +126,7 @@
              
       </script>
       <script>
-         // Function to filter items based on price
-         function filterItems() {
-             const minPrice = parseFloat(document.getElementById("min-price").value);
-             const maxPrice = parseFloat(document.getElementById("max-price").value);
-         
-             const items = document.querySelectorAll(".menu-item");
-         
-             items.forEach((item) => {
-                 const itemPrice = parseFloat(item.querySelector(".item-price").textContent.replace("$", ""));
-                 item.style.display = itemPrice >= minPrice && itemPrice <= maxPrice ? "block" : "none";
-             });
-         }
-         
-         // Event listener for the filter button
-         document.getElementById("search-form").addEventListener("submit", function (e) {
-         e.preventDefault();
-         
-         const searchQuery = document.getElementById("search-query").value.toLowerCase();
-         
-         // Fetch filtered menu items based on the search query
-         fetch(`/menu?search_query=${searchQuery}`)
-             .then(response => response.json())
-             .then(data => {
-                 // Update the menu items with the filtered results
-                 console.log(data);
-         
-                 // Check if any items are found
-                 if (data.length > 0) {
-                     // Iterate through the buttons to find the correct category
-                     buttons.forEach((button) => {
-                         const targetId = button.getAttribute("data-target");
-                         const targetSection = document.querySelector(targetId);
-         
-                         // Check if the current section contains the found item
-                         const foundItem = data.find(item => item[1].toLowerCase() === searchQuery);
-                         if (foundItem && targetSection) {
-                             // Open the section and break out of the loop
-                             targetSection.style.display = "block";
-                             //break;
-                         }
-                     });
-                 }
-             })
-             .catch(error => {
-                 console.error('Error fetching menu items:', error);
-             });
-         });
-         
-         
-             
+
              document.querySelectorAll('.add-to-cart-button').forEach(button => {
              button.addEventListener('click', () => {
                  const itemId = button.dataset.itemId;
