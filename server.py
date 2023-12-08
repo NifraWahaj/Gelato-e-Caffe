@@ -14,8 +14,8 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="r13Bne3@7",
-    database="gelatoecaffee"
+    password="patanahi",
+    database="gelatoecaffè"
 )
 cursor = db.cursor()
 @app.route('/')
