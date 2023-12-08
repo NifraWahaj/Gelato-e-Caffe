@@ -9,7 +9,6 @@ from flask import session
 app = Flask(__name__, template_folder='FrontEnd/templates', static_folder='FrontEnd/static')
 
 login_user = ''
-is_logged_in = False
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 db = mysql.connector.connect(
     host="localhost",
@@ -62,6 +61,9 @@ def handle_signup():
         obj.callproc('InsertUser', args)
         db.commit()
 
+        global login_user
+        login_user = email
+
         return jsonify({'success': True}), 200
 
     except mysql.connector.Error as err:
@@ -82,9 +84,6 @@ def handle_login():
         print(user)
         if user:
             global login_user
-            global is_logged_in
-            #session['login_user'] = email #
-            session['is_logged_in'] = True
             login_user = email
             print(login_user)
 
@@ -119,7 +118,7 @@ def handle_menu():
 
     return render_template('Menu.html', menu=menu, categories=categories, default_category=default_category)
 
-##  instead of 'already exists in the cart' its inserting duplicates
+##  instead of 'already exists in the cart' its inserting duplicates   -- Fixed
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     if login_user:
@@ -130,7 +129,6 @@ def add_to_cart():
         results = cursor.stored_results()
         for result in results:
             user = result.fetchone()
-        print(user)
 
         if user:
             #sql = "SELECT * FROM Cart WHERE UserID=%s and MItemID=%s"
@@ -139,9 +137,10 @@ def add_to_cart():
             #exist = cursor.fetchone()
 
             cursor.callproc("GetCartByUserIDAndMItemID", (user[0], item_id))
-            exist = cursor.fetchone()
-
-            if exist:
+            exists = cursor.stored_results()
+            for exist in exists:
+                existing = exist.fetchone()
+            if existing:
                 return jsonify({'msg': ' already exists in the cart'})
             else:
                 #insert_query = "INSERT INTO Cart (UserID, MItemID) VALUES (%s, %s)"
@@ -160,17 +159,17 @@ def add_to_cart():
 @app.route('/Cart')
 def cart():
     if login_user:
-        cursor.callproc("GetUserByEmail", (login_user,)) #
+        cursor.callproc("GetUserByEmail", (login_user,))
         results = cursor.stored_results()
         for result in results:
-            user=result.fetchone()
+            user = result.fetchone()
 
         cursor.callproc("GetMenuAndCartByUserID", (user[0],))
         results_menu_cart = cursor.stored_results()
 
         # first result set 
         result_menu_cart = next(results_menu_cart, None)
-
+        print(result_menu_cart)
         if result_menu_cart:
             cart = result_menu_cart.fetchall()
         else:
