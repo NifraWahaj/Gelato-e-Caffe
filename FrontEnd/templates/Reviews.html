@@ -1,443 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- Bootstrap 4 CSS -->
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-      <!-- Bootstrap Icons -->
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-      <!-- Material Icons -->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!-- Custom Stylesheet -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-      <!-- Google Fonts Link -->
-      <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
-      <link rel="stylesheet"
-         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-      <!-- Favicon -->
-      <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
-      <!-- Bootstrap 3 for Ratings Chart -->
-      <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-      <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-      <!-- Custom Navbar Styles -->
-      <style>
-         .custom-navbar {
-         background-color: #fffdec;
-         position: fixed;
-         z-index: 1000;
-         width: 100%;
-         top: 0;
-         }
-         .custom-navbar .btn-custom {
-         margin-left: 49%;
-         }
-         /*keep this here, it disrupts nav bar of all pages if put in style.css*/
-         .custom-center {
-         display: flex;
-         justify-content: center;
-         }
-         .rating .glyphicon {
-         font-size: 22px;
-         }
-         .rating-num {
-         font-size: 54px;
-         }
-         .progress {
-         margin-bottom: 5px;
-         }
-         .progress-bar {
-         text-align: left;
-         }
-         .rating-desc .col-md-3 {
-         padding-right: 0px;
-         }
-         .glyphicon {
-         margin-right: 5px;
-         font-size: 22px;
-         }
-         .rating-desc .col-md-3 {
-         padding-right: 5px;
-         }
-         .sr-only {
-         margin-left: 5px;
-         overflow: visible;
-         clip: auto;
-         font-size: 12px;
-         margin-bottom: 3%;
-         }
-         .animated {
-         -webkit-transition: height 0.2s;
-         -moz-transition: height 0.2s;
-         transition: height 0.2s;
-         }
-         .stars {
-         margin: 20px 0;
-         font-size: 24px;
-         color: #d9534f;
-         }
-         .custom-btn {
-         background-color: #02594d;
-         color: white;
-         }
-         .custom-btn:hover {
-         background-color: #d9534f;
-         }
-      </style>
-      <!-- Chart.js -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-      <title>Gelato e Caffè</title>
-   </head>
-   <body >
-      <!-- ======= Nav Bar  ======= -->  
-      <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
-         <a class="navbar-brand" href="{{ url_for('admin_home') }}">
-         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo">
-         </a>      
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-         </button>
-         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto nav-fill">
-               <li class="nav-item">
-                  <a class="nav-link" href="{{url_for('admin_menu') }}">Menu</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('admin_review') }}">Reviews</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('admin_reservation') }}#">Reservation</a>
-               </li>
-            </ul>
-            {% if is_logged_in %}
-            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('handle_logout') }}">Log Out</a>
-            {% else %}
-            <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>
-            {% endif %}
-         </div>
-      </nav>
-     
-      <div id="separator-admin">
-         <h3 class="separator-heading-admin " style="margin-top: 1%; ">REVIEW</h3>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-      <div class="container mt-5">
-         <!--OVERALL RATING-->
-         <div class="container">
-            <h2 class="text-center">Ratings</h2>
-            <div class="row">
-               <div class="col-xs-12 col-md-14">
-                  <div class="well well-sm">
-                     <br>
-                     <div class="row">
-                        <br>
-                        <!-- Display average rating and total reviews -->
-                        <div class="col-xs-12 col-md-6 text-center">
-                           <h1 class="rating-num">{{ avg_rating | round(1) }}</h1>
-                           <div class="rating">
-                              {% for _ in range(5) %}
-                              {% if loop.index <= avg_rating %}
-                              <span class="glyphicon glyphicon-star"></span>
-                              {% else %}
-                              <span class="glyphicon glyphicon-star-empty"></span>
-                              {% endif %}
-                              {% endfor %}
-                           </div>
-                           <div>
-                              <span class="glyphicon glyphicon-user"></span>{{ total_reviews }} total reviews
-                           </div>
-                        </div>
-                        <!-- Display rating distribution -->
-                        <div class="col-xs-12 col-md-6">
-                           <div class="row rating-desc">
-                              {% for rating, count in rating_counts %}
-                              <div class="col-xs-3 col-md-3 text-right">
-                                 <span class="glyphicon glyphicon-star"></span>{{ rating }}
-                              </div>
-                              <div class="col-xs-8 col-md-9">
-                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ (count / total_reviews) * 100 }}"
-                                       aria-valuemin="0" aria-valuemax="100" style="width: {{ (count / total_reviews) * 100 }}%">
-                                       <!-- it might be showing an error here but when we run it it's working fine -->
-                                       <span class="sr-only">{{ ((count / total_reviews) * 100) | round(1) }}%</span>
-                                    </div>
-                                 </div>
-                              </div>
-                              {% endfor %}
-                              <!-- end rating -->
-                           </div>
-                           <!-- end row -->
-                        </div>
-                     </div>
-                     <br>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <br><br>
-        <!--REVIEW-->
-         <div class="container">
-            
-            <h2 class="text-center">Reviews</h2>
-            <br>
-         <div style="display: flex; justify-content: space-between;">    
-            <!-- show month wise  -->
-            <div class="form-group" style="width: 48%;">
-                <label for="monthSelect-review">Select Month:</label>
-                <select class="form-control" id="monthSelect-review" style="width: 95%;">
-                </select>
-            </div>
-            <!-- sorting by rating -->
-            <div style="width: 48%;">
-                <label for="ratingSort">Sort by Rating:</label>
-                <select class="form-control" id="ratingSort" style="width: 100%;">
-                    <option value="all">All Ratings</option>
-                    <option value="5">5 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="2">2 Stars</option>
-                    <option value="1">1 Star</option>
-                </select>
-            </div>
-        </div>
-        <br><br>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-        <!-- REVIEW-->
-        <div class="container">
-            <div class="reviews-container">
-                <!-- Reviews will be dynamically rendered here -->
-            </div>
-        </div>
-      
-    </div>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-              <!-- TOP 10 ITEMS SOLD -->
-    <h2 class="text-center">Top Items Sold</h2>
-    <div class="form-group "style="width: 71%; margin-left:12%;">
-        <label for="monthSelect" style="margin-left:40px;" >Select Month:</label>
-        <select id="monthSelect" class="form-control" style="margin-left:40px;">
-            {% for month in months %}
-                <option value="{{ month }}">{{ month }}</option>
-            {% endfor %}
-        </select>
-    </div>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <style> /*keep this here, it disrupts nav bar of all pages if put in style.css*/
+        .custom-center {
+            display: flex;
+            justify-content: center;
+        }
+        .rating .glyphicon { font-size: 22px; }
+        .rating-num { font-size: 54px; }
+        .progress { margin-bottom: 5px; }
+        .progress-bar { text-align: left; }
+        .rating-desc .col-md-3 { padding-right: 0px; }
+        .glyphicon {
+            margin-right: 5px;
+            font-size: 22px; 
+        }
+        .rating-desc .col-md-3 {
+            padding-right: 5px; 
+        }
+        .sr-only {
+            margin-left: 5px;
+            overflow: visible;
+            clip: auto;
+            font-size: 12px;
+            margin-bottom: 3%;
+        }
+        .animated {
+            -webkit-transition: height 0.2s;
+            -moz-transition: height 0.2s;
+            transition: height 0.2s;
+        }
+        .stars
+        {
+            margin: 20px 0;
+            font-size: 24px;
+            color: #d9534f;
+        }
+        .custom-btn {
+            background-color: #02594d;
+            color: white; 
+        }
+        .custom-btn:hover {
+            background-color:#d9534f; 
+        }
+
+
+    </style>
     
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="soldItemsChart"></canvas>
-                    <script>
-                        var topItemsData = {{ top_items | tojson | safe }};
+    <title>Reviews</title>
 
-                        var itemLabels = topItemsData.map(function(item) {
-                            return item[0];
-                        });
+</head>
+<body >
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+        <a class="navbar-brand" href="/">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo">
+        </a>
+       
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <ul class="navbar-nav mr-auto nav-fill">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('handle_menu') }}">Menu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/#Location-section">Location</a>
+            </li>
+        
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('reviews') }}">Reviews</a>
+            </li>
+    
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('reservation') }}">Reservation</a>
+            </li>
+        
+            <li class="nav-item">
+                <a class="nav-link" href="/#About-Us-section">About Us</a>
+            </li>
+        </ul>
+    
+        <a class="custom-cart-button" href="/Cart">
+            <i class="material-icons">shopping_cart</i>
+        </a>
+        {% if is_logged_in %}
+        <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('handle_logout') }}">Log Out</a>
+        {% else %}
+        <a class="btn btn-custom my-2 my-sm-0" href="{{ url_for('login') }}">Log In</a>
+        {% endif %}
+    </nav>
+    
+    <div id="separator-review">
+        <h3 class="separator-review-class">REVIEWS</h3>
+    </div>
+    <br>
 
-                        var itemQuantities = topItemsData.map(function(item) {
-                            return item[1];
-                        });
+<!--RATING-->
+<div class="container">
+    <h2 class="text-center">Rating</h2>
+    <div class="row">
+        <div class="col-xs-12 col-md-14">
+            <div class="well well-sm"><br>
+                <div class="row"><br>
 
-                        var soldItemsChart = new Chart("soldItemsChart", {
-                            type: "pie",
-                            data: {
-                                labels: itemLabels,
-                                datasets: [{
-                                    data: itemQuantities,
-                                    backgroundColor: ["#FF6384", "#36A2EB", "#ff8b3d", "#4BC0C0", "#9966FF", "#FF99CC", "#AFE1AF", "#FFD700", "#0a417a", "#8464a0"]
-                                }]
-                            },
-                            options: {
-                                title: {
-                                    display: true,
-                                    text: "Top 10 Sold Items"
-                                }
-                            }
-                        });
+                    <!-- Display average rating and total reviews -->
+                    <div class="col-xs-12 col-md-6 text-center">
+                        <h1 class="rating-num">{{ avg_rating | round(1) }}</h1>
+                        <div class="rating">
+                            {% for _ in range(5) %}
+                                {% if loop.index <= avg_rating %}
+                                    <span class="glyphicon glyphicon-star"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <span class="glyphicon glyphicon-user"></span>{{ total_reviews }} total reviews
+                        </div>
+                    </div>
 
-                        document.getElementById('monthSelect').addEventListener('change', function() {
-    var selectedMonth = this.value;
+                    <!-- Display rating distribution -->
+                    <div class="col-xs-12 col-md-6">
+                        <div class="row rating-desc">
+                            {% for rating, count in rating_counts %}
+                            <div class="col-xs-3 col-md-3 text-right">
+                                <span class="glyphicon glyphicon-star"></span>{{ rating }}
+                            </div>
+                            <div class="col-xs-8 col-md-9">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ (count / total_reviews) * 100 }}"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: {{ (count / total_reviews) * 100 }}%"> <!-- it might be showing an error here but when we run it it's working fine -->
+                                        <span class="sr-only">{{ ((count / total_reviews) * 100) | round(1) }}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- end rating -->
+                        </div>
+                        <!-- end row -->
+                    </div>
 
-    fetch(`/AdminReview?month=${selectedMonth}`, { headers: { 'Content-Type': 'application/json' } })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            itemLabels = data.map(item => item.item);
-            itemQuantities = data.map(item => item.quantity);
+                </div>
+                <br>
+            </div>
 
-            soldItemsChart.data.labels = itemLabels;
-            soldItemsChart.data.datasets[0].data = itemQuantities;
-            soldItemsChart.update();
-        })
-        .catch(error => console.error('Error:', error));
-});
+        </div>
+    </div>
+</div>
 
-                    </script>
+
+<!--REVIEW-->
+<div class="container">
+    <h2 class="text-center">Reviews</h2>
+    {% for review in reviews %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <p style="font-size: 18px;">
+                        <a class="float-left"><strong>{{ review[1] }}</strong></a>
+                        <span class="float-right">
+                            {% for star in range(review[2]) %}
+                            <i class="text-warning fa fa-star" style="font-size: 18px;"></i>
+                            {% endfor %}
+                        </span>
+                    </p>
+                    <div class="clearfix"></div>
+                    <p style="font-size: 18px;">{{ review[3] }}</p>
+                    <hr>
                 </div>
             </div>
         </div>
     </div>
+    {% endfor %}
+</div>
 
-    <script>
-document.getElementById('monthSelect').addEventListener('change', function() {
-    var selectedMonth = this.value;
+    <br><br>
 
-    // Make sure the URL is constructed correctly with the selected month
-    fetch(`/update_chart?month=${selectedMonth}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            itemLabels = data.map(item => item[0]);
-            itemQuantities = data.map(item => item[1]);
+    <!--WRITE REVIEW-->
+    <div class="container">
+        <div class="row" style="margin-top: 40px;">
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <div class="text-right">
+                        <a class="btn btn-success custom-btn" href="#post-review-box" id="open-review-box">Leave a Review</a>
+                       
+                    </div>
+                    <br>
 
-            soldItemsChart.data.labels = itemLabels;
-            soldItemsChart.data.datasets[0].data = itemQuantities;
-            soldItemsChart.update();
-        })
-        .catch(error => console.error('Error:', error));
-});
+                    <div class="row" id="post-review-box" style="display: none;">
+                        <div class="col-md-12">
+                            <form accept-charset="UTF-8" action="/Reviews" method="post" onsubmit="return validateForm()">
+                                <input id="ratings-hidden" name="rating" type="hidden">
+                                <textarea class="form-control" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
+                                <div class="text-right">
+                                    <div class="stars starrr" data-rating="0"></div>
+                                    <button class="btn btn-danger btn-lg" type="button" id="cancel-review-box" style="margin-right: 10px;">Cancel</button>
+                                    <button class="btn btn-success btn-lg" type="submit" style="background-color: #02594d;">Save</button>
+                                </div>
+                            </form>
+
+                            <script>
+                                function validateForm() {
+                                    const rating = document.getElementById('ratings-hidden').value;
+                                    if (rating === '0' || rating === '') {
+                                        alert('Please select a rating before submitting.');
+                                        return false; 
+                                    }
+                                    return true;
+                                }
+                                function handleStarRating(rating) {
+                                    document.getElementById('ratings-hidden').value = rating;
+                                }
+                            </script>
 
 
-    </script>
-
-     
-
-      
-      <script>
-         // current year
-         function getCurrentYear() {
-             var currentDate = new Date();
-             return currentDate.getFullYear();
-         }
-         // current month
-         function getCurrentMonth() {
-             var currentDate = new Date();
-             return currentDate.getMonth() + 1; // Adding 1 because getMonth() returns zero-based months
-         }
-         
-         // populate dropdown with curr and previous months of curr year
-         function populateMonthDropdown() {
-             var monthSelect = document.getElementById('monthSelect');
-             var currentYear = getCurrentYear();
-             var currentMonth = getCurrentMonth();
-         
-             for (var month = currentMonth; month >= 1; month--) {
-                 var option = document.createElement('option');
-                 option.value = month;
-                 option.text = new Date(currentYear, month - 1, 1).toLocaleString('en-US', { month: 'long' });
-                 monthSelect.add(option);
-             }
-         }
-         
-         // event listener for monthSelect dropdown
-         document.getElementById('monthSelect').addEventListener('change', function () {
-             var selectedMonth = this.value;
-             //fetchTopItems(selectedMonth);
-         });
-         populateMonthDropdown();
-         
-         // ================== REVIEW DROPDOWNS ==================
-         // populate dropdown with curr and previous months of curr year
-         function populateReviewMonthDropdown() {
-             var monthSelect = document.getElementById('monthSelect-review');
-             var currentYear = getCurrentYear();
-             var currentMonth = getCurrentMonth();
-         
-             for (var month = currentMonth; month >= 1; month--) {
-                 var option = document.createElement('option');
-                 option.value = month;
-                 option.text = new Date(currentYear, month - 1, 1).toLocaleString('en-US', { month: 'long' });
-                 monthSelect.add(option);
-             }
-         }
-         
-        populateReviewMonthDropdown(); 
-
-                // Add a global variable to store the fetched reviews data
-        let allReviews = [];
-
-        // Fetch reviews as JSON
-        fetch('/admin_reviews_json')
-            .then(response => response.json())
-            .then(data => {
-                allReviews = data.reviews;
-                // Apply default filters (current month) when page loads
-                const currentMonth = new Date().getMonth() + 1;
-                const defaultFilteredReviews = filterReviews(currentMonth, 'all');
-                // Initial rendering of filtered reviews
-                renderReviews(defaultFilteredReviews);
-            })
-            .catch(error => console.error('Error fetching reviews:', error));
-
-        // Function to filter reviews based on month and rating
-        function filterReviews(month, rating) {
-            return allReviews.filter(review => {
-                const reviewMonth = new Date(review.entry_date).getMonth() + 1;
-                const reviewRating = review.Rating;
-                const filterMonth = month === 'all' || reviewMonth === parseInt(month);
-                const filterRating = rating === 'all' || reviewRating === parseInt(rating);
-                return filterMonth && filterRating;
-            });
-        }
-
-        // Function to render reviews based on filtered criteria
-        function renderReviews(reviews) {
-            const reviewsContainer = document.querySelector('.reviews-container');
-            reviewsContainer.innerHTML = ''; // Clear the previous reviews
-            
-            reviews.forEach(review => {
-                // Create HTML elements to display each review
-                const reviewElement = document.createElement('div');
-                reviewElement.classList.add('card');
-                reviewElement.innerHTML = `
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p style="font-size: 18px;">
-                                    <a class="float-left"><strong>${review.UserName}</strong></a>
-                                    <span class="float-right">
-                                        ${getStarRating(review.Rating)}
-                                    </span>
-                                </p>
-                                <div class="clearfix"></div>
-                                <p style="font-size: 18px;">${review.Comments}</p>
-                                <hr>
-                            </div>
                         </div>
                     </div>
-                `;
-                reviewsContainer.appendChild(reviewElement);
-            });
-        }
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
 
-        // Function to get star rating HTML based on the rating value
-        function getStarRating(rating) {
-            let stars = '';
-            for (let i = 0; i < rating; i++) {
-                stars += '<i class="text-warning fa fa-star" style="font-size: 18px;"></i>';
+
+    
+     <!-- ======= Footer ======= -->
+     <div id="footer-section">
+        <div class="left-section">
+            <a class="navbar-brand-foot" href="#footer-section">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gelato e Caffè Logo" class="navbar-logo-foot">
+            </a>
+        </div>
+        <div class="right-section">
+            <h3 class="footer-section-head">Contact</h3>
+            <h3 class="footer-section-text">
+                Email: gelatoecaffè@gmail.com
+            </h3>
+            <h3 class="footer-section-text">
+                Phone: (123) 456-7890
+            </h3>
+            <h6 class="copyright-section">Copyright © 2023 Gelato e Caffè.  All rights reserved.</h6>
+        </div>
+    </div>
+   
+
+    <script>
+        //show review box
+        function openReviewBox() {
+            document.getElementById("post-review-box").style.display = "block";
+        }
+    
+        //hide review box
+        function closeReviewBox() {
+            document.getElementById("post-review-box").style.display = "none";
+        }
+        //cancel review box
+        function cancelReview() {
+        document.getElementById("post-review-box").style.display = "none";
+    }
+        //star rating plugin
+        function Starrr(element, options) {
+            this.element = element;
+            this.options = options;
+            for (var i = 0; i < 5; i++) {
+                this.element.innerHTML += '<span class="glyphicon glyphicon-star-empty"></span>';
             }
-            return stars;
+            this.stars = this.element.getElementsByTagName('span');
+            for (i = 0; i < this.stars.length; i++) {
+                this.stars[i].addEventListener('click', this.starClick.bind(this));
+            }
+            this.updateRating();
         }
-
-        // Update reviews based on selected month
-        document.getElementById('monthSelect-review').addEventListener('change', function () {
-            const selectedMonth = this.value;
-            const selectedRating = document.getElementById('ratingSort').value;
-            const filteredReviews = filterReviews(selectedMonth, selectedRating);
-            renderReviews(filteredReviews);
+    
+        Starrr.prototype.starClick = function (e) {
+            var index = this.getIndex(e.target);
+            if (this.options.rating === index + 1) {
+                this.options.rating = 0;
+            } else {
+                this.options.rating = index + 1;
+            }
+            this.updateRating();
+            var changeEvent = new Event('starrr:change');
+            this.element.dispatchEvent(changeEvent);
+        };
+    
+        Starrr.prototype.getIndex = function (element) {
+            var index = 0;
+            while ((element = element.previousElementSibling) != null) {
+                index++;
+            }
+            return index;
+        };
+    
+        Starrr.prototype.updateRating = function () {
+            for (var i = 0; i < 5; i++) {
+                if (i < this.options.rating) {
+                    this.stars[i].classList.remove('glyphicon-star-empty');
+                    this.stars[i].classList.add('glyphicon-star');
+                } else {
+                    this.stars[i].classList.remove('glyphicon-star');
+                    this.stars[i].classList.add('glyphicon-star-empty');
+                }
+            }
+        }
+    
+        //initializing star rating plugin
+        const starRating = document.querySelector('.stars.starrr');
+        const ratingsField = document.getElementById('ratings-hidden');
+        const starrr = new Starrr(starRating, {
+            rating: 0, // initial rating
         });
-
-        // Update reviews based on selected rating
-        document.getElementById('ratingSort').addEventListener('change', function () {
-            const selectedRating = this.value;
-            const selectedMonth = document.getElementById('monthSelect-review').value;
-            const filteredReviews = filterReviews(selectedMonth, selectedRating);
-            renderReviews(filteredReviews);
+    
+        //handling "starrr:change" event to update hidden input field
+        starRating.addEventListener('starrr:change', function (e) {
+            ratingsField.value = starrr.options.rating;
         });
+    
+        //click event handlers to the open/close/cancel buttons
+        const openReviewBtn = document.getElementById('open-review-box');
+        openReviewBtn.addEventListener('click', openReviewBox);
+    
+        const closeReviewBtn = document.getElementById('close-review-box');
+        closeReviewBtn.addEventListener('click', closeReviewBox);
 
-      </script>
-      <br><br>
-   </body>
+        const cancelReviewBtn = document.getElementById('cancel-review-box');
+        cancelReviewBtn.addEventListener('click', cancelReview);
+
+    </script>
+</body>
 </html>
