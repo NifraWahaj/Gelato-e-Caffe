@@ -1,21 +1,6 @@
 # Gelato-e-Caffe
 This website serves as a platform for customers to explore the cafe's menu, conveniently place orders, reserve a spot, and share their valuable feedback through reviews. Behind the scenes, the cafe effortlessly manages its menu, reviews and reservations.
 
-## Issues
-  
-## Progress Status
-- AdminHome - Complete
-- AdminMenu- search query is working but prob with js script
-- AdminReservation - Complete
-- AdminReview - Complete
-  
-- Login - Complete
-- SignUp - Complete
-- Home - Complete
-- Menu - when some item is searched it should show that item by opening it's category section by itself 
-- Reviews - Complete
-- Reservation - Complete
-
 ## Features
 
 **For Customers:**
